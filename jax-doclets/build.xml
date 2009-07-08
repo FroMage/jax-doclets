@@ -87,7 +87,7 @@
 	<target name="test-jaxrs" depends="jars" description="Test the JAXRS doclet">
 		<javadoc classpathref="build.classpath" 
 			sourcefiles="${src.dir}/com/lunatech/doclets/jax/test/RESTOrdersBean.java,${src.dir}/com/lunatech/doclets/jax/test/interfaces/RESTOrders.java" 
-			destdir="jaxrsdocs/" 
+			destdir="${build.dir}/jaxrsdocs/" 
 			extdirs="${lib.dir}" doclet="com.lunatech.doclets.jax.jaxrs.JAXRSDoclet" docletpathref="run.classpath"
 			>
 			<link href="../jaxbdocs/"/>
@@ -97,7 +97,7 @@
 	<target name="test-jaxb" depends="jars" description="Test the JAXB doclet">
 		<javadoc classpathref="build.classpath" 
 			sourcefiles="${src.dir}/com/lunatech/doclets/jax/test/RESTOrdersBean.java,${src.dir}/com/lunatech/doclets/jax/test/interfaces/RESTOrders.java" 
-			destdir="jaxbdocs/" 
+			destdir="${build.dir}/jaxbdocs/" 
 			extdirs="${lib.dir}" doclet="com.lunatech.doclets.jax.jaxb.JAXBDoclet" docletpathref="run.classpath"
 			>
 		</javadoc>
