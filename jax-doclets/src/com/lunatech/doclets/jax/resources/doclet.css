@@ -1,0 +1,48 @@
+table {
+ width: 100%;
+ border-collapse: collapse;
+}
+
+th {
+ text-align: left;
+ background: #CCCCFF;
+}
+
+th, td {
+ padding: 0.5em 1em;
+ border: thin inset black;
+}
+
+tr.subheader {
+ font-size: smaller;
+ text-align: center;
+ font-weight: bold;
+}
+
+table.menu {
+ width: auto;
+ padding: 0.3em 0.8em;
+ background-color: #EEEEFF;
+ border-collapse: separate;
+}
+
+table.menu th.selected, table.menu a {
+ font-weight: bold;
+}
+
+table.menu th {
+ padding: 0.1em;
+ background-color: transparent;
+ border: none;
+}
+
+table.menu th.selected {
+ background: #00008B;
+ color: white;
+}
+
+.footer {
+ font-style: italic;
+ font-size: smaller;
+ color: gray;
+}
