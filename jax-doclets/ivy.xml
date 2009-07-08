@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" 
+		xmlns:m="http://ant.apache.org/ivy/maven" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+    <info 
+        organisation="com.lunatech"
+        module="jax-doclets"
+        status="integration"
+        revision="${version}">
+	</info>
+	<configurations>
+		<conf name="compile" transitive="true"/>
+		<conf name="default" transitive="true" extends="compile"/>
+	</configurations>
+    <dependencies>
+		<dependency org="javax.ws.rs" name="jsr311-api" rev="1.0b9-r358" conf="default->*" force="true"/>
+	</dependencies>
+</ivy-module>

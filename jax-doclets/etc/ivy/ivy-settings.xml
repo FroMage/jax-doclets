@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivysettings>
+
+	<!-- Settings to define where we find the Lunatech repos -->
+	<property name="lunatech.repo.ivy.root" value="http://ivy.repo.lunatech.com" override="false" />
+	<property name="lunatech.repo.maven.root" value="http://maven.repo.lunatech.com" override="false" />
+	<property name="lunatech.repo.ivy.pattern" value="[organisation]/[module]/[revision]/[type]s/[artifact].[ext]"
+		override="false" />
+
+	<!-- The HTTP server root on Lunatech's ivy repo -->
+	<property name="lunatech.repo.ivy.ssh.root" value="/usr/local/www/ivy.repo.lunatech.com/htdocs" override="false"/>
+
+	<!-- Settings to define where we find the JBoss and Central repos -->
+	<property name="maven.repo.pattern" value="[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]"
+		override="false" />
+    <property name="central.repo.root" value="http://repo1.maven.org/maven2" override="false"/>
+    <property name="jboss.repo.root" value="http://repository.jboss.org/maven2" override="false"/>
+
+	<settings defaultResolver="default" />
+
+	<!-- Set this to include the optional classifier in the pattern -->
+	<caches artifactPattern="[organisation]/[module]/[type]s/[artifact]-[revision](-[classifier]).[ext]" checkUpToDate="true" />
+
+	<resolvers>
+		<!-- First use the lunatech Ivy repository -->
+		<url name="lunatech-ivy">
+			<ivy pattern="${lunatech.repo.ivy.root}/${lunatech.repo.ivy.pattern}" />
+			<artifact pattern="${lunatech.repo.ivy.root}/${lunatech.repo.ivy.pattern}" />
+		</url>
+		<!-- Use this for publishing only -->
+		<ssh name="lunatech-ivy-ssh" host="ivy.repo.lunatech.com" publishPermissions="0644">
+			<ivy pattern="${lunatech.repo.ivy.ssh.root}/${lunatech.repo.ivy.pattern}" />
+			<artifact pattern="${lunatech.repo.ivy.ssh.root}/${lunatech.repo.ivy.pattern}" />
+		</ssh>
+		<!-- Second use the lunatech Maven repository -->
+		<ibiblio name="lunatech-maven" m2compatible="true" usepoms="true" root="${lunatech.repo.maven.root}"
+			pattern="${maven.repo.pattern}" />
+		<!-- Third use the JBoss Maven repository (must be used before central) -->
+		<ibiblio name="jboss" m2compatible="true" usepoms="true" root="${jboss.repo.root}"
+			pattern="${maven.repo.pattern}" />
+		<!-- Third use the Central Maven repository -->
+		<ibiblio name="central" m2compatible="true" usepoms="true" root="${central.repo.root}"
+			pattern="${maven.repo.pattern}" />
+
+		<!-- The order is significant here, not above -->
+		<chain name="default" returnFirst="true">
+			<resolver ref="lunatech-ivy" />
+			<resolver ref="lunatech-maven" />
+			<resolver ref="jboss" />
+			<resolver ref="central" />
+		</chain>
+	</resolvers>
+
+	<modules>
+		<!-- We need this setting override because central also has the same 3.0 version but with a different API -->
+		<module organisation="org.antlr" name="antlr-runtime" revision="3.0" resolver="jboss"/>
+		<!-- These are broken at the JBoss repo -->
+		<module organisation="commons-httpclient" name="commons-httpclient" resolver="central"/>
+		<module organisation="commons-codec" name="commons-codec" resolver="central"/>
+		<module organisation="junit" name="junit" resolver="central"/>
+	</modules>
+</ivysettings>

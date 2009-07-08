@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<project name="jax-doclets" default="jars" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+		
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="lib.dir" value="${basedir}/lib-ivy"/>
+	<property name="build.classes.dir" value="${build.dir}/classes"/>
+	<property name="build.dist.dir" value="${build.dir}/dist"/>
+
+	<property name="ivy.dir" value="${basedir}/etc/ivy" />
+	<property name="ivy.stamp" value="${basedir}/ivy.stamp" />
+
+	<property name="dependency-reports.dir" value="${build.dir}/dependency-reports" />
+
+	<target name="init" depends="ivy-check">
+		<!-- Fail if ivy is not up to date and there was no manual override given -->
+		<condition property="ivy.failure">
+			<and>
+				<isfalse value="${ivy.upToDate}"/>
+				<isfalse value="${ivy.ignore}"/>
+			</and>
+		</condition>
+		<fail if="ivy.failure">You must run ivy-resolve in order to have the latest ivy libraries. You can ignore this with -Divy.ignore=true</fail>
+
+		<!-- get the svn revision number -->
+		<exec executable="svnversion" outputproperty="svnversion" failonerror="true">
+			<env key="path" value="/usr/bin"/>
+			<arg value="--no-newline" />
+		</exec>
+		<property name="major.version" value="0"/>
+		<property name="minor.version" value="1"/>
+		<property name="patch.version" value="r${svnversion}"/>
+		<property name="version" value="${major.version}.${minor.version}.${patch.version}"/>
+
+		<property name="jar" value="${build.dist.dir}/jax-doclets-${version}.jar"/>
+		<property name="sources.jar" value="${build.dist.dir}/jax-doclets-${version}-sources.jar"/>
+
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="${build.dist.dir}"/>
+
+		<path id="build.classpath">
+			<pathelement path="${lib.dir}/default/jar/jsr311-api.jar"/>
+		</path>
+
+		<path id="run.classpath">
+			<path refid="build.classpath"/>
+			<pathelement path="${jar}"/>
+		</path>
+
+	</target>
+	
+	<target name="compile" depends="init">
+		<javac debug="true" classpathref="build.classpath" srcdir="${src.dir}" destdir="${build.classes.dir}">
+			<filename name="com/lunatech/doclets/jax/apt/PathProcessor.java"/>
+		</javac>
+		<javac debug="true" classpathref="build.classpath" srcdir="${src.dir}" destdir="${build.classes.dir}">
+			<compilerarg value="-processor"/>
+			<compilerarg value="com.lunatech.doclets.jax.apt.PathProcessor"/>
+		</javac>
+		<copy todir="${build.classes.dir}/com/lunatech/doclets/jax/resources">
+			<fileset dir="${src.dir}/com/lunatech/doclets/jax/resources"/>
+		</copy>
+	</target>
+	
+	<target name="clean" description="Cleans the build">
+		<delete dir="${build.dir}" includes="**" includeemptydirs="true"/>
+	</target>
+
+	<target name="jar" depends="init, compile">
+		<jar destfile="${jar}">
+			<fileset dir="${build.classes.dir}"/>
+		</jar>
+	</target>
+
+	<target name="sources-jar" depends="init">
+		<jar destfile="${sources.jar}">
+			<fileset dir="${src.dir}"/>
+		</jar>
+	</target>
+
+	<target name="jars" depends="jar, sources-jar"/>
+
+	<target name="test-jaxrs" depends="jars" description="Test the JAXRS doclet">
+		<javadoc classpathref="build.classpath" 
+			sourcefiles="${src.dir}/com/lunatech/doclets/jax/test/RESTOrdersBean.java,${src.dir}/com/lunatech/doclets/jax/test/interfaces/RESTOrders.java" 
+			destdir="jaxrsdocs/" 
+			extdirs="${lib.dir}" doclet="com.lunatech.doclets.jax.jaxrs.JAXRSDoclet" docletpathref="run.classpath"
+			>
+			<link href="../jaxbdocs/"/>
+		</javadoc>
+	</target>
+	
+	<target name="test-jaxb" depends="jars" description="Test the JAXB doclet">
+		<javadoc classpathref="build.classpath" 
+			sourcefiles="${src.dir}/com/lunatech/doclets/jax/test/RESTOrdersBean.java,${src.dir}/com/lunatech/doclets/jax/test/interfaces/RESTOrders.java" 
+			destdir="jaxbdocs/" 
+			extdirs="${lib.dir}" doclet="com.lunatech.doclets.jax.jaxb.JAXBDoclet" docletpathref="run.classpath"
+			>
+		</javadoc>
+	</target>
+	
+	<!-- Ivy targets -->
+	
+	<path id="ivy.lib.path">
+		<fileset dir="${ivy.dir}" includes="*.jar"/>
+	</path>
+	<taskdef uri="antlib:org.apache.ivy.ant" resource="fr/jayasoft/ivy/ant/antlib.xml" classpathref="ivy.lib.path"/>
+	
+	<target name="ivy-check" description="Checks whether ivy should be invoked">
+		<uptodate property="ivy.upToDate" targetfile="${ivy.stamp}" srcfile="${basedir}/ivy.xml"/>
+		<condition property="ivy.upToDateForMessage" else="false">
+			<istrue value="${ivy.upToDate}"/>
+		</condition>
+		<echo>Ivy is up to date: ${ivy.upToDateForMessage}</echo> 
+	</target>
+	
+	<target name="ivy-resolve" depends="ivy-check" unless="ivy.upToDate" description="Download the libraries needed by this project.">
+		<mkdir dir="${lib.dir}" />
+		<ivy:settings file="${ivy.dir}/ivy-settings.xml"/>
+		<ivy:retrieve sync="true" pattern="${lib.dir}/[conf]/[type]/[artifact].[ext]"/>
+		<ivy:report todir="${dependency-reports.dir}"/>
+		<touch file="${ivy.stamp}"/>
+	</target>
+
+	<target name="ivy-publish" depends="ivy-resolve" description="Upload this project to the Ivy repository.">
+		<ivy:settings file="${ivy.dir}/ivy-settings.xml"/>
+		<ivy:resolve/>
+		<ivy:publish resolver="lunatech-ivy-ssh" forcedeliver="true" overwrite="true" update="true">
+			<artifacts pattern="${build.dir}/[artifact].[ext]" />
+		</ivy:publish>
+	</target>
+
+	<target name="ivy-clean" description="Remove all ivy-downloaded libraries">
+		<delete>
+			<fileset dir="${lib.dir}"/>
+			<filename name="${ivy.stamp}"/>
+		</delete>
+	</target>
+		
+	<target name="ivy-clean-cache" description="Cleans the Ivy cache. Beware as it can be huge to re-download.">
+		<ivy:settings file="${ivy.dir}/ivy-settings.xml"/>
+		<ivy:cleancache/>
+	</target>
+
+</project>
