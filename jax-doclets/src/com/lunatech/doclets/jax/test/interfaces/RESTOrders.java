@@ -102,7 +102,7 @@ public interface RESTOrders {
    */
   @Path("/order/{key}")
   @GET
-  public Response getOrder(@PathParam("key") final String orderKey);
+  public Order getOrder(@PathParam("key") final String orderKey);
 
   /**
    * Creates or updates a new order
@@ -133,6 +133,10 @@ public interface RESTOrders {
   //
   // Order comments
 
+  /**
+   * @returnWrapped com.lunatech.doclets.jax.test.RESTOrdersBean.Comment
+   * @return the list of order comments
+   */
   @Path("/order/{key}/comments")
   @GET
   public Response getOrderComments(@PathParam("key") final String orderKey);
@@ -263,4 +267,12 @@ public interface RESTOrders {
   @Produces("*/*")
   public Response getOrderAttachmentThumbnail(@PathParam("key") final String orderKey, @PathParam("name") String name);
 
+  /**
+   * @inputWrapped com.lunatech.doclets.jax.test.RESTOrdersBean.Order
+   * @param content
+   *          this is the xml
+   */
+  @Path("/order/{key}/something")
+  @PUT
+  public void putSomething(String content);
 }
