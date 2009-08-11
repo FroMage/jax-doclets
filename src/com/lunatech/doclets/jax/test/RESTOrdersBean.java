@@ -163,7 +163,7 @@ public class RESTOrdersBean implements RESTOrders {
 
   // order
 
-  public Response getOrder(final String orderKey) {
+  public Order getOrder(final String orderKey) {
     return null;
   }
 
@@ -282,5 +282,10 @@ public class RESTOrdersBean implements RESTOrders {
   public Response getOrderAttachmentThumbnail(final String orderKey, final String filename) {
     return null;
   }
+
+  //
+  // Various
+
+  public void putSomething(String content) {}
 
 }

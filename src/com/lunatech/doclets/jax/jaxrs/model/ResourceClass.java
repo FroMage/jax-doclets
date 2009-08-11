@@ -22,9 +22,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 
 import com.lunatech.doclets.jax.Utils;
 import com.sun.javadoc.AnnotationDesc;
@@ -47,8 +45,8 @@ public class ResourceClass {
     // find the annotated class or interface
     declaringClass = Utils.findAnnotatedClass(resourceClass, Path.class);
     rootPathAnnotation = Utils.findAnnotation(declaringClass, Path.class);
-    rootProducesAnnotation = Utils.findAnnotation(declaringClass, Produces.class);
-    rootConsumesAnnotation = Utils.findAnnotation(declaringClass, Consumes.class);
+    rootProducesAnnotation = Utils.findAnnotation(declaringClass, Utils.getProducesClass());
+    rootConsumesAnnotation = Utils.findAnnotation(declaringClass, Utils.getConsumesClass());
     for (final MethodDoc method : resourceClass.methods(false)) {
       MethodDoc declaringMethod = Utils.findAnnotatedMethod(declaringClass, method, Path.class);
       if (declaringMethod != null) {
