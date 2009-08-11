@@ -469,4 +469,12 @@ public class Utils {
     }
     return null;
   }
+
+  public static Tag[] getTags(Doc doc, String tagName) {
+    Tag[] tags = doc.tags("@" + tagName);
+    if (tags != null && tags.length > 0) {
+      return tags;
+    }
+    return null;
+  }
 }
