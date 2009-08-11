@@ -61,12 +61,22 @@ public class JAXBMember implements Comparable<JAXBMember> {
     return property;
   }
 
-  public Type getJavaType() {
-    Type type;
+  private Type getType() {
     if (property.isMethod()) {
-      type = ((MethodDoc) property).returnType();
+      return ((MethodDoc) property).returnType();
     } else
-      type = ((FieldDoc) property).type();
+      return ((FieldDoc) property).type();
+  }
+
+  public boolean isCollection() {
+    Type type = getType();
+    Type collectionType = Utils.findSuperType(type, "java.util.Collection");
+    // FIXME: this is dodgy at best
+    return collectionType != null;
+  }
+
+  public Type getJavaType() {
+    Type type = getType();
     Type collectionType = Utils.findSuperType(type, "java.util.Collection");
     // FIXME: this is dodgy at best
     if (collectionType != null) {

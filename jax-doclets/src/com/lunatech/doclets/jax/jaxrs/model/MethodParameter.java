@@ -23,6 +23,7 @@ import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ParamTag;
 import com.sun.javadoc.Parameter;
+import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 
 public class MethodParameter {
@@ -58,7 +59,20 @@ public class MethodParameter {
     return "";
   }
 
-  public String getTypeName() {
+  public boolean isWrapped() {
+    Type parameterType = getType();
+    return !parameterType.isPrimitive() && parameterType.qualifiedTypeName().equals("java.lang.String")
+           && Utils.getTag(method, "inputWrapped") != null;
+  }
+
+  public String getWrappedType() {
+    if (!isWrapped())
+      return null;
+    Tag tag = Utils.getTag(method, "inputWrapped");
+    return tag.text();
+  }
+
+  public String getTypeString() {
     return parameter.type().qualifiedTypeName() + parameter.type().dimension();
   }
 

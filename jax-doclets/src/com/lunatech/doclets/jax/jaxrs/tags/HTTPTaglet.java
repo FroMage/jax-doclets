@@ -27,7 +27,7 @@ public class HTTPTaglet implements Taglet {
 
   public static final String NAME = "HTTP";
 
-  private static final String HEADER = "HTTP return code:";
+  private static final String HEADER = "HTTP return codes:";
 
   public String getName() {
     return NAME;
@@ -71,21 +71,34 @@ public class HTTPTaglet implements Taglet {
   }
 
   public String toString(Tag tag) {
-    return "<DT><B>" + HEADER + "</B><DD>" + tag.text() + "</DD>\n";
+    return "<DT><B>" + HEADER + "</B></DT><DD><B>" + getHTTPCode(tag) + "</B> - " + getHTTPDoc(tag) + "</DD>\n";
   }
 
   public String toString(Tag[] tags) {
     if (tags.length == 0) {
       return null;
     }
-    String result = "\n<DT><B>" + HEADER + "</B><DD>";
+    String result = "\n<DT><B>" + HEADER + "</B></DT>";
     for (int i = 0; i < tags.length; i++) {
-      if (i > 0) {
-        result += ", ";
-      }
-      result += tags[i].text();
+      result += "<DD><B>" + getHTTPCode(tags[i]) + "</B> - " + getHTTPDoc(tags[i]) + "</DD>\n";
     }
-    return result + "</DD>\n";
+    return result + "\n";
+  }
+
+  public String getHTTPCode(Tag tag) {
+    String text = tag.text().trim();
+    int ws = text.indexOf(' ');
+    if (ws > -1)
+      return text.substring(0, ws);
+    return text;
+  }
+
+  public String getHTTPDoc(Tag tag) {
+    String text = tag.text().trim();
+    int ws = text.indexOf(' ');
+    if (ws > -1)
+      return text.substring(ws + 1);
+    return null;
   }
 
 }

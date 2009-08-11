@@ -71,15 +71,22 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
 
   private MethodParameter inputParameter;
 
+  private MethodOutput output;
+
   public ResourceMethod(MethodDoc method, MethodDoc declaringMethod, ResourceClass resource) {
     this.resource = resource;
     this.method = method;
     this.declaringClass = resource.getDeclaringClass();
     this.declaringMethod = declaringMethod;
+    this.output = new MethodOutput(declaringMethod);
     setupPath();
     setupParameters();
     setupMethods();
     setupMIMEs();
+  }
+
+  public MethodOutput getOutput() {
+    return output;
   }
 
   private void setupMIMEs() {
