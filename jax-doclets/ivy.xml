@@ -31,6 +31,10 @@
 		<conf name="compile" transitive="true"/>
 		<conf name="default" transitive="true" extends="compile"/>
 	</configurations>
+	<publications>
+		<artifact name="jax-doclets" ext="jar"/>
+		<artifact name="jax-doclets" ext="jar" m:classifier="sources" type="source"/>
+	</publications>
     <dependencies>
 		<dependency org="javax.ws.rs" name="jsr311-api" rev="1.0b9-r358" conf="default->*" force="true"/>
 	</dependencies>
