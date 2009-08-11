@@ -135,6 +135,8 @@ public interface RESTOrders {
 
   /**
    * @returnWrapped com.lunatech.doclets.jax.test.RESTOrdersBean.Comment
+   * @returnWrapped com.lunatech.doclets.jax.test.RESTOrdersBean.OrderLine when
+   *                there is an error
    * @return the list of order comments
    */
   @Path("/order/{key}/comments")
