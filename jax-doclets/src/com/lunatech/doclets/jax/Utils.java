@@ -38,6 +38,7 @@ import com.sun.javadoc.ProgramElementDoc;
 import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 import com.sun.javadoc.AnnotationDesc.ElementValuePair;
+import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 import com.sun.tools.doclets.internal.toolkit.Configuration;
 import com.sun.tools.doclets.internal.toolkit.taglets.DeprecatedTaglet;
 import com.sun.tools.doclets.internal.toolkit.taglets.ParamTaglet;
@@ -396,4 +397,76 @@ public class Utils {
     }
   }
 
+  /**
+   * Returns either Produces.class or ProduceMime.class (old version)
+   * 
+   * @return
+   */
+  public static Class<?> getProducesClass() {
+    try {
+      return Class.forName("javax.ws.rs.Produces");
+    } catch (ClassNotFoundException e) {
+      try {
+        return Class.forName("javax.ws.rs.ProduceMime");
+      } catch (ClassNotFoundException e1) {
+        throw new RuntimeException(e1);
+      }
+    }
+  }
+
+  /**
+   * Returns either Consumes.class or ConsumeMime.class (old version)
+   * 
+   * @return
+   */
+  public static Class<?> getConsumesClass() {
+    try {
+      return Class.forName("javax.ws.rs.Consumes");
+    } catch (ClassNotFoundException e) {
+      try {
+        return Class.forName("javax.ws.rs.ConsumeMime");
+      } catch (ClassNotFoundException e1) {
+        throw new RuntimeException(e1);
+      }
+    }
+  }
+
+  public static String getExternalLink(Configuration configuration, Type type, HtmlDocletWriter writer) {
+    return getExternalLink(configuration, type.asClassDoc().containingPackage().name(), type.typeName(), writer);
+  }
+
+  public static String getExternalLink(Configuration configuration, String className, HtmlDocletWriter writer) {
+    int lastSep = className.lastIndexOf('.');
+    if (lastSep == -1)
+      return getExternalLink(configuration, "", className, writer);
+    String link;
+    // since classes can be internal, look up backwards with an ever shrinking
+    // package name
+    do {
+      link = getExternalLink(configuration, className.substring(0, lastSep), className.substring(lastSep + 1), writer);
+      if (link != null)
+        return link;
+      lastSep = className.lastIndexOf('.', lastSep - 1);
+    } while (lastSep > -1);
+    return null;
+  }
+
+  private static String getExternalLink(Configuration configuration, String packageName, String className, HtmlDocletWriter writer) {
+    return configuration.extern.getExternalLink(packageName, writer.relativePath, className + ".html");
+  }
+
+  public static String getLinkTypeName(String url) {
+    int lastSep = url.lastIndexOf('/');
+    if (lastSep != -1 && url.endsWith(".html"))
+      return url.substring(lastSep + 1, url.length() - 5);
+    throw new IllegalArgumentException("Invalid type link: " + url);
+  }
+
+  public static Tag getTag(Doc doc, String tagName) {
+    Tag[] tags = doc.tags("@" + tagName);
+    if (tags != null && tags.length > 0) {
+      return tags[0];
+    }
+    return null;
+  }
 }
