@@ -29,6 +29,8 @@ import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.InputWrappedTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.ReturnWrappedTaglet;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.DocErrorReporter;
@@ -62,6 +64,8 @@ public class JAXRSDoclet {
     htmlDoclet.configuration.root = rootDoc;
     htmlDoclet.configuration.setOptions();
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new HTTPTaglet()));
+    htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new ReturnWrappedTaglet()));
+    htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new InputWrappedTaglet()));
     final ClassDoc[] classes = rootDoc.classes();
     for (final ClassDoc klass : classes) {
       if (Utils.findAnnotatedClass(klass, jaxrsAnnotations) != null) {
