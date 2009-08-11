@@ -97,7 +97,7 @@ public class JAXBClassWriter extends DocletWriter {
         around("td", member.getName());
       }
       open("td");
-      printMemberType(member);
+      printMemberType(member, true);
       close("td");
       open("td");
       Doc javaDoc = member.getJavaDoc();
@@ -110,7 +110,9 @@ public class JAXBClassWriter extends DocletWriter {
     close("table");
   }
 
-  private void printMemberType(JAXBMember member) {
+  private void printMemberType(JAXBMember member, boolean markCollections) {
+    if (markCollections && member.isCollection())
+      print("xsd:list[");
     if (member.isIDREF())
       print("xsd:IDREF[");
     if (member.isID())
@@ -124,6 +126,8 @@ public class JAXBClassWriter extends DocletWriter {
     if (member.isID())
       print("]");
     if (member.isIDREF())
+      print("]");
+    if (markCollections && member.isCollection())
       print("]");
   }
 
@@ -140,7 +144,7 @@ public class JAXBClassWriter extends DocletWriter {
     Collection<Attribute> attributes = jaxbClass.getAttributes();
     for (Attribute attribute : attributes) {
       print("\n " + attribute.getName() + "=\"");
-      printMemberType(attribute);
+      printMemberType(attribute, false);
       print("\"");
     }
     print(">\n");
@@ -149,15 +153,21 @@ public class JAXBClassWriter extends DocletWriter {
       print("  &lt;" + element.getName() + ">");
       if (element.isWrapped()) {
         print("\n   &lt;" + element.getWrappedName() + ">");
-        printMemberType(element);
-        print("&lt;/" + element.getWrappedName() + ">\n  ");
+        printMemberType(element, false);
+        print("&lt;/" + element.getWrappedName() + ">");
+        if (element.isCollection())
+          print("…");
+        print("\n  ");
       } else
-        printMemberType(element);
-      print("&lt;/" + element.getName() + ">\n");
+        printMemberType(element, false);
+      print("&lt;/" + element.getName() + ">");
+      if (!element.isWrapped() && element.isCollection())
+        print("…");
+      print("\n");
     }
     for (Value value : jaxbClass.getValues()) {
       print(" ");
-      printMemberType(value);
+      printMemberType(value, true);
       print("\n");
     }
     print("&lt;/" + jaxbClass.getName() + ">\n");

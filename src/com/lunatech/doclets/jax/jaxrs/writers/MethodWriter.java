@@ -24,11 +24,11 @@ import java.util.Map;
 import java.util.Set;
 
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxrs.model.MethodOutput;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
 import com.sun.javadoc.MethodDoc;
-import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.TagletOutputImpl;
 
@@ -90,40 +90,52 @@ public class MethodWriter extends DocletWriter {
   }
 
   private void printOutput() {
-    Type returnType = method.getJavaDoc().returnType();
     open("dt");
     around("b", "Output:");
     close("dt");
-    open("dd");
 
-    String link = null;
-    String typeName = returnType.qualifiedTypeName() + returnType.dimension();
-    if (!returnType.isPrimitive()) {
-      // check if we have it wrapped
-      if (returnType.qualifiedTypeName().equals("java.lang.String") || returnType.qualifiedTypeName().equals("javax.ws.rs.core.Response")) {
-        Tag tag = Utils.getTag(method.getJavaDoc(), "returnWrapped");
-        if (tag != null) {
-          System.err.println("IN THERE: " + tag.text());
-          link = Utils.getExternalLink(configuration, tag.text(), writer);
-          if (link != null)
-            typeName = Utils.getLinkTypeName(link);
-        }
-      } else {
+    MethodOutput output = method.getOutput();
+
+    if (output.isOutputWrapped()) {
+      for (int i = 0; i < output.getOutputWrappedCount(); i++) {
+        open("dd");
+        String typeName = output.getWrappedOutputType(i);
+        String link = Utils.getExternalLink(configuration, typeName, writer);
+        if (link != null)
+          typeName = Utils.getLinkTypeName(link);
+        printOutput(typeName, link, output.getOutputDoc(i));
+        close("dd");
+      }
+    } else {
+      open("dd");
+      Type returnType = output.getOutputType();
+      String link = null;
+      String typeName = returnType.qualifiedTypeName() + returnType.dimension();
+      if (!returnType.isPrimitive()) {
         link = Utils.getExternalLink(configuration, returnType, writer);
         if (link != null)
           typeName = returnType.typeName() + returnType.dimension();
       }
+      printOutput(typeName, link, output.getOutputDoc());
+      if (link == null) {
+        around("tt", typeName);
+      } else {
+        around("a href='" + link + "'", typeName);
+      }
+      close("dd");
     }
+  }
+
+  private void printOutput(String typeName, String link, String doc) {
     if (link == null) {
       around("tt", typeName);
     } else {
       around("a href='" + link + "'", typeName);
     }
     print(" - ");
-    Tag returnDoc = Utils.getTag(method.getJavaDoc(), "return");
-    if (returnDoc != null)
-      print(returnDoc.text());
-    close("dd");
+    if (doc != null)
+      print(doc);
+
   }
 
   private void printInput() {
@@ -136,21 +148,18 @@ public class MethodWriter extends DocletWriter {
     open("dd");
     Type type = inputParameter.getType();
     String link = null;
-    String typeName = inputParameter.getTypeName();
+    String typeName = inputParameter.getTypeString();
     if (!type.isPrimitive()) {
       // check if we have it wrapped
-      if (type.qualifiedTypeName().equals("java.lang.String")) {
-        Tag tag = Utils.getTag(method.getJavaDoc(), "inputWrapped");
-        if (tag != null) {
-          System.err.println("IN THERE: " + tag.text());
-          link = Utils.getExternalLink(configuration, tag.text(), writer);
-          if (link != null)
-            typeName = Utils.getLinkTypeName(link);
-        }
+      if (inputParameter.isWrapped()) {
+        String wrappedType = inputParameter.getWrappedType();
+        link = Utils.getExternalLink(configuration, wrappedType, writer);
+        if (link != null)
+          typeName = Utils.getLinkTypeName(link);
       } else {
         link = Utils.getExternalLink(configuration, type, writer);
         if (link != null)
-          typeName = type.typeName();
+          typeName = type.typeName() + type.dimension();
       }
     }
     if (link == null) {
