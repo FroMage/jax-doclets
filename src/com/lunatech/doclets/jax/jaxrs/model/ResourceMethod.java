@@ -45,7 +45,7 @@ import com.sun.javadoc.Tag;
 
 public class ResourceMethod implements Comparable<ResourceMethod> {
 
-  private static final Class<?>[] MethodAnnotations = new Class<?>[] { GET.class, POST.class, PUT.class, HEAD.class, DELETE.class };
+  public static final Class<?>[] MethodAnnotations = new Class<?>[] { GET.class, POST.class, PUT.class, HEAD.class, DELETE.class };
 
   private MethodDoc declaringMethod;
 
