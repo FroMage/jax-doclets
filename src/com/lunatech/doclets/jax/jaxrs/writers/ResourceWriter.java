@@ -62,7 +62,14 @@ public class ResourceWriter extends DocletWriter {
 
   private void printMethods() {
     List<ResourceMethod> methods = resource.getMethods();
-    if (methods.isEmpty())
+    boolean hasMethods = false;
+    for (ResourceMethod method : methods) {
+      if (!method.isResourceLocator()) {
+        hasMethods = true;
+        break;
+      }
+    }
+    if (!hasMethods)
       return;
     tag("hr");
     open("table");
@@ -72,6 +79,9 @@ public class ResourceWriter extends DocletWriter {
     close("th");
     close("tr");
     for (ResourceMethod method : methods) {
+      // skip resource locator methods
+      if (method.isResourceLocator())
+        continue;
       open("tr");
       open("td");
       new MethodWriter(method, this).print();

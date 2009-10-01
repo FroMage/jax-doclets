@@ -292,4 +292,8 @@ public class RESTOrdersBean implements RESTOrders {
     return null;
   }
 
+  public LamaSubResource getLama(String foo) {
+    return null;
+  }
+
 }

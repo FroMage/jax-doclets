@@ -73,6 +73,8 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
 
   private MethodOutput output;
 
+  private ResourceClass resourceLocator;
+
   public ResourceMethod(MethodDoc method, MethodDoc declaringMethod, ResourceClass resource) {
     this.resource = resource;
     this.method = method;
@@ -83,6 +85,10 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
     setupParameters();
     setupMethods();
     setupMIMEs();
+    // is this a resource locator?
+    if (methods.isEmpty() && !declaringMethod.returnType().isPrimitive())
+      resourceLocator = new ResourceClass(declaringMethod.returnType().asClassDoc(), this);
+
   }
 
   public MethodOutput getOutput() {
@@ -139,7 +145,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
 
   private void setupPath() {
     final AnnotationDesc pathAnnotation = Utils.findMethodAnnotation(declaringClass, method, Path.class);
-    final String rootPath = (String) Utils.getAnnotationValue(resource.getRootPathAnnotation());
+    final String rootPath = resource.getPath();
 
     if (pathAnnotation != null) {
       String path = (String) Utils.getAnnotationValue(pathAnnotation);
@@ -171,20 +177,20 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   }
 
   public List<String> getProduces() {
-    if (producesAnnotation == null)
+    if (getProducesAnnotation() == null)
       return Collections.emptyList();
     List<String> producedMIMEs = new ArrayList<String>();
-    for (String mime : Utils.getAnnotationValues(producesAnnotation)) {
+    for (String mime : Utils.getAnnotationValues(getProducesAnnotation())) {
       producedMIMEs.add(mime);
     }
     return producedMIMEs;
   }
 
   public List<String> getConsumes() {
-    if (consumesAnnotation == null)
+    if (getConsumesAnnotation() == null)
       return Collections.emptyList();
     List<String> consumedMIMEs = new ArrayList<String>();
-    for (String mime : Utils.getAnnotationValues(consumesAnnotation)) {
+    for (String mime : Utils.getAnnotationValues(getConsumesAnnotation())) {
       consumedMIMEs.add(mime);
     }
     return consumedMIMEs;
@@ -203,14 +209,31 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   }
 
   public Map<String, MethodParameter> getQueryParameters() {
+    if (resource.isSubResource()) {
+      Map<String, MethodParameter> allQueryParameters = new HashMap<String, MethodParameter>(resource.getParentMethod()
+          .getQueryParameters());
+      allQueryParameters.putAll(queryParameters);
+      return allQueryParameters;
+    }
     return queryParameters;
   }
 
   public Map<String, MethodParameter> getPathParameters() {
+    if (resource.isSubResource()) {
+      Map<String, MethodParameter> allPathParameters = new HashMap<String, MethodParameter>(resource.getParentMethod().getPathParameters());
+      allPathParameters.putAll(pathParameters);
+      return allPathParameters;
+    }
     return pathParameters;
   }
 
   public Map<String, MethodParameter> getMatrixParameters() {
+    if (resource.isSubResource()) {
+      Map<String, MethodParameter> allMatrixParameters = new HashMap<String, MethodParameter>(resource.getParentMethod()
+          .getMatrixParameters());
+      allMatrixParameters.putAll(matrixParameters);
+      return allMatrixParameters;
+    }
     return matrixParameters;
   }
 
@@ -244,6 +267,30 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
       }
     }
     return strbuf.toString();
+  }
+
+  public AnnotationDesc getProducesAnnotation() {
+    if (producesAnnotation != null)
+      return producesAnnotation;
+    if (resource.isSubResource())
+      return resource.getProducesAnnotation();
+    return null;
+  }
+
+  public AnnotationDesc getConsumesAnnotation() {
+    if (consumesAnnotation != null)
+      return consumesAnnotation;
+    if (resource.isSubResource())
+      return resource.getConsumesAnnotation();
+    return null;
+  }
+
+  public ResourceClass getResourceLocator() {
+    return resourceLocator;
+  }
+
+  public boolean isResourceLocator() {
+    return resourceLocator != null;
   }
 
 }
