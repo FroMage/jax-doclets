@@ -244,6 +244,9 @@ public class Utils {
   public static String appendURLFragments(String... fragments) {
     StringBuffer strbuf = new StringBuffer();
     for (String fragment : fragments) {
+      // skip empty fragments
+      if (fragment == null || fragment.length() == 0)
+        continue;
       if (!strbuf.toString().endsWith("/") && !fragment.startsWith("/")) {
         strbuf.append("/");
       }

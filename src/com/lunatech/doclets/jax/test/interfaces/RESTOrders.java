@@ -32,6 +32,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.lunatech.doclets.jax.test.LamaSubResource;
 import com.lunatech.doclets.jax.test.RESTOrdersBean.Comment;
 import com.lunatech.doclets.jax.test.RESTOrdersBean.Order;
 import com.lunatech.doclets.jax.test.RESTOrdersBean.OrderLine;
@@ -280,4 +281,13 @@ public interface RESTOrders {
 
   @GET
   public String getNoPath();
+
+  /**
+   * Returns a lama subresource
+   * 
+   * @param foo
+   *          the foo of the bar
+   */
+  @Path("/subresources/{foo}/")
+  public LamaSubResource getLama(@PathParam("foo") String foo);
 }

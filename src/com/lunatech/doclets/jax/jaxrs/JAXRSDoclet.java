@@ -81,7 +81,7 @@ public class JAXRSDoclet {
   }
 
   private static void handleJAXRSClass(final ClassDoc klass) {
-    jaxrsMethods.addAll(new ResourceClass(klass).getMethods());
+    jaxrsMethods.addAll(new ResourceClass(klass, null).getMethods());
   }
 
 }
