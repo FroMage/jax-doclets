@@ -277,4 +277,7 @@ public interface RESTOrders {
   @Path("/order/{key}/something")
   @PUT
   public void putSomething(String content);
+
+  @GET
+  public String getNoPath();
 }
