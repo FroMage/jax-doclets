@@ -22,6 +22,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 
 import com.lunatech.doclets.jax.Utils;
@@ -48,7 +53,8 @@ public class ResourceClass {
     rootProducesAnnotation = Utils.findAnnotation(declaringClass, Utils.getProducesClass());
     rootConsumesAnnotation = Utils.findAnnotation(declaringClass, Utils.getConsumesClass());
     for (final MethodDoc method : resourceClass.methods(false)) {
-      MethodDoc declaringMethod = Utils.findAnnotatedMethod(declaringClass, method, Path.class);
+      MethodDoc declaringMethod = Utils.findAnnotatedMethod(declaringClass, method, Path.class, GET.class, PUT.class, DELETE.class,
+                                                            HEAD.class, POST.class);
       if (declaringMethod != null) {
         methods.add(new ResourceMethod(method, declaringMethod, this));
       }

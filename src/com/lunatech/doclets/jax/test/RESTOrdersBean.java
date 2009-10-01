@@ -288,4 +288,8 @@ public class RESTOrdersBean implements RESTOrders {
 
   public void putSomething(String content) {}
 
+  public String getNoPath() {
+    return null;
+  }
+
 }
