@@ -104,20 +104,24 @@
 
 	<target name="test-jaxrs" depends="jars" description="Test the JAXRS doclet">
 		<javadoc classpathref="build.classpath" 
-			sourcefiles="${src.dir}/com/lunatech/doclets/jax/test/RESTOrdersBean.java,${src.dir}/com/lunatech/doclets/jax/test/interfaces/RESTOrders.java" 
 			destdir="${build.dir}/jaxrsdocs/" 
+			sourcepath="${src.dir}"
 			extdirs="${lib.dir}" doclet="com.lunatech.doclets.jax.jaxrs.JAXRSDoclet" docletpathref="run.classpath"
 			>
 			<link href="../jaxbdocs/"/>
+			<package name="com.lunatech.doclets.jax.test.*"/>
+			<package name="com.lunatech.doclets.jax.test.interfaces.*"/>
 		</javadoc>
 	</target>
 	
 	<target name="test-jaxb" depends="jars" description="Test the JAXB doclet">
 		<javadoc classpathref="build.classpath" 
-			sourcefiles="${src.dir}/com/lunatech/doclets/jax/test/RESTOrdersBean.java,${src.dir}/com/lunatech/doclets/jax/test/interfaces/RESTOrders.java" 
 			destdir="${build.dir}/jaxbdocs/" 
+			sourcepath="${src.dir}"
 			extdirs="${lib.dir}" doclet="com.lunatech.doclets.jax.jaxb.JAXBDoclet" docletpathref="run.classpath"
 			>
+			<package name="com.lunatech.doclets.jax.test.*"/>
+			<package name="com.lunatech.doclets.jax.test.interfaces.*"/>
 		</javadoc>
 	</target>
 	

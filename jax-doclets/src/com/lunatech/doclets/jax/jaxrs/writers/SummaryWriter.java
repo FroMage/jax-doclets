@@ -73,8 +73,12 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
 
   private void printResource(Resource resource) {
     for (ResourceMethod method : resource.getMethods()) {
-      for (String httpMethod : method.getMethods())
+      // skip resource locator methods
+      if (method.isResourceLocator())
+        continue;
+      for (String httpMethod : method.getMethods()) {
         printMethod(resource, method, httpMethod);
+      }
     }
     for (String name : resource.getResources().keySet()) {
       Resource subResource = resource.getResources().get(name);
