@@ -117,11 +117,6 @@ public class MethodWriter extends DocletWriter {
           typeName = returnType.typeName() + returnType.dimension();
       }
       printOutput(typeName, link, output.getOutputDoc());
-      if (link == null) {
-        around("tt", typeName);
-      } else {
-        around("a href='" + link + "'", typeName);
-      }
       close("dd");
     }
   }
