@@ -46,9 +46,15 @@ public class ResourceClass {
 
   private AnnotationDesc rootConsumesAnnotation;
 
-  public ResourceClass(ClassDoc resourceClass) {
+  private ResourceMethod parentMethod;
+
+  public ResourceClass(ClassDoc resourceClass, ResourceMethod methodLocator) {
+    this.parentMethod = methodLocator;
     // find the annotated class or interface
     declaringClass = Utils.findAnnotatedClass(resourceClass, Path.class);
+    // sub-resources may not have a path, but they're still resources
+    if (declaringClass == null)
+      declaringClass = resourceClass;
     rootPathAnnotation = Utils.findAnnotation(declaringClass, Path.class);
     rootProducesAnnotation = Utils.findAnnotation(declaringClass, Utils.getProducesClass());
     rootConsumesAnnotation = Utils.findAnnotation(declaringClass, Utils.getConsumesClass());
@@ -66,19 +72,47 @@ public class ResourceClass {
     return declaringClass;
   }
 
-  public AnnotationDesc getRootPathAnnotation() {
-    return rootPathAnnotation;
+  public String getPath() {
+    String myPath;
+    if (rootPathAnnotation != null)
+      myPath = (String) Utils.getAnnotationValue(rootPathAnnotation);
+    else
+      myPath = null;
+    if (parentMethod != null)
+      return Utils.appendURLFragments(parentMethod.getPath(), myPath);
+    return myPath;
   }
 
   public AnnotationDesc getProducesAnnotation() {
-    return rootProducesAnnotation;
+    if (rootProducesAnnotation != null)
+      return rootProducesAnnotation;
+    if (parentMethod != null)
+      return parentMethod.getProducesAnnotation();
+    return null;
   }
 
   public AnnotationDesc getConsumesAnnotation() {
-    return rootConsumesAnnotation;
+    if (rootConsumesAnnotation != null)
+      return rootConsumesAnnotation;
+    if (parentMethod != null)
+      return parentMethod.getConsumesAnnotation();
+    return null;
   }
 
   public Collection<ResourceMethod> getMethods() {
-    return methods;
+    List<ResourceMethod> allMethods = new LinkedList<ResourceMethod>(methods);
+    for (ResourceMethod method : methods) {
+      if (method.isResourceLocator())
+        allMethods.addAll(method.getResourceLocator().getMethods());
+    }
+    return allMethods;
+  }
+
+  public ResourceMethod getParentMethod() {
+    return parentMethod;
+  }
+
+  public boolean isSubResource() {
+    return parentMethod != null;
   }
 }
