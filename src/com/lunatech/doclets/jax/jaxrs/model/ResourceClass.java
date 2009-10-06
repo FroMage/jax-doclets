@@ -74,9 +74,11 @@ public class ResourceClass {
 
   public String getPath() {
     String myPath;
-    if (rootPathAnnotation != null)
+    if (rootPathAnnotation != null) {
       myPath = (String) Utils.getAnnotationValue(rootPathAnnotation);
-    else
+      if (!myPath.startsWith("/"))
+        myPath = "/" + myPath;
+    } else
       myPath = null;
     if (parentMethod != null)
       return Utils.appendURLFragments(parentMethod.getPath(), myPath);
