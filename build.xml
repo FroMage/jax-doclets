@@ -23,6 +23,7 @@
 	
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="src.dir" value="${basedir}/src"/>
+	<property name="src.test.dir" value="${basedir}/src-test"/>
 	<property name="lib.dir" value="${basedir}/lib-ivy"/>
 	<property name="build.classes.dir" value="${build.dir}/classes"/>
 	<property name="build.dist.dir" value="${build.dir}/dist"/>
@@ -105,7 +106,7 @@
 	<target name="test-jaxrs" depends="jars" description="Test the JAXRS doclet">
 		<javadoc classpathref="build.classpath" 
 			destdir="${build.dir}/jaxrsdocs/" 
-			sourcepath="${src.dir}"
+			sourcepath="${src.test.dir}"
 			extdirs="${lib.dir}" doclet="com.lunatech.doclets.jax.jaxrs.JAXRSDoclet" docletpathref="run.classpath"
 			>
 			<link href="../jaxbdocs/"/>
@@ -117,7 +118,7 @@
 	<target name="test-jaxb" depends="jars" description="Test the JAXB doclet">
 		<javadoc classpathref="build.classpath" 
 			destdir="${build.dir}/jaxbdocs/" 
-			sourcepath="${src.dir}"
+			sourcepath="${src.test.dir}"
 			extdirs="${lib.dir}" doclet="com.lunatech.doclets.jax.jaxb.JAXBDoclet" docletpathref="run.classpath"
 			>
 			<package name="com.lunatech.doclets.jax.test.*"/>
