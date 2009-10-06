@@ -48,20 +48,7 @@ public class MethodWriter extends DocletWriter {
   }
 
   private void printMethod(String httpMethod) {
-    open("pre");
-    print(httpMethod + " " + resource.getAbsolutePath());
-    Map<String, MethodParameter> queryParameters = method.getQueryParameters();
-    if (!queryParameters.isEmpty()) {
-      print("?");
-      boolean first = true;
-      for (String name : queryParameters.keySet()) {
-        if (!first)
-          print("&");
-        print(name);
-        first = false;
-      }
-    }
-    close("pre");
+    printHTTPExample(httpMethod);
     if (!Utils.isEmptyOrNull(method.getDoc())) {
       open("p");
       print(method.getDoc());
@@ -70,7 +57,7 @@ public class MethodWriter extends DocletWriter {
     open("dl");
     printInput();
     printOutput();
-    printParameters(queryParameters, "Query");
+    printParameters(method.getQueryParameters(), "Query");
     printParameters(method.getPathParameters(), "Path");
     printParameters(method.getMatrixParameters(), "Matrix");
     printMIMEs(method.getProduces(), "Produces");
@@ -194,4 +181,27 @@ public class MethodWriter extends DocletWriter {
     }
   }
 
+  private void printHTTPExample(String httpMethod) {
+    open("pre");
+    print(httpMethod + " " + resource.getAbsolutePath());
+    Map<String, MethodParameter> matrixParameters = method.getMatrixParameters();
+    if (!matrixParameters.isEmpty()) {
+      for (String name : matrixParameters.keySet()) {
+        print(";");
+        print(name);
+      }
+    }
+    Map<String, MethodParameter> queryParameters = method.getQueryParameters();
+    if (!queryParameters.isEmpty()) {
+      print("?");
+      boolean first = true;
+      for (String name : queryParameters.keySet()) {
+        if (!first)
+          print("&");
+        print(name);
+        first = false;
+      }
+    }
+    close("pre");
+  }
 }
