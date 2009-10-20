@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
@@ -479,5 +480,16 @@ public class Utils {
       return tags;
     }
     return null;
+  }
+  public static String getOption(String options[][], String optionName) {
+	    for(String option[] : options) {
+	    	String name = option[0];
+	    	if(!optionName.equals(name)) {
+	    		continue;
+	    	}
+	    	String value = option.length > 1 ? option[1] : null;
+	    	return value;
+	    }
+	    return null;
   }
 }
