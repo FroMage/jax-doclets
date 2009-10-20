@@ -18,24 +18,15 @@
  */
 package com.lunatech.doclets.jax.jaxrs;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import javax.ws.rs.Path;
 
 import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jaxrs.model.Resource;
-import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
-import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
-import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.InputWrappedTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.ReturnWrappedTaglet;
+import com.lunatech.doclets.jax.jaxrs.model.*;
+import com.lunatech.doclets.jax.jaxrs.tags.*;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
-import com.sun.javadoc.ClassDoc;
-import com.sun.javadoc.DocErrorReporter;
-import com.sun.javadoc.LanguageVersion;
-import com.sun.javadoc.RootDoc;
+import com.sun.javadoc.*;
 import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
 import com.sun.tools.doclets.internal.toolkit.taglets.LegacyTaglet;
@@ -47,7 +38,10 @@ public class JAXRSDoclet {
   private static final Class<?>[] jaxrsAnnotations = new Class<?>[] { Path.class };
 
   public static int optionLength(final String option) {
-    return HtmlDoclet.optionLength(option);
+	  if("-jaxrscontext".equals(option)) {
+		  return 2;
+	  }
+	  return HtmlDoclet.optionLength(option);
   }
 
   public static boolean validOptions(final String[][] options, final DocErrorReporter reporter) {
@@ -63,6 +57,8 @@ public class JAXRSDoclet {
   public static boolean start(final RootDoc rootDoc) {
     htmlDoclet.configuration.root = rootDoc;
     htmlDoclet.configuration.setOptions();
+    htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new ResponseHeaderTaglet()));
+    htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new RequestHeaderTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new HTTPTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new ReturnWrappedTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new InputWrappedTaglet()));

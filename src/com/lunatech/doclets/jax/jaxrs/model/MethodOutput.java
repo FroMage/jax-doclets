@@ -13,11 +13,7 @@ public class MethodOutput {
 
   public MethodOutput(MethodDoc declaringMethod) {
     this.declaringMethod = declaringMethod;
-    Type returnType = declaringMethod.returnType();
-    if (!returnType.isPrimitive()
-        && (returnType.qualifiedTypeName().equals("java.lang.String") || returnType.qualifiedTypeName().equals("javax.ws.rs.core.Response")))
-      returnWrappedTags = Utils.getTags(declaringMethod, "returnWrapped");
-
+    returnWrappedTags = Utils.getTags(declaringMethod, "returnWrapped");
   }
 
   public Type getOutputType() {
@@ -25,7 +21,17 @@ public class MethodOutput {
   }
 
   public boolean isOutputWrapped() {
-    return returnWrappedTags != null;
+	    Type returnType = declaringMethod.returnType();
+	    if (returnType.isPrimitive()) {
+	    	return false;
+	    }
+	    if(returnWrappedTags==null) {
+	    	return false;
+	    }
+	    if(returnWrappedTags.length==0) {
+	    	return false;
+	    }
+	    return true;
   }
 
   public int getOutputWrappedCount() {
