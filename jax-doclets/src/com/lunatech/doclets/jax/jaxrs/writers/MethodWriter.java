@@ -27,7 +27,7 @@ import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.model.MethodOutput;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
-import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.*;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.TagletOutputImpl;
@@ -58,14 +58,34 @@ public class MethodWriter extends DocletWriter {
     printInput();
     printOutput();
     printParameters(method.getQueryParameters(), "Query");
-    printParameters(method.getPathParameters(), "Path");
+    // done on resource printParameters(method.getPathParameters(), "Path");
     printParameters(method.getMatrixParameters(), "Matrix");
     printMIMEs(method.getProduces(), "Produces");
     printMIMEs(method.getConsumes(), "Consumes");
     printHTTPCodes();
+    printHTTPRequestHeaders();
+    printHTTPResponseHeaders();
     close("dl");
   }
 
+  private void printHTTPRequestHeaders() {
+	    MethodDoc javaDoc = method.getJavaDoc();
+	    TagletOutputImpl output = new TagletOutputImpl("");
+	    Set<String> tagletsSet = new HashSet<String>();
+	    tagletsSet.add(RequestHeaderTaglet.NAME);
+	    Utils.genTagOuput(configuration.tagletManager, javaDoc, configuration.tagletManager.getCustomTags(javaDoc), writer
+	        .getTagletWriterInstance(false), output, tagletsSet);
+	    writer.print(output.toString());
+  }
+  private void printHTTPResponseHeaders() {
+	    MethodDoc javaDoc = method.getJavaDoc();
+	    TagletOutputImpl output = new TagletOutputImpl("");
+	    Set<String> tagletsSet = new HashSet<String>();
+	    tagletsSet.add(ResponseHeaderTaglet.NAME);
+	    Utils.genTagOuput(configuration.tagletManager, javaDoc, configuration.tagletManager.getCustomTags(javaDoc), writer
+	        .getTagletWriterInstance(false), output, tagletsSet);
+	    writer.print(output.toString());
+}
   private void printHTTPCodes() {
     MethodDoc javaDoc = method.getJavaDoc();
     TagletOutputImpl output = new TagletOutputImpl("");
@@ -114,9 +134,10 @@ public class MethodWriter extends DocletWriter {
     } else {
       around("a href='" + link + "'", typeName);
     }
-    print(" - ");
-    if (doc != null)
+    if (doc != null) {
+      print(" - ");
       print(doc);
+    }
 
   }
 
@@ -149,8 +170,11 @@ public class MethodWriter extends DocletWriter {
     } else {
       around("a href='" + link + "'", typeName);
     }
-    writer.print(" - ");
-    writer.print(inputParameter.getDoc());
+    String d = inputParameter.getDoc();
+    if(d!=null) {
+    	writer.print(" - ");
+    	writer.print(d);
+    }
     close("dd");
   }
 
@@ -183,7 +207,13 @@ public class MethodWriter extends DocletWriter {
 
   private void printHTTPExample(String httpMethod) {
     open("pre");
-    print(httpMethod + " " + resource.getAbsolutePath());
+    String absPath = resource.getAbsolutePath();
+    String jaxrscontext = Utils.getOption(this.configuration.root.options(), "-jaxrscontext");
+    if(jaxrscontext!=null) {
+    	absPath = jaxrscontext + absPath;
+    }
+    
+    print(httpMethod + " " + absPath);
     Map<String, MethodParameter> matrixParameters = method.getMatrixParameters();
     if (!matrixParameters.isEmpty()) {
       for (String name : matrixParameters.keySet()) {

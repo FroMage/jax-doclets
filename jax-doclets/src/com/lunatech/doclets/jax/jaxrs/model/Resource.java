@@ -76,8 +76,8 @@ public class Resource {
   public String getAbsolutePath() {
     if (parent != null)
       return Utils.appendURLFragments(parent.getAbsolutePath(), fragment);
-    else
-      return "/";
+    else 
+    	return "/";
   }
 
   public static Resource getRootResource(List<ResourceMethod> resourceMethods) {

@@ -18,22 +18,15 @@
  */
 package com.lunatech.doclets.jax.jaxb;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.regex.*;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
-import com.lunatech.doclets.jax.jaxb.model.JAXBMember;
-import com.lunatech.doclets.jax.jaxb.model.Registry;
-import com.lunatech.doclets.jax.jaxb.writers.PackageListWriter;
-import com.lunatech.doclets.jax.jaxb.writers.SummaryWriter;
-import com.sun.javadoc.ClassDoc;
-import com.sun.javadoc.DocErrorReporter;
-import com.sun.javadoc.LanguageVersion;
-import com.sun.javadoc.RootDoc;
-import com.sun.javadoc.Type;
+import com.lunatech.doclets.jax.jaxb.model.*;
+import com.lunatech.doclets.jax.jaxb.writers.*;
+import com.sun.javadoc.*;
 import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
 
@@ -42,11 +35,23 @@ public class JAXBDoclet {
   private static final Class<?>[] jaxbAnnotations = new Class<?>[] { XmlRootElement.class };
 
   public static int optionLength(final String option) {
+	  if("-matchingjaxbnamesonly".equals(option)) {
+		  return 2;
+	  }
     return HtmlDoclet.optionLength(option);
   }
 
   public static boolean validOptions(final String[][] options, final DocErrorReporter reporter) {
-    return HtmlDoclet.validOptions(options, reporter);
+    if(!HtmlDoclet.validOptions(options, reporter)) {
+    	return false;
+    }
+	String value = Utils.getOption(options, "-matchingjaxbnamesonly");
+	try {
+		Pattern p = value==null ? null : Pattern.compile(value);
+	} catch(Throwable t) {
+		return false;
+	}
+    return true;
   }
 
   public static LanguageVersion languageVersion() {
@@ -61,6 +66,10 @@ public class JAXBDoclet {
 
   public JAXBDoclet(RootDoc rootDoc) {
     htmlDoclet.configuration.root = rootDoc;
+    String pattern = Utils.getOption(getRootDoc().options(), "-matchingjaxbnamesonly");
+    if(pattern!=null) {
+    	onlyOutputJAXBClassPackagesMatching = Pattern.compile(pattern);
+    }
   }
 
   public static boolean start(final RootDoc rootDoc) {
@@ -68,6 +77,7 @@ public class JAXBDoclet {
     return true;
   }
 
+  private Pattern onlyOutputJAXBClassPackagesMatching;
   private void start() {
     htmlDoclet.configuration.setOptions();
     final ClassDoc[] classes = htmlDoclet.configuration.root.classes();
@@ -77,7 +87,7 @@ public class JAXBDoclet {
       }
     }
     for (final JAXBClass klass : jaxbClasses) {
-      System.err.println("JAXB class: " + klass);
+      //System.err.println("JAXB class: " + klass);
       klass.write(htmlDoclet.configuration);
     }
     new PackageListWriter(htmlDoclet.configuration, registry).write();
@@ -86,8 +96,44 @@ public class JAXBDoclet {
   }
 
   private void handleJAXBClass(final ClassDoc klass) {
+	  ClassDoc superDoc = klass.superclass();
     if (!registry.isJAXBClass(klass.qualifiedTypeName()) && !klass.isPrimitive() && !klass.qualifiedTypeName().startsWith("java.")
         && !klass.isEnum()) {
+    	String fqName = klass.qualifiedTypeName();
+		if(onlyOutputJAXBClassPackagesMatching!=null) {
+			 Matcher m = onlyOutputJAXBClassPackagesMatching.matcher(fqName);
+			 if(!m.matches()) {
+				 return;
+			 }
+		}
+		/*
+    	do { 
+	    	 String typeName = klass.typeName();
+	    	boolean hasFoundMatch = false;
+	    	PackageDoc packageDocs[] = this.htmlDoclet.configuration().packages;
+	    	if(packageDocs==null) {
+	    		break;
+	    	}
+    		for(PackageDoc packageDoc : packageDocs) {
+    			String packageName = packageDoc.name();
+    			String className = klass.asClassDoc().qualifiedName();
+    			String a = packageName+"."+klass.name();
+    			if(!a.equals(className)) {
+    				continue;
+    			}
+    			if(onlyOutputJAXBClassPackagesMatching!=null) {
+    				 Matcher m = onlyOutputJAXBClassPackagesMatching.matcher(className);
+    				 if(!m.matches()) {
+    					 continue;
+    				 }
+    			}
+    			hasFoundMatch = true;
+    			break;
+	    	}
+    		if(!hasFoundMatch)
+    			return;
+    	} while(false);
+	    	 */
       JAXBClass jaxbClass = new JAXBClass(klass, registry, this);
       jaxbClasses.add(jaxbClass);
       registry.addJAXBClass(jaxbClass);
