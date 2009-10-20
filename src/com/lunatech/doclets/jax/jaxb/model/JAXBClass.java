@@ -65,7 +65,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
   private Map<String, JAXBMember> members = new HashMap<String, JAXBMember>();
 
   public JAXBClass(ClassDoc klass, Registry registry, JAXBDoclet doclet) {
-    System.err.println("Root: " + klass.name());
+    //System.err.println("Root: " + klass.name());
     this.klass = klass;
     this.registry = registry;
     this.doclet = doclet;
@@ -83,7 +83,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
     if (accessorAnnotationType != null)
       accessorAnnotation = Utils.findAnnotation(accessorAnnotationType, XmlAccessorType.class);
     XmlAccessType accessType = XmlAccessType.PUBLIC_MEMBER;
-    System.err.println("Accessor: " + accessorAnnotation);
+    //System.err.println("Accessor: " + accessorAnnotation);
     if (accessorAnnotation != null) {
       FieldDoc value = (FieldDoc) Utils.getAnnotationValue(accessorAnnotation);
       accessType = XmlAccessType.valueOf(value.name());
