@@ -87,6 +87,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
   }
 
   private void printMethod(Resource resource, ResourceMethod method, String httpMethod) {
+    String jaxrscontext = Utils.getOption(this.configuration.root.options(), "-jaxrscontext");
     open("tr");
     around("td", httpMethod);
     open("td");
@@ -94,7 +95,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
     if (path.length() == 0)
       path = ".";
     open("a href='" + path + "/index.html'");
-    around("tt", method.getURL(resource));
+    around("tt", (jaxrscontext == null ? "" : jaxrscontext) + method.getURL(resource));
     close("a");
     close("td");
     open("td");
