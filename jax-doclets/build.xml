@@ -21,6 +21,7 @@
 	
 	<import file="build-local.xml" optional="yes"/>
 	
+	<property file="build.properties"/>
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="src.test.dir" value="${basedir}/src-test"/>
