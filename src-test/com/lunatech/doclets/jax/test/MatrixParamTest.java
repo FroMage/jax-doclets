@@ -7,11 +7,17 @@ import javax.ws.rs.Path;
 @Path("switches")
 public class MatrixParamTest {
 
+  public static class HostServerData {}
+
   /**
-   * e.g. /switches/search=switch1
+   * e.g. /switches;search=switch1
+   * 
+   * @param search
+   *          the search result
+   * @return an array of results
    */
   @GET
-  public String[] search(@MatrixParam("search") String search) {
+  public HostServerData[] search(@MatrixParam(value = "search") String search) {
     return null;
   }
 
