@@ -19,12 +19,16 @@
 package com.lunatech.doclets.jax.jaxrs.writers;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jaxrs.model.*;
+import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
+import com.lunatech.doclets.jax.jaxrs.model.Resource;
+import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.sun.javadoc.Doc;
-import com.sun.tools.doclets.formats.html.*;
+import com.sun.tools.doclets.formats.html.ConfigurationImpl;
+import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class ResourceWriter extends DocletWriter {
@@ -117,19 +121,20 @@ public class ResourceWriter extends DocletWriter {
       close("td");
       open("td");
       Doc javaDoc = subResource.getJavaDoc();
-      if(javaDoc==null) {
-    	  // Got a method like this?
-  		// @PUT
-    	// @Path("cancelled")
-    	// public PutCancelledResponse setCancelled() {
-    	  // Then there won't be a javadoc on the class for it.  Rather we pull the javadoc off the method itself.
-    	  do {
-        	  List<ResourceMethod> methods = subResource.getMethods();
-        	  if(methods==null || methods.size()!=1)
-        		  break;
-        	  ResourceMethod rm = methods.get(0);
-        	  javaDoc = rm.getJavaDoc();
-    	  } while(false);
+      if (javaDoc == null) {
+        // Got a method like this?
+        // @PUT
+        // @Path("cancelled")
+        // public PutCancelledResponse setCancelled() {
+        // Then there won't be a javadoc on the class for it. Rather we pull the
+        // javadoc off the method itself.
+        do {
+          List<ResourceMethod> methods = subResource.getMethods();
+          if (methods == null || methods.size() != 1)
+            break;
+          ResourceMethod rm = methods.get(0);
+          javaDoc = rm.getJavaDoc();
+        } while (false);
       }
       if (javaDoc != null && javaDoc.firstSentenceTags() != null)
         writer.printSummaryComment(javaDoc);
@@ -144,37 +149,30 @@ public class ResourceWriter extends DocletWriter {
     print("Path: ");
     String jaxrscontext = Utils.getOption(this.configuration.root.options(), "-jaxrscontext");
     String name = resource.getName();
-    if (name.length() == 0)
-      name = jaxrscontext == null ? "/" : jaxrscontext;
-    if(!name.startsWith("/")) {
-    	name = "/" + name;
-    }
+    if (Utils.isEmptyOrNull(name))
+      name = jaxrscontext == null ? "/" : Utils.slashify(jaxrscontext);
     StringBuffer buf = new StringBuffer(name);
-    // FIXME path variables need to be output on the resource. vs. being repeated for each method on this resource.  i.e. moved out of MethodWriter to here
     Resource _resource = this.resource;
     String rel = "";
     while ((_resource = _resource.getParent()) != null) {
       rel = "../" + rel;
       String resourceName = _resource.getName();
-      if("".equals(resourceName)) {
-    	  if(jaxrscontext!=null) {
-    		  resourceName = jaxrscontext;
-    	  } else {
-    		  resourceName = "/";
-    	  }
-      } else {
-    	  resourceName ="/"+resourceName;
+      if (Utils.isEmptyOrNull(resourceName)) {
+        if (!Utils.isEmptyOrNull(jaxrscontext)) {
+          resourceName = Utils.slashify(jaxrscontext);
+        } else {
+          // start with slash
+          resourceName = "/";
+        }
       }
-      String href = "<a href='" + rel + "index.html'>" 
-      	+ resourceName;
-      href += "</a> ";
-      //if (_resource.getName().length() == 0)
-        //href += "</a> ";
-      //else
-        //href += "</a> / ";
+      String href = "<a href='" + rel + "index.html'>" + resourceName;
+      if (_resource.getName().length() == 0)
+        href += "</a> ";
+      else
+        href += "</a> / ";
       buf.insert(0, href);
     }
-  
+
     print(buf.toString());
     close("h2");
     Doc javaDoc = this.resource.getJavaDoc();
@@ -182,33 +180,33 @@ public class ResourceWriter extends DocletWriter {
       writer.printInlineComment(javaDoc);
     }
     do {
-    	boolean needsPathHeading = true;
+      boolean needsPathHeading = true;
       List<ResourceMethod> lrm = this.resource.getMethods();
-      if(lrm.size()==0) {
-    	  // not expected (resource with no methods)
-    	  break;
+      if (lrm.size() == 0) {
+        // not expected (resource with no methods)
+        break;
       }
       // All methods on same resource, so path should be same
       ResourceMethod rm = lrm.get(0);
-      Map<String, MethodParameter>  parameters = rm.getPathParameters();
+      Map<String, MethodParameter> parameters = rm.getPathParameters();
       for (MethodParameter param : parameters.values()) {
-    	  if(needsPathHeading) {
-    		  open("dl");
-    		  open("dt");
-    		  around("b", "Path parameters:");
-    		  close("dt");
-    		  needsPathHeading = false;
-    	  }
+        if (needsPathHeading) {
+          open("dl");
+          open("dt");
+          around("b", "Path parameters:");
+          close("dt");
+          needsPathHeading = false;
+        }
         open("dd");
         around("b", param.getName());
         print(" - " + param.getDoc());
         close("dd");
       }
-      if(!needsPathHeading) {
-      	close("dl");
+      if (!needsPathHeading) {
+        close("dl");
       }
-    } while(false);
-    
+    } while (false);
+
   }
 
   private void printHeader() {
