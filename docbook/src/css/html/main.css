@@ -1,0 +1,73 @@
+body {
+ color: black;
+}
+
+img#header-logo {
+ position: absolute;
+}
+
+.navheader table tbody tr:first-child {
+ height: 60px;
+}
+
+.figure .title {
+ text-align: center;
+ margin-top: 0px;
+ border-bottom: solid #61911B 1px;
+ padding-top: 0.5em;
+ padding-bottom: 0.5em;
+ background: #DBFFA6;
+}
+
+.figure {
+ border: solid #61911B 1px;
+}
+
+.figure .figure-contents {
+ margin-left: 2em;
+}
+
+.section table {
+ border: solid #61911B 1px;
+ border-collapse: collapse;
+}
+
+.section table tr.odd {
+ background-color: #F8F8F8;
+}
+
+.section table th {
+ text-align: left;
+}
+
+.section table th, .section table td {
+ padding: 0.2em 0.5em;
+}
+
+.section table caption {
+ border-top: solid #61911B 1px;
+ border-left: solid #61911B 1px;
+ border-right: solid #61911B 1px;
+ padding-top: 0.5em;
+ padding-bottom: 0.5em;
+ background: #DBFFA6;
+ font-weight: bold;
+}
+
+p.remark {
+ padding: 1em;
+ border: solid #61911B 1px;
+ background: #DBFFA6;
+}
+
+p.remark:before {
+ content: 'Remark: ';
+}
+
+a {
+ color: #61911B;
+}
+
+a:visited {
+ color: #3D5C11;
+}

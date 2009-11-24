@@ -1,0 +1,112 @@
+<!--
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+                "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+--> 
+<chapter id="JAXBDoclet">
+<title>JAXB doclet documentation</title>
+<para>The JAXB doclet generates documentation for your XML schema based on JAXB annotations and JavaDoc comments
+on your JAXB classes.</para>
+<section>
+ <title>Where should we write JavaDoc</title>
+ <para>JavaDoc is read either on the JAXB properties (getter methods or fields), or their interface (only for the getters)
+ as well as on the JAXB classes.</para>
+<remark>
+Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then
+the JAX-RS doclet using the <link linkend="-link"><literal>-link</literal></link> parameter.
+</remark>
+</section>
+<section>
+ <title>Supported standard JavaDoc tags</title>
+ <para>There are no standard JavaDoc tags supported. Everything comes from JavaDoc comments.</para>
+</section>
+<section>
+ <title>Supported specific JavaDoc tags</title>
+ <para>There are no specific JavaDoc tags supported.</para>
+</section>
+<section>
+ <title>Supported JAXB annotations</title>
+ <para>The following standard JAXB annotations are supported on properties or classes:</para>
+   <figure>
+    <title>Standard JAXB annotations</title>
+    <itemizedlist>
+     <listitem><literal>@XmlAccessorType</literal></listitem>
+     <listitem><literal>@XmlRootElement</literal></listitem>
+     <listitem><literal>@XmlElement</literal></listitem>
+     <listitem><literal>@XmlElementWrapper</literal></listitem>
+     <listitem><literal>@XmlAttribute</literal></listitem>
+     <listitem><literal>@XmlValue</literal></listitem>
+     <listitem><literal>@XmlID</literal></listitem>
+     <listitem><literal>@XmlIDREF</literal></listitem>
+     <listitem><literal>@XmlTransient</literal> (ignored)</listitem>
+    </itemizedlist>
+   </figure>
+  </section>
+<section>
+ <title>Mapping Java types to XML tpes</title>
+ <para>The following Java types have a special mapping in XML:</para>
+   <table>
+    <caption>Standard Java types mapping to XML</caption>
+    <thead>
+     <tr class="odd">
+      <th>Type</th>
+      <th>XML mapping</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+      <td><literal>java.lang.String</literal></td>
+      <td><literal>xsd:string</literal></td>
+     </tr>
+     <tr class="odd">
+      <td><literal>java.lang.Character</literal>, <literal>char</literal></td>
+      <td><literal>xsd:string</literal></td>
+     </tr>
+     <tr>
+      <td><literal>java.lang.Date</literal></td>
+      <td><literal>xsd:datetime</literal></td>
+     </tr>
+     <tr class="odd">
+      <td><literal>java.lang.Integer</literal>, <literal>int</literal></td>
+      <td><literal>xsd:int</literal></td>
+     </tr>
+     <tr>
+      <td><literal>java.lang.Long</literal>, <literal>long</literal></td>
+      <td><literal>xsd:long</literal></td>
+     </tr>
+     <tr class="odd">
+      <td><literal>java.lang.Short</literal>, <literal>short</literal></td>
+      <td><literal>xsd:short</literal></td>
+     </tr>
+     <tr>
+      <td><literal>java.lang.Byte</literal>, <literal>byte</literal></td>
+      <td><literal>xsd:byte</literal></td>
+     </tr>
+     <tr class="odd">
+      <td><literal>java.lang.Float</literal>, <literal>float</literal></td>
+      <td><literal>xsd:float</literal></td>
+     </tr>
+     <tr>
+      <td><literal>java.lang.Double</literal>, <literal>double</literal></td>
+      <td><literal>xsd:double</literal></td>
+     </tr>
+     <tr class="odd">
+      <td><literal>java.lang.Boolean</literal>, <literal>boolean</literal></td>
+      <td><literal>xsd:boolean</literal></td>
+     </tr>
+     <tr>
+      <td><literal>java.lang.Object</literal></td>
+      <td><literal>xsd:any</literal></td>
+     </tr>
+     <tr class="odd">
+      <td><literal>java.lang.Enum</literal></td>
+      <td>List of enum values</td>
+     </tr>
+     <tr>
+      <td><literal>java.util.Collection</literal></td>
+      <td><literal>xsd:list</literal></td>
+     </tr>
+    </tbody>
+   </table>
+   <para>Any other type is taken to be either a Java type or a JAXB type, for whom proper links will be generated.</para>
+  </section>
+</chapter>

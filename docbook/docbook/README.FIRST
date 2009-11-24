@@ -1,0 +1,12 @@
+		       DocBook Framework (DBF)
+		       =======================
+
+------------------------------------------------------------------------
+
+The documentation has been moved to DocBook format and is available
+in the DBUserGuide.pdf file in this directory.
+
+You can rebuild this documentation by running "ant" in the docs
+directory.
+
+------------------------------------------------------------------------

@@ -1,0 +1,134 @@
+<!--
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+                "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+--> 
+<chapter id="Overview">
+<title>Overview</title>
+
+<para>
+jax-doclets allows you to generate <ulink url="http://java.sun.com/j2se/javadoc/">JavaDoc</ulink> 
+documentation for specific Java annotation-based extensions such as:
+</para>
+<para>
+
+<itemizedlist>
+
+<listitem>
+ <para><ulink url="https://jsr311.dev.java.net/">JAX-RS</ulink>: the RESTful API for Java</para>
+</listitem>
+
+<listitem>
+ <para><ulink url="https://jaxb.dev.java.net/">JAXB</ulink>: the XML binding API for Java</para>
+</listitem>
+
+</itemizedlist>
+
+</para>
+
+<para>
+The goal of jax-doclets is to let you write documentation for your JAX-RS API and JAXB structures
+in JavaDoc, where it belongs, where it is maintainable, and produce a quality JavaDoc-style
+documentation.
+</para>
+
+<section>
+ <title>Information</title>
+ <para>jax-doclets is an open-source project maintained by <ulink url="http://www.lunatech-labs.com">Lunatech Labs</ulink>.</para>
+ <variablelist>
+  <varlistentry>
+   <term>Home page</term>
+   <listitem><para><ulink url="http://www.lunatech-labs.com/content/jax-doclets"></ulink> </para></listitem>
+  </varlistentry>
+  <varlistentry>
+   <term>Download</term>
+   <listitem><para><ulink url="http://code.google.com/p/jax-doclets/downloads/list"></ulink> </para></listitem>
+  </varlistentry>
+  <varlistentry>
+   <term>Issue Tracker</term>
+   <listitem><para><ulink url="http://code.google.com/p/jax-doclets/issues/list"></ulink> </para></listitem>
+  </varlistentry>
+  <varlistentry>
+   <term>Source Control Management</term>
+   <listitem><para><ulink url="http://code.google.com/p/jax-doclets/source/checkout"></ulink> </para></listitem>
+  </varlistentry>
+ </variablelist>
+</section>
+<section>
+ <title>Example</title>
+ <para>Here is an example of documented JAX-RS and JAXB code:</para>
+ <figure>
+  <?dbfo pgwide="1"?>
+  <title>Example of documented JAX-RS and JAXB code</title>
+  <programlisting language="java">
+package com.lunatech.doclets.jax.test;
+
+import javax.ws.rs.*;
+import javax.xml.bind.annotation.*;
+
+/**
+ * An example JAX-RS resource
+ */
+@Path("/example")
+@Produces( { "application/xml", "application/*+xml" })
+public class JAXRSExample {
+
+  /**
+   * An example resource
+   */
+  @XmlRootElement
+  public static class JAXBExample {
+
+    /**
+     * The resource ID
+     */
+    @XmlID
+    @XmlElement
+    String id;
+
+    /**
+     * The example contents
+     */
+    @XmlValue
+    String contents;
+
+    /**
+     * An optional attribute
+     */
+    @XmlAttribute
+    String type;
+  }
+
+  /**
+   * Gets an example resource
+   * 
+   * @param id
+   *          the example id
+   * @param type
+   *          the type of resource we prefer
+   * @param startIndex
+   *          the start index
+   * @return an example resource suitable for the given parameters
+   * @HTTP 404 if there is no such example resource
+   * @RequestHeader X-Example-Auth the authentication header
+   * @ResponseHeader Location a pointer to the example details
+   */
+  @Path("{id}")
+  @GET
+  public JAXBExample getExample(@PathParam("id") String id, 
+                                @MatrixParam("type") String type, 
+                                @QueryParam("start") int startIndex) {
+    return new JAXBExample();
+  }
+}
+  </programlisting>
+ </figure>
+ <figure>
+  <title>Result of documented JAX-RS code</title>
+  <graphic fileref="images/jaxrs-example.png" format="PNG" scale="75"/>
+ </figure>
+ <figure>
+  <title>Result of documented JAXB code</title>
+  <graphic fileref="images/jaxb-example.png" format="PNG" scale="75"/>
+ </figure>
+</section>
+</chapter>

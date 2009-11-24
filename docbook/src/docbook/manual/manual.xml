@@ -1,0 +1,47 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+                "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
+ [
+  <!ENTITY Overview SYSTEM "modules/Overview.xml">
+  <!ENTITY Running SYSTEM "modules/Running.xml">
+  <!ENTITY JAXRSDoclet SYSTEM "modules/JAXRSDoclet.xml">
+  <!ENTITY JAXBDoclet SYSTEM "modules/JAXBDoclet.xml">
+  <!ENTITY License SYSTEM "modules/License.xml">
+ ]>
+<book>
+
+   <bookinfo>
+      <graphic fileref="images/labs-logo-60.png" format="PNG"/>
+      <title>jax-doclets</title>
+      <productname>jax-doclets</productname>
+      <subtitle>JavaDoc doclets for Java Extension APIs</subtitle>
+      <releaseinfo>0.5</releaseinfo>
+	  <productnumber>0.5</productnumber>
+      <copyright><year>2009</year><holder>Lunatech Labs</holder></copyright>
+      <author>
+       <firstname>Stéphane</firstname>
+       <surname>Épardaud</surname>
+       <email>stephane@epardaud.fr</email>
+       <affiliation>
+        <jobtitle>Senior Software Developer</jobtitle>
+        <orgname>Lunatech Labs</orgname>
+       </affiliation>
+      </author>
+   </bookinfo>
+
+   <toc/>
+
+   <preface id="preface" revision="1">
+      <title>Preface</title>
+      <para>
+         This is pre-release software, please bear with it.
+      </para>
+   </preface>
+
+   &Overview;
+   &Running;
+   &JAXRSDoclet;
+   &JAXBDoclet;
+   &License;
+
+</book>
+
