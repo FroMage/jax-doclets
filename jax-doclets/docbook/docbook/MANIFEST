@@ -1,0 +1,58 @@
+# Copyright 2006 The Apache Software Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+README.FIRST                            - Important Information about PDF rendering!
+DBFUserGuide.pdf                        - DocBook Framework documentation
+
+TODO                                    - Want to help? Start here.
+LICENSE                                 - Apache Software License 2.0
+MANIFEST                                - This file
+NOTICE                                  - Copyright notices
+
+build-docbook.xml                       - ant tasks for docbook transformation
+docbook.properties                      - Default values for all settings.
+
+src/resources/CatalogManager.properties - Configuration file for xml commons resolver
+src/resources/xml-catalog.xml           - Catalog file for xml commons resolver
+
+src/styles                              - User XSLT styles
+src/styles/custom.xsl                   - Empty default custom file. Do not delete or change!
+src/styles/html.xsl                     - Stylesheet driver for HTML
+src/styles/htmlsingle.xsl               - Stylesheet driver for HTML-Single
+src/styles/pdf.xsl                      - Stylesheet driver for PDF
+
+src/styles/html                         - XSLT styles for HTML and HTML-Single
+src/styles/html/custom.xsl              - Custom settings for HTML and HTML-Single
+src/styles/html/titlepage.xml           - Titlepage definition for HTML and HTML-Single
+
+src/styles/pdf                          - XSLT styles for PDF
+src/styles/pdf/custom.xsl               - Custom settings for PDF
+src/styles/pdf/titlepage.xml            - Titlepage definition for PDF
+
+src/css                                 - User CSS files
+src/css/html                            - CSS files for HTML and HTML-Single
+
+src/zip                                 - Docbook reference files
+src/zip/docbook-xml-4.4.zip             - XML definition files from http://www.oasis-open.org/docbook/xml/
+src/zip/docbook-xsl-snapshot.zip        - XSL transformation styles from http://docbook.sourceforge.net/snapshots/
+                                          (Build 6795, 2007-04-26)
+
+docs                                    - Contains the DocBook source for the DocBook Framework
+                                          documentation.
+
+lib                                     - libraries for XSLT transformation
+
+MANIFEST                                - This file
+TODO                                    - If you feel like helping out, tackle these tasks.
+LICENSE.txt                             - The license (ASL 2.0) for this toolset
