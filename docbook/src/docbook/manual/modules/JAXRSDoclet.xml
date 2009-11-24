@@ -1,0 +1,98 @@
+<!--
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+                "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+--> 
+<chapter id="JAXRSDoclet">
+<title>JAX-RS doclet documentation</title>
+<para>The JAX-RS doclet generates documentation for your RESTful service based on JAX-RS annotations and JavaDoc comments
+on your JAX-RS resource methods.</para>
+<section>
+ <title>Where should you write JavaDoc</title>
+ <para>JavaDoc is read either on the JAX-RS resource methods, or their interface. Only method-level
+ JavaDoc is used. Documentation for a given RESTful URL is taken from the method annotated with <literal>@GET</literal>
+ for that URL.</para>
+ <para>JAX-RS resource locators are supported.</para>
+<remark>
+Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then
+the JAX-RS doclet using the <link linkend="-link"><literal>-link</literal></link> parameter.
+</remark>
+</section>
+<section>
+ <title>Supported standard JavaDoc tags</title>
+ <para>The following standard JavaDoc tags are supported on resource methods:</para>
+   <table>
+    <caption>Standard JavaDoc tags</caption>
+    <thead>
+     <tr class="odd">
+      <th>Tag</th>
+      <th>Function</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+      <td><literal>@param {name} {doc}</literal></td>
+      <td>This is used to document the corresponding resource method parameters annotated with <literal>@PathParam</literal>, <literal>@QueryParam</literal> or <literal>@MatrixParam</literal>.
+       Can be used at most once per parameter name.</td>
+     </tr>
+     <tr class="odd">
+      <td><literal>@return {doc}</literal></td>
+      <td>Documents the entity returned from this resource method. Can only be used once.</td>
+     </tr>
+    </tbody>
+   </table>
+  </section>
+<section>
+ <title>Supported specific JavaDoc tags</title>
+ <para>The following specific JavaDoc tags are supported on resource methods:</para>
+   <table>
+    <caption>Specific JavaDoc tags</caption>
+    <thead>
+     <tr class="odd">
+      <th>Tag</th>
+      <th>Function</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+      <td><literal>@HTTP {code} {doc}</literal></td>
+      <td>This is used to document the codes that the method can return. Can be used multiple times.</td>
+     </tr>
+     <tr class="odd">
+      <td><literal>@inputWrapped {fq-classname}</literal></td>
+      <td>Specifies the real type of input when declared as a <literal>String</literal> parameter.
+       Can only be used once.</td>
+     </tr>
+     <tr>
+      <td><literal>@outputWrapped {fq-classname} {doc}</literal></td>
+      <td>Used in place of <literal>@return</literal> when output type is <literal>String</literal>, <literal>void</literal>
+       or <literal>Response</literal> to specify the real type of output and documentation for each possible type.
+       Can be used multiple times.</td>
+     </tr>
+     <tr class="odd">
+      <td><literal>@RequestHeader {header} {doc}</literal></td>
+      <td>This is used to document HTTP request headers. Can be used multiple times.</td>
+     </tr>
+     <tr>
+      <td><literal>@ResponseHeader {header} {doc}</literal></td>
+      <td>This is used to document HTTP response headers. Can be used multiple times.</td>
+     </tr>
+    </tbody>
+   </table>
+  </section>
+<section>
+ <title>Supported JAX-RS annotations</title>
+ <para>The following standard JAX-RS annotations are supported on resource methods or classes:</para>
+   <figure>
+    <title>Standard JAX-RS annotations</title>
+    <itemizedlist>
+     <listitem><literal>@Path</literal></listitem>
+     <listitem><literal>@PathParam</literal></listitem>
+     <listitem><literal>@QueryParam</literal></listitem>
+     <listitem><literal>@MatrixParam</literal></listitem>
+     <listitem><literal>@Produces</literal></listitem>
+     <listitem><literal>@Consumes</literal></listitem>
+     <listitem><literal>@Context</literal> (ignored)</listitem>
+    </itemizedlist>
+   </figure>
+  </section>
+</chapter>

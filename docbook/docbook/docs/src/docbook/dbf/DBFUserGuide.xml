@@ -1,0 +1,932 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+<book lang="en">
+  <title>DocBook Framework (DBF)</title>
+
+  <bookinfo>
+    <copyright>
+      <year>2006-2007</year>
+
+      <holder>The Apache Software Foundation</holder>
+    </copyright>
+
+    <releaseinfo>V 1.1-dev</releaseinfo>
+
+    <productname>DBF</productname>
+
+    <authorgroup>
+      <corpauthor>The Apache Velocity Developers</corpauthor>
+    </authorgroup>
+
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/logo.png"/>
+      </imageobject>
+    </mediaobject>
+  </bookinfo>
+
+  <toc/>
+
+  <chapter id="chapter-preface">
+    <title>Preface</title>
+
+    <section id="section-about-this-project">
+      <title>About this Project</title>
+
+      <para>This project started out as a framework to render documentation
+      for the Apache Velocity project (
+      <uri>http://velocity.apache.org/</uri>) and ended somehow up to be a
+      generic framework to render DocBook documents using Java and driven by
+      Apache ant.</para>
+
+      <para>While DocBook format seems to be ubiquitous these days, to our
+      surprise there were not many generic frameworks around that could render
+      all kinds of formats, are platform independent, do not require lots of
+      infrastructure installed and are easily customizable.</para>
+
+      <para>Projects either use heavily customized and hacked style sheets or
+      a mix of Java and other applications. Adjusting such a rendering
+      framework to the needs of the Apache Velocity project was not easy, so
+      at some point, we decided to redo this (almost) from scratch.</para>
+    </section>
+
+    <section id="section-license">
+      <title>License Information</title>
+
+      <para>Copyright © 2006-2007 The Apache Software Foundation.</para>
+
+      <para>Licensed under the Apache License, Version 2.0 (the "License") you
+      may not use this file except in compliance with the License. You may
+      obtain a copy of the License at
+      <uri>http://www.apache.org/licenses/LICENSE-2.0</uri></para>
+
+      <para>Unless required by applicable law or agreed to in writing,
+      software distributed under the License is distributed on an "AS IS"
+      BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied. See the License for the specific language governing permissions
+      and limitations under the License.</para>
+    </section>
+
+    <section id="section-author-information">
+      <title>Author Information</title>
+
+      <para>This framework and documentation was written by the Apache
+      Velocity Developers. If you have questions, found a bug or have
+      enhancements, please contact us through the Apache Velocity Development
+      Mailing list at <email>dev@velocity.apache.org</email></para>
+    </section>
+  </chapter>
+
+  <chapter id="chapter-introduction">
+    <title>Introduction</title>
+
+    <section id="section-why-another-framework">
+      <title>Why another framework for rendering docbook?</title>
+
+      <para>The Velocity project used a simple HTML based format called
+      <firstterm>XDOC</firstterm> for its documentation for a very long time.
+      However, <firstterm>XDOC</firstterm> is not really popular outside the
+      Apache world<footnote>
+          <para>And not even in the Apache world...</para>
+        </footnote>, it renders somehow into HTML but no other formats (unless
+      you consider a set of alpha and beta-level plugins for maven-1 and
+      maven-2) and tool support for this format is not really there.</para>
+
+      <para>When an XML based format for documentation is considered, DocBook
+      seems to be a natural choice. So we decided to take a stab at rendering
+      the existing Velocity Docs that are end-user specific (Users Guide,
+      Developers Guide, Reference and the likes) through DocBook.</para>
+
+      <para>What we wanted to have, was a framework, that...</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>...renders multiple documents into multiple formats with an
+          uniform look without having to copy a large number of stylesheets,
+          images and other supporting files around.</para>
+        </listitem>
+
+        <listitem>
+          <para>...separates the render framework and the actual documentation
+          to render. It should be sufficient to install the framework only
+          once and then reference it.</para>
+        </listitem>
+
+        <listitem>
+          <para>...uses the standard DocBook XML and XSL zip files available
+          for download. Many of the open source DocBook frameworks use heavily
+          hacked versions and we want to be able to keep up with releases
+          without having to patch the released files every time.</para>
+        </listitem>
+
+        <listitem>
+          <para>...uses current versions of the DocBook reference files, the
+          libraries and supporting tools.</para>
+        </listitem>
+
+        <listitem>
+          <para>...render all formats without connecting to the Internet.
+          Using the Apache XML resolver, it should be possible to use the
+          framework completely standalone. See
+          <uri>http://xml.apache.org/commons/components/resolver/resolver-article.html</uri>
+          for an explanation.</para>
+        </listitem>
+
+        <listitem>
+          <para>...has some documentation so you understand what happens when
+          a format gets rendered and how.</para>
+        </listitem>
+
+        <listitem>
+          <para>...that can be customized easily (if you consider customizing
+          complex XSL style sheets 'easy').</para>
+        </listitem>
+
+        <listitem>
+          <para>...that is platform independent and uses 100% pure Java. No
+          external programs should be needed or called.</para>
+        </listitem>
+
+        <listitem>
+          <para>...that is driven by Apache ant and could be easily embedded
+          into larger builds.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <?hard-pagebreak ?>
+
+    <section id="section-what-you-need">
+      <title>What you need</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>A Java Runtime. All testing has been done using the Sun JSDK
+          1.5.0</para>
+        </listitem>
+
+        <listitem>
+          <para>Apache Ant version 1.6 or better. The build script uses the
+          macrodef task which was introduced in ant 1.6. Any later version
+          should work, too. Get it from
+          <uri>http://ant.apache.org/</uri></para>
+        </listitem>
+
+        <listitem>
+          <para>The Sun JAI libraries. Please see the
+          <literal>README.FIRST</literal> file on how to get and install
+          these.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Everything else needed should be included in this package.</para>
+    </section>
+
+    <section id="section-caveat-emptor">
+      <title>Caveat Emptor!</title>
+
+      <para>This framework has been written for the Velocity documentation and
+      we also tried to do a reasonably good job in documentating it.</para>
+
+      <para>In any case, the last and final word is in the Subversion
+      repository for the DocBook Framework at<uri>
+      http://svn.apache.org/repos/asf/velocity/docbook/trunk/</uri></para>
+
+      <para>The reference on how to setup and build documentation is the
+      Velocity documentation at<uri>
+      http://svn.apache.org/repos/asf/velocity/docs/</uri> and also the
+      DocBook Framework documentation itself which is located in the
+      <literal>docs/</literal> subfolder of the distribution. If in doubt,
+      please check there on how the framework is used.</para>
+    </section>
+  </chapter>
+
+  <chapter id="chapter-using-the-framework">
+    <title>Using the Framework</title>
+
+    <section id="section-how-to-set-up">
+      <title>How to set up your documentation files</title>
+
+      <para>Writing documentation is not just writing text. Often, an author
+      wants to add images, customize the layout of the pages or use specific
+      style information to format documentation in e.g. HTML format. All the
+      required files must be found by the DocBook Framework for creating
+      output files.</para>
+
+      <figure id="figure-recommended-layout">
+        <title>Recommended layout for a documentation project</title>
+
+        <programlisting>&lt;root&gt;
+  |
+  +---- build.xml <co id="co-build-xml" linkends="ca-build-xml"/>
+  +---- project.properties <co id="co-project-properties"
+            linkends="ca-project-properties"/>
+  |
+  +-- src
+       |
+       +-- docbook <co id="co-docbook-sources" linkends="ca-docbook-sources"/>
+       |
+       +-- styles
+       |     |
+       |     +-- pdf <co id="co-styles-pdf" linkends="ca-styles-pdf"/>
+       |     |
+       |     +-- html <co id="co-styles-html" linkends="ca-styles-html"/>
+       |
+       +-- css
+       |    |
+       |    +-- html <co id="co-css-html" linkends="ca-css-html"/>
+       |
+       +-- images <co id="co-src-images" linkends="ca-src-images"/></programlisting>
+      </figure>
+
+      <calloutlist>
+        <callout arearefs="co-build-xml" id="ca-build-xml">
+          <para>ant build file</para>
+        </callout>
+
+        <callout arearefs="co-project-properties" id="ca-project-properties">
+          <para>custom settings for your build</para>
+        </callout>
+
+        <callout arearefs="co-docbook-sources" id="ca-docbook-sources">
+          <para>Docbook sources</para>
+        </callout>
+
+        <callout arearefs="co-styles-pdf" id="ca-styles-pdf">
+          <para>Custom styles for PDF</para>
+        </callout>
+
+        <callout arearefs="co-styles-html" id="ca-styles-html">
+          <para>Custom styles for HTML</para>
+        </callout>
+
+        <callout arearefs="co-css-html" id="ca-css-html">
+          <para>CSS files for HTML</para>
+        </callout>
+
+        <callout arearefs="co-src-images" id="ca-src-images">
+          <para>Image files for PDF/HTML</para>
+        </callout>
+      </calloutlist>
+
+      <para>It is possible to customize this file layout further to adjust it
+      to existing documentation. If you start a new documentation project,
+      then we recommend that you start with this layout until you are familiar
+      on how the DocBook Framework behaves.</para>
+    </section>
+
+    <?hard-pagebreak ?>
+
+    <section id="section-configuring-your-documentation">
+      <title>Customizing your documentation file layout</title>
+
+      <para>Unless you absolutely want to change the default settings for
+      building your documentation, you only need to put a single property into
+      the <firstterm>project.properties</firstterm> file.</para>
+
+      <figure id="figure-minimum-project-properties">
+        <title>Minimum project.properties file</title>
+
+        <programlisting>dbf.basedir = &lt;path to your DocBook Framework installation&gt;</programlisting>
+      </figure>
+
+      <para>The following additional settings can be changed inside the
+      properties file. Except paper type (see below), these settings normally
+      do not need to be changed:</para>
+
+      <table id="table-docbook-framework-properties">
+        <title>DocBook Framework properties</title>
+
+        <tgroup cols="3">
+          <thead>
+            <row>
+              <entry>property name</entry>
+
+              <entry>default value</entry>
+
+              <entry>property function</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry><literal>paper.type</literal></entry>
+
+              <entry><literal>Letter</literal></entry>
+
+              <entry>Paper output size for PDF docs</entry>
+            </row>
+
+            <row>
+              <entry><literal>src.dir</literal></entry>
+
+              <entry><literal>${basedir}/src</literal></entry>
+
+              <entry>docbook and related sources dir</entry>
+            </row>
+
+            <row>
+              <entry><literal>style.src.dir</literal></entry>
+
+              <entry><literal>${src.dir}/styles</literal></entry>
+
+              <entry>custom styles directory</entry>
+            </row>
+
+            <row>
+              <entry><literal>docbook.src.dir</literal></entry>
+
+              <entry><literal>${src.dir}/docbook</literal></entry>
+
+              <entry>docbook files directory</entry>
+            </row>
+
+            <row>
+              <entry><literal>images.src.dir</literal></entry>
+
+              <entry><literal>${src.dir}/images</literal></entry>
+
+              <entry>images location</entry>
+            </row>
+
+            <row>
+              <entry><literal>css.src.dir</literal></entry>
+
+              <entry><literal>${src.dir}/css</literal></entry>
+
+              <entry>css files location</entry>
+            </row>
+
+            <row>
+              <entry><literal>target.dir</literal></entry>
+
+              <entry><literal>${basedir}/target</literal></entry>
+
+              <entry>output directory</entry>
+            </row>
+
+            <row>
+              <entry><literal>tmp.dir</literal></entry>
+
+              <entry><literal>${target.dir}/tmp</literal></entry>
+
+              <entry>temporary files location</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+      <para>If you do not want to use an absolute location for the
+      <literal>dbf.basedir</literal> property (e.g. because you want to check
+      the documentation into a version control system and do not want to
+      update the file all the time depending on who checks this file out
+      where), you can put the DocBook Framework in a subdirectory of your
+      documentation.</para>
+
+      <para>If you use Subversion, you can even use the
+      <literal>svn:externals</literal> setting to do this
+      automatically:</para>
+
+      <para>Add the following line to the <literal>svn:externals</literal>
+      property of your documentation root</para>
+
+      <programlisting>docbook http://svn.apache.org/repos/asf/velocity/docbook/trunk</programlisting>
+
+      <para>and use the following <literal>dbf.basedir</literal>
+      setting<footnote>
+          <para>This also ensures that everytime you check out your
+          documentation, you will get the lastest version of the DocBook
+          Framework.</para>
+        </footnote>:</para>
+
+      <programlisting>dbf.basedir = ${basedir}/docbook</programlisting>
+
+      <?hard-pagebreak ?>
+
+      <para>To render your documentation files, you should write a simple ant
+      build file which calls the framework using the
+      <literal>docbook.dir</literal> and <literal>docbook.file
+      properties</literal>. If your docbook file is located in
+      <literal>src/docbook/manual/ToolManual.xml</literal>, your ant build
+      file looks like this:</para>
+
+      <figure id="figure-sample-ant-build-file">
+        <title>Sample ant build file for rendering documentation</title>
+
+        <programlisting>&lt;project name="dbf-docbook" default="all" basedir="."&gt;
+
+  &lt;property file="project.properties"/&gt;
+
+  &lt;target name="all" description="Build documentation"&gt;
+    &lt;ant antfile="${dbf.basedir}/build-docbook.xml" target="all"&gt;
+      &lt;property name="docbook.dir" value="manual"/&gt;
+      &lt;property name="docbook.file" value="ToolManual"/&gt;
+    &lt;/ant&gt;
+  &lt;/target&gt;
+
+&lt;/project&gt;</programlisting>
+      </figure>
+
+      <para>The resulting documentation file will be located in subdirectories
+      of the <literal>target/manual</literal>directory.</para>
+    </section>
+
+    <section id="section-writing-your-documentation">
+      <title>Writing your documentation</title>
+
+      <para>Your DocBook source files normally reside in subdirectories below
+      the<literal>src/docbook</literal>folder. Each document has its own
+      folder that is referenced through the <literal>docbook.dir</literal>
+      property as shown above.</para>
+
+      <para>In the example above, running <literal>ant all</literal> (or just
+      <literal>ant</literal>) will build all the documentation formats for the
+      ToolManual DocBook file.</para>
+
+      <table id="default-formats-built-in">
+        <title>Default formats built by the DocBook Framework</title>
+
+        <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry>pdf</entry>
+
+              <entry>Adobe PDF format</entry>
+            </row>
+
+            <row>
+              <entry>html</entry>
+
+              <entry>Multiple HTML files, one file for each section</entry>
+            </row>
+
+            <row>
+              <entry>htmlsingle</entry>
+
+              <entry>One big HTML file</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+      <para>Both of the HTML format directories will also contain a Zip file
+      suitable for distribution, which contains all HTML files, images and
+      optional CSS files.</para>
+    </section>
+
+    <?hard-pagebreak ?>
+
+    <section id="section-notes">
+      <title>Notes</title>
+
+      <section id="section-changing-the-paper-size">
+        <title>Changing the paper size</title>
+
+        <para>The DocBook Framework renders the pages of the PDF output by
+        default in <emphasis>US Letter</emphasis> format (8.5 x 11 inches).
+        This allows printing the resulting PDF in both Letter and A4
+        format.</para>
+
+        <para>If you want to reformat the PDF documentation in A4, you can use
+        the <literal>paper.type</literal> property when invoking ant or by
+        setting it permanently in the <literal>project.properties</literal>
+        file.</para>
+
+        <figure id="figure-rendering-in-a4">
+          <title>Rendering documentation in A4 format</title>
+
+          <programlisting>ant -Dpaper.type=A4 will render the documentation in A4.</programlisting>
+        </figure>
+      </section>
+
+      <section id="section-referencing-images">
+        <title>Referencing images</title>
+
+        <para>While the docbook files are located in their respective
+        subdirectories below <literal>src/docbook</literal>, your
+        image files should be put into the
+        <literal>src/images</literal> directory.</para>
+
+        <para>When writing documentation, images are referenced as
+        <literal>images/&lt;your image file name here&gt;</literal> because
+        this is where they will end up when rendering your
+        documentation.</para>
+
+        <warning>
+          <para>If your DocBook writing tool does not allow you to specify
+          image locations, it might not be able to locate the images from
+          <literal>src/images</literal> and just display a broken image
+          symbol. If this concerns you, you can create a symbolic link inside
+          the source directory where your DocBook files reside to the
+          <literal>src/images</literal> directory.</para>
+        </warning>
+      </section>
+
+      <section id="selecting-images-for-inclusion">
+        <title>Selecting images for inclusion</title> <para>By
+        default, all docbook images are included along with the images
+        in the <literal>src/images</literal> directory.</para>
+        <para>To explicitly select images for inclusion, you can
+        create a file which contains inclusion patters for an ant
+        fileset<footnote><para>see
+        <uri>http://ant.apache.org/manual/CoreTypes/fileset.html</uri></para></footnote>. This
+        file must be called
+        <literal>&lt;projectname&gt;.&lt;output-type&gt;_imageincludes.txt</literal>
+        (for example, the html version of the <literal>foo</literal>
+        project would reference
+        <literal>src/docbook/foo/foo.html_imageincludes.txt</literal>)
+        and it must be located in the
+        <literal>src/docbook/&lt;projectname&gt;</literal>
+        directory. This file consists of line delineated file patterns
+        that will be used to match the images to include.</para>
+
+      </section>
+
+      <?hard-pagebreak ?>
+
+      <section id="section-adding-a-new-docbook-file">
+        <title>Adding a new DocBook file to your documentation build</title>
+
+        <para>Create a new subdirectory inside <literal>src/docbook</literal>.
+        This is where your new DocBook document will reside.</para>
+
+        <para>In your documentation ant build file, you must then add a
+        reference to render your new document. To add a DocBook document
+        called <emphasis>NewGuide.xml</emphasis> which has been located in the
+        <literal>guide</literal> subdirectory, see the following
+        example:</para>
+
+        <figure id="figure-adding-new-document">
+          <title>Adding a new DocBook document</title>
+
+          <programlisting>&lt;ant antfile="build-docbook.xml" target="all"&gt;
+  &lt;property name="docbook.dir" value="guide"/&gt; <co id="co-docbook-dir"
+              linkends="ca-docbook-dir"/>
+  &lt;property name="docbook.file" value="NewGuide"/&gt; <co
+              id="co-docbook-file" linkends="ca-docbook-file"/>
+&lt;/ant&gt;</programlisting>
+        </figure>
+
+        <calloutlist>
+          <callout arearefs="co-docbook-dir" id="ca-docbook-dir">
+            <para>The new DocBook file is located in
+            <literal>src/docbook/guide</literal>.</para>
+          </callout>
+
+          <callout arearefs="co-docbook-file" id="ca-docbook-file">
+            <para>This is the name of the main docbook file
+            <emphasis>WITHOUT</emphasis> the ending. The framework will add
+            <literal>.xml</literal> when opening the DocBook file
+            automatically.</para>
+          </callout>
+        </calloutlist>
+
+        <para>When you add a new document to the framework, you should make
+        sure that it references DocBook DTD files which can be resolved
+        locally. Included are the DTD files for DocBook 4.5, so your document
+        declaration should be</para>
+
+        <figure id="figure-recommended-dtd">
+          <title>Recommended DTD for DocBook documents.</title>
+
+          <programlisting>&lt;!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+                "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"&gt;</programlisting>
+        </figure>
+
+        <para>If you use a different doctype definition, the DocBook Framework
+        will still render your documents, but it will have to connect to the
+        Internet to retrieve the definition files every time you run the build
+        process.</para>
+      </section>
+    </section>
+  </chapter>
+
+  <chapter id="section-how-it-works">
+    <title>Developer information</title>
+
+    <important>
+      <para>First take a look at the <literal>MANIFEST</literal> file in the
+      root directory to get an idea what is in this package and what the
+      various files are supposed to do.</para>
+    </important>
+
+    <section id="section-ant-files">
+      <title>ant files</title>
+
+      <para>The <literal>build.xml</literal> file in your documentation
+      directory contains only the driver targets for rendering the
+      documentation. The actual work is done through targets defined in the
+      <literal>build-docbook.xml</literal> ant file in the DocBook
+      Framework.</para>
+
+      <para>This file normally should not be changed! If you have to, please
+      let us know, so we can incorporate your changes and/or bug fixes into
+      the main distribution.</para>
+
+      <para><literal>build-docbook.xml</literal> contains three main targets:
+      <literal>pdf</literal>, <literal>html</literal> and
+      <literal>htmlsingle</literal>. Each is responsible for rendering a
+      format. If you want to add another format, please style your new target
+      similar to these.</para>
+
+      <para>All default settings are kept in the
+      <literal>docbook.properties</literal> file in the root directory. There
+      should be no need to change these properties, they can be customized in
+      your project directory by using a <literal>project.properties</literal>
+      file.</para>
+    </section>
+
+    <section id="section-docbook-reference-files">
+      <title>DocBook reference files</title>
+
+      <para>We use the DocBook XML and XSL distribution archives without any
+      changes to them. The reference files are located in the
+      <literal>src/zip</literal> folder and are expanded into the
+      <literal>target/</literal> directory before the rendering
+      process.</para>
+
+      <para>The file names must be reflected in the
+      <literal>docbook.xml.version</literal> and
+      <literal>docbook.xsl.version</literal> properties in the
+      <literal>docbook.properties</literal> file. If you want to use e.g. a
+      newer XSL version, you can put it into <literal>src/zip</literal> and
+      update the <literal>docbook.properties</literal> to reflect this change.
+      Let us know how it works out for you.</para>
+    </section>
+
+    <section id="section-xml-resolver">
+      <title>XML Resolver</title>
+
+      <para>The framework uses the Apache XML commons resolver to avoid
+      accessing the Internet for Catalog files. The resolver is configured
+      through the <literal>CatalogManager.properties</literal> and
+      <literal>xml-catalog.xml</literal> files in the
+      <literal>src/resolver</literal> directory of the distribution.</para>
+
+      <para>If you update e.g. the Docbook XML version, you must also update
+      the catalog file to match the new version. Else the rendering process
+      will have no knowledge of your changes and access the Internet to
+      download the required DTD files.</para>
+    </section>
+
+    <section id="section-docbook-source-files">
+      <title>Docbook Source files</title>
+
+      <para>The sources for each DocBook document to render should be in
+      subdirectories of <literal>src/docbook</literal>. Each document has its
+      own subdirectory and gets rendered separately. Adding a new document is
+      described in the <emphasis>Adding a new DocBook file to your
+      Documentation build</emphasis> note above.</para>
+    </section>
+
+    <section id="section-stylesheets-and-driver-files">
+      <title>Stylesheets and Driver files</title>
+
+      <para>For each of the formats used by the framework, a stylesheet driver
+      file exists in the DocBook Framework in <literal>src/styles</literal>.
+      These files are <literal>pdf.xsl</literal>, <literal>html.xsl</literal>
+      and <literal>htmlsingle.xsl</literal>.</para>
+
+      <para>The driver files are intended to reference the actual style sheet
+      customization and to add some framework specific elements through
+      filtering. This two step process has been chosen because
+      <emphasis>html</emphasis> and <emphasis>htmlsingle</emphasis> are very
+      similar and it makes no sense to maintain two sets of stylesheet
+      customizations that are virtually identical.</para>
+
+      <para>Before usage, these files are copied to
+      <literal>target/tmp</literal> using an ant filter set. This allows you
+      to use the following replacements in the driver files:</para>
+
+      <table id="ant-filter-tokens">
+        <title>ant filter tokens in the stylesheet customization files</title>
+
+        <tgroup cols="3">
+          <thead>
+            <row>
+              <entry>Filter token</entry>
+
+              <entry>Default Value</entry>
+
+              <entry>Token function</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>@file.prefix@</entry>
+
+              <entrytbl cols="1">
+                <tbody>
+                  <row>
+                    <entry>file:// (Unix)</entry>
+                  </row>
+
+                  <row>
+                    <entry>file:/// (Windows)</entry>
+                  </row>
+                </tbody>
+              </entrytbl>
+
+              <entry>Prefix for loading a file through the XSL
+              processor.</entry>
+            </row>
+
+            <row>
+              <entry>@docbook.xml@</entry>
+
+              <entry>(computed at runtime)</entry>
+
+              <entry>Location of the DocBook XML files</entry>
+            </row>
+
+            <row>
+              <entry>@docbook.xsl@</entry>
+
+              <entry>(computed at runtime)</entry>
+
+              <entry>Location of the DocBook XSL style sheets</entry>
+            </row>
+
+            <row>
+              <entry>@src.dir@</entry>
+
+              <entry>${basedir}/src</entry>
+
+              <entry>Location of the source files (DocBook, Images
+              etc.)</entry>
+            </row>
+
+            <row>
+              <entry>@tmp.dir@</entry>
+
+              <entry>${basedir}/target/tmp</entry>
+
+              <entry>Directory for temporary (scratch) files</entry>
+            </row>
+
+            <row>
+              <entry>@&lt;type&gt;.target.dir@ (type is pdf for PDF, html for
+              multi-page HTML and htmlsingle for single-page HTML)</entry>
+
+              <entry>(computed at runtime)</entry>
+
+              <entry>Points to the target directory into which the document is
+              rendered</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+      <para>Please refer to the provided driver files in
+      <literal>src/styles</literal> in the DocBook Framework on how to use the
+      filter set.</para>
+    </section>
+
+    <section id="section-stylesheet-customizations">
+      <title>StyleSheet customizations</title>
+
+      <para>You can customize the stylesheets used to render the documentation
+      by adding style files to your project.</para>
+
+      <para>The <emphasis>html</emphasis> and <emphasis>htmlsingle</emphasis>
+      render process uses the same set of customizations, so there are only
+      two possible locations, one for PDF and one for HTML.</para>
+
+      <para>The files are located in your project under
+      <literal>src/styles/pdf</literal> and <literal>src/styles/html</literal>
+      respectively. The DocBook Framework only loads a file named
+      <literal>custom.xsl</literal> file from the directory, which in turn can
+      load additional files.</para>
+    </section>
+
+    <section id="section-pdf-stylesheet">
+      <title>PDF StyleSheet information</title>
+
+      <para>In the footer, the <literal>&lt;releaseinfo&gt;</literal> and
+      <literal>&lt;productname&gt;</literal> elements of the DocBook document
+      are displayed. Each document should have these fields defined.</para>
+    </section>
+
+    <section id="section-titlepages">
+      <title>Titlepages</title>
+
+      <para>Similar to the style sheet customizations, the DocBook Framework
+      can use custom title pages when rendering PDF and HTML output.</para>
+
+      <para>The title page format files are also be kept in the
+      <literal>src/styles/html</literal> and <literal>src/styles/pdf</literal>
+      sub-directories of your documentation project. If no custom page is
+      given, a default title page is used.</para>
+    </section>
+  </chapter>
+
+  <chapter id="section-acknowledgements">
+    <title>Acknowledgements</title>
+
+    <para>DocBook is a fairly complex format and using and customizing the XSL
+    style sheets available is not really straightforward. So by googling left
+    and right and looking at other DocBook rendering frameworks that are in
+    the open source, we tried to model similarities and sometimes just copied
+    some of the ideas.</para>
+
+    <para>This DocBook Framework is literally standing on the shoulders of
+    other projects, in particular:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>The DocBook Format</emphasis> by Norman Walsh; (C)
+        1999-2006 by Norman Walsh, OASIS and O'Reilly, especially all the
+        documentation that is available from
+        <uri>http://www.docbook.org/</uri></para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>The DocBook FAQ</emphasis> maintained by Dave Pawson
+        and available from <uri>http://www.dpawson.co.uk/docbook/</uri>. We
+        wouldn't have survived without it.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>DocBook XSL: The Complete Guide</emphasis> by Bob
+        Stayton. This is an invaluable reference to the DocBook style sheets.
+        Find it online at <uri>http://sagehill.net/</uri> or buy the
+        E-book.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>The DocBook Project</emphasis> located at
+        <uri>http://docbook.sourceforge.net/</uri>. They maintain the XSL
+        style sheets used to transform DocBook into other formats and also
+        link to the docbook mailing list archives.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>The Apache XML commons resolver</emphasis> available
+        from
+        <uri>http://xml.apache.org/commons/components/resolver/</uri></para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>The XMLmind XML Editor</emphasis> from XMLMind,
+        available through <uri>http://www.xmlmind.com/xmleditor/</uri> This
+        cross-platform, pure Java editor not only runs well on Linux, Windows
+        and MacOS but also offers DocBook WYSIWYG support and has a free
+        version! And if you pay for it, you get the source code for it
+        too.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Ideas on how to render elements, to arrange things and how to do
+    more obscure things like title pages or use CSS to render HTML, we've
+    taken (sometimes literally by cut and paste) from the following
+    projects:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>The Spring Framework documentation</emphasis>. It
+        hooked us on the idea that Velocity should have DocBook documentation,
+        too. Their DocBook framework is really nice, however it proved to be
+        'not exactly what we were looking for' (see above). Spring is an
+        example on how good documentation makes all the difference between a
+        successful and popular project and 'the others'. Thanks a lot, Spring
+        guys! Download Spring Framework from
+        <uri>http://www.springframework.org/</uri>.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>The "ant and docbook" styler suite</emphasis> by Dawid
+        Weiss, available from
+        <uri>http://www.cs.put.poznan.pl/dweiss/xml/projects/ant-docbook-styler/index.xml</uri>
+        . We stole his CSS style sheet almost verbatim. Thanks a lot,
+        Dawid!</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>The Maven sdocbook plugin</emphasis> by Siegfried
+        Goeschl, Per Olesen and Carlos Sanchez, available at the SourceForge
+        Maven plugin page at
+        <uri>http://maven-plugins.sourceforge.net/maven-sdocbook-plugin/</uri></para>
+      </listitem>
+    </itemizedlist>
+  </chapter>
+</book>
