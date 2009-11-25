@@ -10,13 +10,25 @@
 <book>
 
    <bookinfo>
-      <graphic fileref="images/labs-logo-60.png" format="PNG"/>
       <title>jax-doclets</title>
       <productname>jax-doclets</productname>
       <subtitle>JavaDoc doclets for Java Extension APIs</subtitle>
       <releaseinfo>0.5</releaseinfo>
 	  <productnumber>0.5</productnumber>
       <copyright><year>2009</year><holder>Lunatech Labs</holder></copyright>
+      <corpauthor>
+       Lunatech Labs
+       <ulink url="http://www.lunatech-labs.com" >
+        <inlinemediaobject>
+         <imageobject role="fo">
+          <imagedata fileref="images/labs-logo.svg" width="400" format="SVG"/>
+         </imageobject>
+         <imageobject role="html">
+          <imagedata fileref="images/labs-logo-60.png" width="164" format="PNG"/>
+         </imageobject>
+        </inlinemediaobject>
+       </ulink>
+      </corpauthor>
       <author>
        <firstname>Stéphane</firstname>
        <surname>Épardaud</surname>
@@ -26,6 +38,11 @@
         <orgname>Lunatech Labs</orgname>
        </affiliation>
       </author>
+      <abstract>
+       <para>
+        jax-doclets is a set of JavaDoc doclets for the Java Extension APIs.
+       </para>
+      </abstract>
    </bookinfo>
 
    <toc/>

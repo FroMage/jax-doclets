@@ -55,6 +55,45 @@
 <xsl:attribute-set name="monospace.verbatim.properties">
   <xsl:attribute name="font-size">8pt</xsl:attribute>
 </xsl:attribute-set>
+ 
+  <xsl:param name="use.role.for.mediaobject" select="1"/>
+  <xsl:param name="ulink.footnotes" select="1"/>
 
+<xsl:attribute-set name="section.title.level1.properties">
+  <xsl:attribute name="font-size">
+    <xsl:value-of select="$body.font.master * 1.21550625"/>
+    <xsl:text>pt</xsl:text>
+  </xsl:attribute>
+</xsl:attribute-set>
+<xsl:attribute-set name="section.title.level2.properties">
+  <xsl:attribute name="font-size">
+    <xsl:value-of select="$body.font.master * 1.157625"/>
+    <xsl:text>pt</xsl:text>
+  </xsl:attribute>
+</xsl:attribute-set>
+<xsl:attribute-set name="section.title.level3.properties">
+  <xsl:attribute name="font-size">
+    <xsl:value-of select="$body.font.master * 1.1025"/>
+    <xsl:text>pt</xsl:text>
+  </xsl:attribute>
+</xsl:attribute-set>
+<xsl:attribute-set name="section.title.level4.properties">
+  <xsl:attribute name="font-size">
+    <xsl:value-of select="$body.font.master * 1.05"/>
+    <xsl:text>pt</xsl:text>
+  </xsl:attribute>
+</xsl:attribute-set>
+<xsl:attribute-set name="section.title.level5.properties">
+  <xsl:attribute name="font-size">
+    <xsl:value-of select="$body.font.master"/>
+    <xsl:text>pt</xsl:text>
+  </xsl:attribute>
+</xsl:attribute-set>
+<xsl:attribute-set name="section.title.level6.properties">
+  <xsl:attribute name="font-size">
+    <xsl:value-of select="$body.font.master"/>
+    <xsl:text>pt</xsl:text>
+  </xsl:attribute>
+</xsl:attribute-set>
 
 </xsl:stylesheet>

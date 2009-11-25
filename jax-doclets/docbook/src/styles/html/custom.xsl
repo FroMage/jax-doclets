@@ -55,7 +55,7 @@
   <xsl:param name="ignore.image.scaling" select="1"/>
 
  <xsl:template name="user.header.navigation">
-  <img id="header-logo" src="images/labs-logo-60.png"/>
+  <a href="http://www.lunatech-labs.com"><img id="header-logo" src="images/labs-logo-60.png"/></a>
  </xsl:template>
  
 
