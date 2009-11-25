@@ -77,12 +77,12 @@ com.lunatech.doclets.jax.test
  </section>
 </section>
  <section>
-  <title>Doclet configuration</title>
+  <title>Doclet parameters</title>
   <section>
-   <title>Generic configuration</title>
-   <para>This works for all jax-doclets</para>
+   <title>Generic parameters</title>
+   <para>These parameters are valid for all jax-doclets</para>
    <table>
-    <caption>jax-doclet generic configuration</caption>
+    <caption>jax-doclet generic parameters</caption>
     <thead>
      <tr class="odd">
       <th>Parameter</th>
@@ -106,6 +106,25 @@ com.lunatech.doclets.jax.test
       <td><literal id="-link">-link</literal></td>
       <td>Path to another JavaDoc documentation. This is used to produce links to other package's
       documentation, either regular JavaDoc or to JAXB documentation in the case of the JAX-RS doclet.</td>
+     </tr>
+    </tbody>
+   </table>
+  </section>
+  <section>
+   <title>JAX-RS doclet parameters</title>
+   <para>These parameters are only valid for the JAX-RS doclet</para>
+   <table>
+    <caption>JAX-RS doclet parameters</caption>
+    <thead>
+     <tr class="odd">
+      <th>Parameter</th>
+      <th>Function</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+      <td><literal>-jaxrscontext</literal></td>
+      <td>The URL path to your RESTful API, if there is a prefix prepended to it on your deploy site.</td>
      </tr>
     </tbody>
    </table>

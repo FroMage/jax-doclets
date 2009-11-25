@@ -71,3 +71,15 @@ a {
 a:visited {
  color: #3D5C11;
 }
+
+a img {
+ border: none;
+}
+
+div.titlepage {
+ text-align: center;
+}
+
+div.abstract {
+ text-align: left;
+}
