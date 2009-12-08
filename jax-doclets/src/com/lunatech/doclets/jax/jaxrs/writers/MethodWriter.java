@@ -320,7 +320,7 @@ public class MethodWriter extends DocletWriter {
       for (String name : headerParameters.keySet()) {
         print("Cookie: ");
         print(name);
-        print("\n");
+        print("=…\n");
       }
     }
 
