@@ -22,7 +22,13 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import com.lunatech.doclets.jax.Utils;
-import com.sun.javadoc.*;
+import com.sun.javadoc.AnnotationDesc;
+import com.sun.javadoc.ClassDoc;
+import com.sun.javadoc.Doc;
+import com.sun.javadoc.FieldDoc;
+import com.sun.javadoc.MethodDoc;
+import com.sun.javadoc.ProgramElementDoc;
+import com.sun.javadoc.Type;
 
 public class JAXBMember implements Comparable<JAXBMember> {
 
@@ -63,29 +69,11 @@ public class JAXBMember implements Comparable<JAXBMember> {
   }
 
   public boolean isCollection() {
-    Type type = getType();
-    String dimension = type.dimension();
-    if(dimension!=null && dimension.length()>0) {
-    	return true;
-    }
-    ParameterizedType parameterizedType = type.asParameterizedType();
-    Type collectionType = Utils.findSuperType(type, "java.util.Collection");
-    // FIXME: this is dodgy at best
-    return collectionType != null;
+    return Utils.isCollection(getType());
   }
 
   public Type getJavaType() {
-    Type type = getType();
-    Type collectionType = Utils.findSuperType(type, "java.util.Collection");
-    // FIXME: this is dodgy at best
-    if (collectionType != null) {
-    	ParameterizedType parameterizedType = type.asParameterizedType();
-      Type[] types = parameterizedType == null ? null : parameterizedType.typeArguments();
-      if (types!=null && types.length == 1)
-        return types[0];
-      return klass.getDoclet().forName("java.lang.Object");
-    }
-    return type;
+    return Utils.getCollectionType(getType(), klass.getDoclet());
   }
 
   public String getJavaTypeName() {

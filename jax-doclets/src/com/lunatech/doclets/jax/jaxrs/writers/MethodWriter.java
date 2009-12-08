@@ -24,6 +24,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.Utils.InvalidJaxTypeException;
+import com.lunatech.doclets.jax.Utils.JaxType;
+import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.MethodOutput;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
@@ -31,6 +34,7 @@ import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
 import com.sun.javadoc.MethodDoc;
+import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.TagletOutputImpl;
 
@@ -38,8 +42,8 @@ public class MethodWriter extends DocletWriter {
 
   private ResourceMethod method;
 
-  public MethodWriter(ResourceMethod method, ResourceWriter resourceWriter) {
-    super(resourceWriter.getConfiguration(), resourceWriter.getWriter(), resourceWriter.getResource());
+  public MethodWriter(ResourceMethod method, ResourceWriter resourceWriter, JAXRSDoclet doclet) {
+    super(resourceWriter.getConfiguration(), resourceWriter.getWriter(), resourceWriter.getResource(), doclet);
     this.method = method;
   }
 
@@ -60,8 +64,12 @@ public class MethodWriter extends DocletWriter {
     printInput();
     printOutput();
     printParameters(method.getQueryParameters(), "Query");
-    // done on resource printParameters(method.getPathParameters(), "Path");
+    // done on resource
+    // printParameters(method.getPathParameters(), "Path");
     printParameters(method.getMatrixParameters(), "Matrix");
+    printParameters(method.getFormParameters(), "Form");
+    printParameters(method.getCookieParameters(), "Cookie");
+    printParameters(method.getHeaderParameters(), "Header");
     printMIMEs(method.getProduces(), "Produces");
     printMIMEs(method.getConsumes(), "Consumes");
     printHTTPCodes();
@@ -103,38 +111,106 @@ public class MethodWriter extends DocletWriter {
       for (int i = 0; i < output.getOutputWrappedCount(); i++) {
         open("dd");
         String typeName = output.getWrappedOutputType(i);
-        String link = Utils.getExternalLink(configuration, typeName, writer);
-        if (link != null)
-          typeName = Utils.getLinkTypeName(link);
-        printOutput(typeName, link, output.getOutputDoc(i));
+        JaxType returnType = null;
+        try {
+          returnType = Utils.parseType(typeName, method.getJavaDoc().containingClass(), doclet);
+        } catch (InvalidJaxTypeException e) {
+          doclet.warn("Invalid @returnWrapped type: " + typeName);
+          e.printStackTrace();
+        }
+        if (returnType != null)
+          printOutputType(returnType);
+        else
+          around("tt", escape(typeName));
+        if (output.getOutputDoc(i) != null) {
+          print(" - ");
+          print(output.getOutputDoc(i));
+        }
         close("dd");
       }
     } else {
       open("dd");
       Type returnType = output.getOutputType();
-      String link = null;
-      String typeName = returnType.qualifiedTypeName() + returnType.dimension();
-      if (!returnType.isPrimitive()) {
-        link = Utils.getExternalLink(configuration, returnType, writer);
-        if (link != null)
-          typeName = returnType.typeName() + returnType.dimension();
+      printOutputType(returnType);
+      if (output.getOutputDoc() != null) {
+        print(" - ");
+        print(output.getOutputDoc());
       }
-      printOutput(typeName, link, output.getOutputDoc());
       close("dd");
     }
   }
 
-  private void printOutput(String typeName, String link, String doc) {
-    if (link == null) {
-      around("tt", typeName);
-    } else {
-      around("a href='" + link + "'", typeName);
-    }
-    if (doc != null) {
-      print(" - ");
-      print(doc);
+  private void printOutputType(Type type) {
+    open("tt");
+    printOutputGenericType(type);
+    close("tt");
+  }
+
+  private void printOutputGenericType(Type type) {
+    String link = null;
+    if (!type.isPrimitive()) {
+      link = Utils.getExternalLink(configuration, type, writer);
     }
 
+    if (link == null) {
+      print(type.qualifiedTypeName());
+    } else {
+      around("a href='" + link + "'", type.typeName());
+    }
+    ParameterizedType pType = type.asParameterizedType();
+    if (pType != null) {
+      boolean first = true;
+      print("&lt;");
+      for (Type genericType : pType.typeArguments()) {
+        if (first) {
+          first = false;
+        } else {
+          print(",");
+        }
+        printOutputGenericType(genericType);
+      }
+      print("&gt;");
+    }
+    print(type.dimension());
+  }
+
+  private void printOutputType(JaxType type) {
+    open("tt");
+    printOutputGenericType(type);
+    close("tt");
+  }
+
+  private void printOutputGenericType(JaxType type) {
+    String link = null;
+    if (type.getType() == null) {
+      doclet.warn("Type information not found: " + type.getTypeName());
+      print(type.getTypeName());
+      return;
+    }
+
+    if (!type.getType().isPrimitive()) {
+      link = Utils.getExternalLink(configuration, type.getType(), writer);
+    }
+
+    if (link == null) {
+      print(type.getType().qualifiedTypeName());
+    } else {
+      around("a href='" + link + "'", type.getType().typeName());
+    }
+    if (type.hasParameters()) {
+      boolean first = true;
+      print("&lt;");
+      for (JaxType genericType : type.getParameters()) {
+        if (first) {
+          first = false;
+        } else {
+          print(",");
+        }
+        printOutputGenericType(genericType);
+      }
+      print("&gt;");
+    }
+    print(type.getDimension());
   }
 
   private void printInput() {
@@ -215,6 +291,7 @@ public class MethodWriter extends DocletWriter {
       for (String name : matrixParameters.keySet()) {
         print(";");
         print(name);
+        print("=…");
       }
     }
     Map<String, MethodParameter> queryParameters = method.getQueryParameters();
@@ -225,9 +302,41 @@ public class MethodWriter extends DocletWriter {
         if (!first)
           print("&");
         print(name);
+        print("=…");
         first = false;
       }
     }
+    print("\n");
+
+    Map<String, MethodParameter> headerParameters = method.getHeaderParameters();
+    if (!headerParameters.isEmpty()) {
+      for (String name : headerParameters.keySet()) {
+        print(name);
+        print(": …\n");
+      }
+    }
+    Map<String, MethodParameter> cookieParameters = method.getCookieParameters();
+    if (!cookieParameters.isEmpty()) {
+      for (String name : headerParameters.keySet()) {
+        print("Cookie: ");
+        print(name);
+        print("\n");
+      }
+    }
+
+    Map<String, MethodParameter> formParameters = method.getFormParameters();
+    if (!formParameters.isEmpty()) {
+      print("\n");
+      boolean first = true;
+      for (String name : formParameters.keySet()) {
+        if (!first)
+          print("&");
+        print(name);
+        print("=…");
+        first = false;
+      }
+    }
+    print("\n");
     close("pre");
   }
 }

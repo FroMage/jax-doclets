@@ -20,63 +20,49 @@ package com.lunatech.doclets.jax.jaxrs.model;
 
 import com.lunatech.doclets.jax.Utils;
 import com.sun.javadoc.AnnotationDesc;
-import com.sun.javadoc.MethodDoc;
-import com.sun.javadoc.ParamTag;
-import com.sun.javadoc.Parameter;
+import com.sun.javadoc.Doc;
 import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 
-public class MethodParameter {
+public abstract class MethodParameter {
 
-  private Parameter parameter;
+  protected AnnotationDesc paramAnnotation;
 
-  private AnnotationDesc paramAnnotation;
+  protected MethodParameterType type;
 
-  private MethodParameterType type;
-
-  private MethodDoc method;
-
-  private int parameterIndex;
-
-  public MethodParameter(Parameter parameter, int parameterIndex, AnnotationDesc paramAnnotation, MethodParameterType type, MethodDoc method) {
-    this.parameter = parameter;
+  public MethodParameter(AnnotationDesc paramAnnotation, MethodParameterType type) {
     this.paramAnnotation = paramAnnotation;
     this.type = type;
-    this.method = method;
-    this.parameterIndex = parameterIndex;
   }
 
   public String getName() {
     return (String) Utils.getAnnotationValue(paramAnnotation);
   }
 
-  public String getDoc() {
-    Parameter overriddenParameter = method.parameters()[parameterIndex];
-    for (ParamTag paramTag : method.paramTags()) {
-      if (overriddenParameter.name().equals(paramTag.parameterName()))
-        return paramTag.parameterComment();
-    }
-    return "";
-  }
+  public abstract String getDoc();
 
   public boolean isWrapped() {
     Type parameterType = getType();
     return !parameterType.isPrimitive() && parameterType.qualifiedTypeName().equals("java.lang.String")
-           && Utils.getTag(method, "inputWrapped") != null;
+           && Utils.getTag(getParameterDoc(), "inputWrapped") != null;
   }
 
   public String getWrappedType() {
     if (!isWrapped())
       return null;
-    Tag tag = Utils.getTag(method, "inputWrapped");
+    Tag tag = Utils.getTag(getParameterDoc(), "inputWrapped");
     return tag.text();
   }
 
+  protected abstract Type getParameterType();
+
+  protected abstract Doc getParameterDoc();
+
   public String getTypeString() {
-    return parameter.type().qualifiedTypeName() + parameter.type().dimension();
+    return getParameterType().qualifiedTypeName() + getParameterType().dimension();
   }
 
   public Type getType() {
-    return parameter.type();
+    return getParameterType();
   }
 }
