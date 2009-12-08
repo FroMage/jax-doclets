@@ -52,7 +52,7 @@
 			<arg value="--no-newline" />
 		</exec>
 		<property name="major.version" value="0"/>
-		<property name="minor.version" value="5"/>
+		<property name="minor.version" value="6"/>
 		<property name="patch.version" value="r${svnversion}"/>
 		<property name="version" value="${major.version}.${minor.version}.${patch.version}"/>
 
@@ -65,6 +65,7 @@
 
 		<path id="build.classpath">
 			<pathelement path="${lib.dir}/default/jar/jsr311-api.jar"/>
+			<pathelement path="${lib.dir}/default/jar/resteasy-jaxrs.jar"/>
 		</path>
 
 		<path id="run.classpath">

@@ -18,6 +18,32 @@
  */
 package com.lunatech.doclets.jax.jaxrs.model;
 
-public enum MethodParameterType {
-  Path, Query, Matrix, Input, Header, Cookie, Form;
+import com.sun.javadoc.AnnotationDesc;
+import com.sun.javadoc.Doc;
+import com.sun.javadoc.FieldDoc;
+import com.sun.javadoc.Type;
+
+public class FormFieldParameter extends MethodParameter {
+
+  private FieldDoc field;
+
+  public FormFieldParameter(FieldDoc field, AnnotationDesc paramAnnotation, MethodParameterType type) {
+    super(paramAnnotation, type);
+    this.field = field;
+  }
+
+  public String getDoc() {
+    return field.commentText();
+  }
+
+  @Override
+  protected Doc getParameterDoc() {
+    return field;
+  }
+
+  @Override
+  protected Type getParameterType() {
+    return field.type();
+  }
+
 }
