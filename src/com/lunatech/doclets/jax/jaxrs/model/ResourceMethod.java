@@ -417,6 +417,16 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
 
   public String getURL(Resource resource) {
     StringBuffer strbuf = new StringBuffer(resource.getAbsolutePath());
+    Map<String, MethodParameter> matrixParameters = getMatrixParameters();
+    if (!matrixParameters.isEmpty()) {
+      boolean first = true;
+      for (String name : matrixParameters.keySet()) {
+        strbuf.append(";");
+        strbuf.append(name);
+        strbuf.append("=…");
+        first = false;
+      }
+    }
     Map<String, MethodParameter> queryParameters = getQueryParameters();
     if (!queryParameters.isEmpty()) {
       strbuf.append("?");
@@ -425,6 +435,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
         if (!first)
           strbuf.append("&");
         strbuf.append(name);
+        strbuf.append("=…");
         first = false;
       }
     }
