@@ -63,7 +63,7 @@ the JAX-RS doclet using the <link linkend="-link"><literal>-link</literal></link
        Can only be used once.</td>
      </tr>
      <tr>
-      <td><literal>@outputWrapped {fq-classname} {doc}</literal></td>
+      <td><literal>@returnWrapped {fq-classname} {doc}</literal></td>
       <td>Used in place of <literal>@return</literal> when output type is <literal>String</literal>, <literal>void</literal>
        or <literal>Response</literal> to specify the real type of output and documentation for each possible type.
        Can be used multiple times.</td>
@@ -87,11 +87,24 @@ the JAX-RS doclet using the <link linkend="-link"><literal>-link</literal></link
     <itemizedlist>
      <listitem><literal>@Path</literal></listitem>
      <listitem><literal>@PathParam</literal></listitem>
+     <listitem><literal>@FormParam</literal></listitem>
+     <listitem><literal>@CookieParam</literal></listitem>
+     <listitem><literal>@HeaderParam</literal></listitem>
      <listitem><literal>@QueryParam</literal></listitem>
      <listitem><literal>@MatrixParam</literal></listitem>
      <listitem><literal>@Produces</literal></listitem>
      <listitem><literal>@Consumes</literal></listitem>
      <listitem><literal>@Context</literal> (ignored)</listitem>
+    </itemizedlist>
+   </figure>
+  </section>
+<section>
+ <title>Supported RESTEasy JAX-RS extension annotations</title>
+ <para>The following RESTEasy annotations are supported on resource methods or classes:</para>
+   <figure>
+    <title>RESTEasy annotations</title>
+    <itemizedlist>
+     <listitem><literal>@Form</literal></listitem>
     </itemizedlist>
    </figure>
   </section>
