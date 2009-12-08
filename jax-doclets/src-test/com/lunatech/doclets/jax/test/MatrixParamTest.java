@@ -3,10 +3,12 @@ package com.lunatech.doclets.jax.test;
 import javax.ws.rs.GET;
 import javax.ws.rs.MatrixParam;
 import javax.ws.rs.Path;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Path("switches")
 public class MatrixParamTest {
 
+  @XmlRootElement
   public static class HostServerData {}
 
   /**

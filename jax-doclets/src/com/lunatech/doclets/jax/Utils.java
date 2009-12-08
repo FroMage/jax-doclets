@@ -22,7 +22,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
@@ -32,8 +35,10 @@ import com.sun.javadoc.AnnotationValue;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.Doc;
 import com.sun.javadoc.MethodDoc;
+import com.sun.javadoc.PackageDoc;
 import com.sun.javadoc.ParamTag;
 import com.sun.javadoc.Parameter;
+import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.ProgramElementDoc;
 import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
@@ -497,5 +502,184 @@ public class Utils {
       return value;
     }
     return null;
+  }
+
+  public static boolean isCollection(Type type) {
+    String dimension = type.dimension();
+    if (dimension != null && dimension.length() > 0) {
+      return true;
+    }
+    ParameterizedType parameterizedType = type.asParameterizedType();
+    Type collectionType = Utils.findSuperType(type, "java.util.Collection");
+    // FIXME: this is dodgy at best
+    return collectionType != null;
+  }
+
+  public static Type getCollectionType(Type type, JAXDoclet doclet) {
+    Type collectionType = Utils.findSuperType(type, "java.util.Collection");
+    // FIXME: this is dodgy at best
+    if (collectionType != null) {
+      ParameterizedType parameterizedType = type.asParameterizedType();
+      Type[] types = parameterizedType == null ? null : parameterizedType.typeArguments();
+      if (types != null && types.length == 1)
+        return types[0];
+      return doclet.forName("java.lang.Object");
+    }
+    return type;
+  }
+
+  public static Type resolveType(String typeName, ClassDoc klass, JAXDoclet doclet) {
+    log("resolving " + typeName + " in " + klass.qualifiedTypeName());
+    // first look in inner classes
+    for (ClassDoc innerClass : klass.innerClasses(false)) {
+      if (innerClass.simpleTypeName().equals(typeName))
+        return innerClass;
+    }
+    // then the class itself
+    if (klass.typeName().equals(typeName))
+      return klass;
+    // then go through the named imports
+    for (ClassDoc importedClass : klass.importedClasses()) {
+      if (importedClass.typeName().equals(typeName))
+        return importedClass;
+    }
+    // then the package imports
+    for (PackageDoc importedPackage : klass.importedPackages()) {
+      for (ClassDoc importedClass : importedPackage.allClasses(false)) {
+        if (importedClass.typeName().equals(typeName))
+          return importedClass;
+      }
+    }
+    // now try FQDN
+    Type type = doclet.forName(typeName);
+    if (type != null)
+      return type;
+    log("resolving failed for " + typeName + " in " + klass.qualifiedTypeName());
+    return null;
+  }
+
+  public static JaxType parseType(String typeName, ClassDoc containingClass, JAXDoclet doclet) throws InvalidJaxTypeException {
+    typeName = typeName.trim();
+    char[] chars = typeName.toCharArray();
+    Stack<JaxType> types = new Stack<JaxType>();
+    JaxType currentType = new JaxType();
+    types.push(currentType);
+    StringBuffer currentTypeName = new StringBuffer();
+    for (int i = 0; i < chars.length; i++) {
+      char c = chars[i];
+      log("Looking at char " + c);
+      if (c == '<') {
+        log("Start params for " + currentTypeName);
+        // we're done for the type name
+        setupType(currentType, currentTypeName, containingClass, doclet);
+        // add a parameter to the current type
+        JaxType parameterType = new JaxType();
+        currentType.parameters.add(parameterType);
+        currentType = parameterType;
+        // prepare for the parameter type
+        types.push(currentType);
+      } else if (c == '>') {
+        // we're done for the parameter type
+        if (currentTypeName.length() > 0)
+          setupType(currentType, currentTypeName, containingClass, doclet);
+        // reset and pop
+        types.pop();
+        currentType = types.peek();
+        log("End params for " + currentType.typeName);
+        // we should have at least the top type
+        if (types.size() < 1)
+          throw new InvalidJaxTypeException();
+      } else if (c == ',') {
+        // we're done for the parameter type, unless it was already done by
+        // closing its parameter list
+        if (currentTypeName.length() > 0) {
+          setupType(currentType, currentTypeName, containingClass, doclet);
+          // reset, pop
+          types.pop();
+          currentType = types.peek();
+        }
+        log("Next params for " + currentType.typeName);
+        // we should have at least the top type
+        if (types.size() < 1)
+          throw new InvalidJaxTypeException();
+        // add a parameter to the current type
+        JaxType parameterType = new JaxType();
+        currentType.parameters.add(parameterType);
+        currentType = parameterType;
+        // prepare for the parameter type
+        types.push(currentType);
+      } else if (c == '[' || c == ']') {
+        log("Dimension for " + currentType.typeName);
+        // done for the class name unless it was already done by
+        // closing its parameter list
+        if (currentTypeName.length() > 0) {
+          setupType(currentType, currentTypeName, containingClass, doclet);
+        }
+        // FIXME: check dimension correctness
+        currentType.dimension += c;
+      } else {
+        log("Name char: " + currentTypeName);
+        // if the currentType already has a name, barf
+        if (currentType.typeName != null)
+          throw new InvalidJaxTypeException();
+        currentTypeName.append(c);
+      }
+    }
+    // perhaps we didn't have any parameters or dimension
+    if (currentTypeName.length() > 0) {
+      log("End of type without param or dimension for " + currentTypeName);
+      setupType(currentType, currentTypeName, containingClass, doclet);
+    }
+    // we should have the original type to return
+    if (types.size() != 1)
+      throw new InvalidJaxTypeException();
+    return currentType;
+  }
+
+  public static class InvalidJaxTypeException extends Exception {}
+
+  private static void setupType(JaxType currentType, StringBuffer currentTypeName, ClassDoc containingClass, JAXDoclet doclet)
+      throws InvalidJaxTypeException {
+    if (currentTypeName.length() == 0) {
+      throw new InvalidJaxTypeException();
+    }
+    currentType.typeName = currentTypeName.toString();
+    currentType.type = resolveType(currentType.typeName, containingClass, doclet);
+    currentTypeName.setLength(0);
+  }
+
+  public static class JaxType {
+
+    String typeName;
+
+    Type type;
+
+    List<JaxType> parameters = new LinkedList<JaxType>();
+
+    String dimension = "";
+
+    public String getDimension() {
+      return dimension;
+    }
+
+    public String getTypeName() {
+      return typeName;
+    }
+
+    public Type getType() {
+      return type;
+    }
+
+    public List<JaxType> getParameters() {
+      return parameters;
+    }
+
+    public boolean hasParameters() {
+      return !parameters.isEmpty();
+    }
+  }
+
+  private static void log(String mesg) {
+  // System.err.println(mesg);
   }
 }

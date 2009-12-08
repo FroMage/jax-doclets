@@ -25,9 +25,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.MatrixParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -36,9 +39,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
+import org.jboss.resteasy.annotations.Form;
+
 import com.lunatech.doclets.jax.Utils;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
+import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.Parameter;
 import com.sun.javadoc.Tag;
@@ -62,6 +68,12 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   final Map<String, MethodParameter> matrixParameters = new HashMap<String, MethodParameter>();
 
   final Map<String, MethodParameter> queryParameters = new HashMap<String, MethodParameter>();
+
+  final Map<String, MethodParameter> headerParameters = new HashMap<String, MethodParameter>();
+
+  final Map<String, MethodParameter> cookieParameters = new HashMap<String, MethodParameter>();
+
+  final Map<String, MethodParameter> formParameters = new HashMap<String, MethodParameter>();
 
   private List<AnnotationDesc> methods = new LinkedList<AnnotationDesc>();
 
@@ -121,24 +133,145 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
       final AnnotationDesc pathParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, PathParam.class);
       if (pathParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(pathParamAnnotation);
-        pathParameters.put(name, new MethodParameter(parameter, i, pathParamAnnotation, MethodParameterType.Path, declaringMethod));
+        pathParameters.put(name, new RealMethodParameter(parameter, i, pathParamAnnotation, MethodParameterType.Path, declaringMethod));
         continue;
       }
       final AnnotationDesc matrixParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, MatrixParam.class);
       if (matrixParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(matrixParamAnnotation);
-        matrixParameters.put(name, new MethodParameter(parameter, i, matrixParamAnnotation, MethodParameterType.Matrix, declaringMethod));
+        matrixParameters.put(name,
+                             new RealMethodParameter(parameter, i, matrixParamAnnotation, MethodParameterType.Matrix, declaringMethod));
         continue;
       }
       final AnnotationDesc queryParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, QueryParam.class);
       if (queryParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(queryParamAnnotation);
-        queryParameters.put(name, new MethodParameter(parameter, i, queryParamAnnotation, MethodParameterType.Query, declaringMethod));
+        queryParameters.put(name, new RealMethodParameter(parameter, i, queryParamAnnotation, MethodParameterType.Query, declaringMethod));
+        continue;
+      }
+      final AnnotationDesc cookieParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, CookieParam.class);
+      if (cookieParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(cookieParamAnnotation);
+        cookieParameters.put(name,
+                             new RealMethodParameter(parameter, i, cookieParamAnnotation, MethodParameterType.Cookie, declaringMethod));
+        continue;
+      }
+      final AnnotationDesc formParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, FormParam.class);
+      if (formParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(formParamAnnotation);
+        formParameters.put(name, new RealMethodParameter(parameter, i, formParamAnnotation, MethodParameterType.Form, declaringMethod));
+        continue;
+      }
+      final AnnotationDesc headerParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, HeaderParam.class);
+      if (headerParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(headerParamAnnotation);
+        headerParameters.put(name,
+                             new RealMethodParameter(parameter, i, headerParamAnnotation, MethodParameterType.Header, declaringMethod));
+        continue;
+      }
+      final AnnotationDesc formAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, Form.class);
+      if (formAnnotation != null) {
+        walkFormParameter(parameter.type().asClassDoc());
         continue;
       }
       final AnnotationDesc contextAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, Context.class);
       if (contextAnnotation == null) {
-        this.inputParameter = new MethodParameter(parameter, i, null, MethodParameterType.Input, declaringMethod);
+        this.inputParameter = new RealMethodParameter(parameter, i, null, MethodParameterType.Input, declaringMethod);
+      }
+    }
+  }
+
+  private void walkFormParameter(ClassDoc formDoc) {
+    // walk all fields
+    System.err.println("Walking form: " + formDoc);
+    for (FieldDoc field : formDoc.fields(false)) {
+      final AnnotationDesc pathParamAnnotation = Utils.findAnnotation(field, PathParam.class);
+      if (pathParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(pathParamAnnotation);
+        pathParameters.put(name, new FormFieldParameter(field, pathParamAnnotation, MethodParameterType.Path));
+        continue;
+      }
+      final AnnotationDesc matrixParamAnnotation = Utils.findAnnotation(field, MatrixParam.class);
+      if (matrixParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(matrixParamAnnotation);
+        matrixParameters.put(name, new FormFieldParameter(field, matrixParamAnnotation, MethodParameterType.Matrix));
+        continue;
+      }
+      final AnnotationDesc queryParamAnnotation = Utils.findAnnotation(field, QueryParam.class);
+      if (queryParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(queryParamAnnotation);
+        queryParameters.put(name, new FormFieldParameter(field, queryParamAnnotation, MethodParameterType.Query));
+        continue;
+      }
+      final AnnotationDesc headerParamAnnotation = Utils.findAnnotation(field, HeaderParam.class);
+      if (headerParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(headerParamAnnotation);
+        headerParameters.put(name, new FormFieldParameter(field, headerParamAnnotation, MethodParameterType.Header));
+        continue;
+      }
+      final AnnotationDesc cookieParamAnnotation = Utils.findAnnotation(field, CookieParam.class);
+      if (cookieParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(cookieParamAnnotation);
+        cookieParameters.put(name, new FormFieldParameter(field, cookieParamAnnotation, MethodParameterType.Cookie));
+        continue;
+      }
+      final AnnotationDesc formParamAnnotation = Utils.findAnnotation(field, FormParam.class);
+      if (formParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(formParamAnnotation);
+        formParameters.put(name, new FormFieldParameter(field, formParamAnnotation, MethodParameterType.Form));
+        continue;
+      }
+      final AnnotationDesc contextAnnotation = Utils.findAnnotation(field, Context.class);
+      if (contextAnnotation == null) {
+        this.inputParameter = new FormFieldParameter(field, null, MethodParameterType.Input);
+      }
+    }
+    // and methods
+    for (MethodDoc method : formDoc.methods(false)) {
+      System.err.println(method.returnType().qualifiedTypeName());
+      if (!method.returnType().qualifiedTypeName().equals("void") || method.parameters().length != 1 || !method.name().startsWith("set"))
+        continue;
+      Parameter parameter = method.parameters()[0];
+      System.err.println("Got one: " + method.name());
+      final AnnotationDesc pathParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, PathParam.class);
+      if (pathParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(pathParamAnnotation);
+        pathParameters.put(name, new FormMethodParameter(method, pathParamAnnotation, MethodParameterType.Path));
+        continue;
+      }
+      final AnnotationDesc matrixParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, MatrixParam.class);
+      if (matrixParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(matrixParamAnnotation);
+        matrixParameters.put(name, new FormMethodParameter(method, matrixParamAnnotation, MethodParameterType.Matrix));
+        continue;
+      }
+      final AnnotationDesc queryParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, QueryParam.class);
+      if (queryParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(queryParamAnnotation);
+        queryParameters.put(name, new FormMethodParameter(method, queryParamAnnotation, MethodParameterType.Query));
+        continue;
+      }
+      final AnnotationDesc headerParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, HeaderParam.class);
+      if (headerParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(headerParamAnnotation);
+        headerParameters.put(name, new FormMethodParameter(method, headerParamAnnotation, MethodParameterType.Header));
+        continue;
+      }
+      final AnnotationDesc cookieParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, CookieParam.class);
+      if (cookieParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(cookieParamAnnotation);
+        cookieParameters.put(name, new FormMethodParameter(method, cookieParamAnnotation, MethodParameterType.Cookie));
+        continue;
+      }
+      final AnnotationDesc formParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, FormParam.class);
+      if (formParamAnnotation != null) {
+        String name = (String) Utils.getAnnotationValue(formParamAnnotation);
+        formParameters.put(name, new FormMethodParameter(method, formParamAnnotation, MethodParameterType.Form));
+        continue;
+      }
+      final AnnotationDesc contextAnnotation = Utils.findParameterAnnotation(method, parameter, 0, Context.class);
+      if (contextAnnotation == null) {
+        this.inputParameter = new FormMethodParameter(method, null, MethodParameterType.Input);
       }
     }
   }
@@ -235,6 +368,35 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
       return allMatrixParameters;
     }
     return matrixParameters;
+  }
+
+  public Map<String, MethodParameter> getCookieParameters() {
+    if (resource.isSubResource()) {
+      Map<String, MethodParameter> allCookieParameters = new HashMap<String, MethodParameter>(resource.getParentMethod()
+          .getCookieParameters());
+      allCookieParameters.putAll(cookieParameters);
+      return allCookieParameters;
+    }
+    return cookieParameters;
+  }
+
+  public Map<String, MethodParameter> getHeaderParameters() {
+    if (resource.isSubResource()) {
+      Map<String, MethodParameter> allHeaderParameters = new HashMap<String, MethodParameter>(resource.getParentMethod()
+          .getHeaderParameters());
+      allHeaderParameters.putAll(headerParameters);
+      return allHeaderParameters;
+    }
+    return headerParameters;
+  }
+
+  public Map<String, MethodParameter> getFormParameters() {
+    if (resource.isSubResource()) {
+      Map<String, MethodParameter> allFormParameters = new HashMap<String, MethodParameter>(resource.getParentMethod().getFormParameters());
+      allFormParameters.putAll(formParameters);
+      return allFormParameters;
+    }
+    return formParameters;
   }
 
   public String getPath() {

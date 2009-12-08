@@ -18,6 +18,7 @@
  */
 package com.lunatech.doclets.jax.jaxrs.writers;
 
+import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 import com.sun.tools.doclets.internal.toolkit.Configuration;
@@ -26,9 +27,12 @@ public class DocletWriter extends com.lunatech.doclets.jax.writers.DocletWriter 
 
   protected Resource resource;
 
-  public DocletWriter(Configuration configuration, HtmlDocletWriter writer, Resource resource) {
+  protected JAXRSDoclet doclet;
+
+  public DocletWriter(Configuration configuration, HtmlDocletWriter writer, Resource resource, JAXRSDoclet doclet) {
     super(configuration, writer);
     this.resource = resource;
+    this.doclet = doclet;
   }
 
   public Resource getResource() {

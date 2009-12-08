@@ -37,5 +37,6 @@
 	</publications>
     <dependencies>
 		<dependency org="javax.ws.rs" name="jsr311-api" rev="1.0b9-r358" conf="default->*" force="true"/>
+		<dependency org="org.jboss.resteasy" name="resteasy-jaxrs" rev="1.2.1.GA" conf="default" force="true"/>
 	</dependencies>
 </ivy-module>

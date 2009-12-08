@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.writers.ResourceWriter;
 import com.sun.javadoc.Doc;
 import com.sun.tools.doclets.internal.toolkit.Configuration;
@@ -76,8 +77,8 @@ public class Resource {
   public String getAbsolutePath() {
     if (parent != null)
       return Utils.appendURLFragments(parent.getAbsolutePath(), fragment);
-    else 
-    	return "/";
+    else
+      return "/";
   }
 
   public static Resource getRootResource(List<ResourceMethod> resourceMethods) {
@@ -129,12 +130,12 @@ public class Resource {
     return fragment;
   }
 
-  public void write(Configuration configuration) {
-    ResourceWriter writer = new ResourceWriter(configuration, this);
+  public void write(JAXRSDoclet doclet, Configuration configuration) {
+    ResourceWriter writer = new ResourceWriter(configuration, this, doclet);
     writer.write();
     for (String subResourceKey : subResources.keySet()) {
       Resource subResource = subResources.get(subResourceKey);
-      subResource.write(configuration);
+      subResource.write(doclet, configuration);
     }
   }
 
