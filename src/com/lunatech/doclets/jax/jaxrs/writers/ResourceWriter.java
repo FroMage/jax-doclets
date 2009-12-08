@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
@@ -33,8 +34,8 @@ import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class ResourceWriter extends DocletWriter {
 
-  public ResourceWriter(Configuration configuration, Resource resource) {
-    super(configuration, getWriter(configuration, resource), resource);
+  public ResourceWriter(Configuration configuration, Resource resource, JAXRSDoclet doclet) {
+    super(configuration, getWriter(configuration, resource), resource, doclet);
   }
 
   private static HtmlDocletWriter getWriter(Configuration configuration, Resource resource) {
@@ -85,7 +86,7 @@ public class ResourceWriter extends DocletWriter {
         continue;
       open("tr");
       open("td");
-      new MethodWriter(method, this).print();
+      new MethodWriter(method, this, doclet).print();
       close("td");
       close("tr");
     }
