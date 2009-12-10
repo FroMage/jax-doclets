@@ -317,7 +317,7 @@ public class MethodWriter extends DocletWriter {
     }
     Map<String, MethodParameter> cookieParameters = method.getCookieParameters();
     if (!cookieParameters.isEmpty()) {
-      for (String name : headerParameters.keySet()) {
+      for (String name : cookieParameters.keySet()) {
         print("Cookie: ");
         print(name);
         print("=…\n");
