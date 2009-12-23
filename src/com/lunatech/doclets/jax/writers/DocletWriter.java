@@ -71,9 +71,10 @@ public class DocletWriter {
     around("TITLE", title);
     close("TITLE");
     tag("LINK REL='stylesheet' TYPE='text/css' HREF='" + writer.relativePath + "doclet.css' TITLE='Style'");
-    if (configuration.charset.length() > 0) {
-      print("<META http-equiv=\"Content-Type\" content=\"text/html; " + "charset=" + configuration.charset + "\">\n");
-    }
+    String charset = configuration.charset;
+    if (Utils.isEmptyOrNull(charset))
+      charset = "UTF-8";
+    print("<META http-equiv=\"Content-Type\" content=\"text/html; " + "charset=" + charset + "\">\n");
     close("HEAD");
     open("BODY");
     String msg = Utils.getOption(this.getConfiguration().root.options(), "-header");
