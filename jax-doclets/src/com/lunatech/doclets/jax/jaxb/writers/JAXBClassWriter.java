@@ -21,8 +21,6 @@ package com.lunatech.doclets.jax.jaxb.writers;
 import java.io.IOException;
 import java.util.Collection;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxb.model.Attribute;
 import com.lunatech.doclets.jax.jaxb.model.Element;
@@ -157,14 +155,14 @@ public class JAXBClassWriter extends DocletWriter {
         print("\n   &lt;" + element.getWrappedName() + ">");
         printMemberType(element, true);
         print("&lt;/" + element.getWrappedName() + ">");
-        //if (element.isCollection())
-          //print("…");
+        // if (element.isCollection())
+        // print("…");
         print("\n  ");
       } else
         printMemberType(element, true);
       print("&lt;/" + element.getName() + ">");
-      //if (!element.isWrapped() && element.isCollection())
-      //  print("…");
+      // if (!element.isWrapped() && element.isCollection())
+      // print("…");
       print("\n");
     }
     for (Value value : jaxbClass.getValues()) {
