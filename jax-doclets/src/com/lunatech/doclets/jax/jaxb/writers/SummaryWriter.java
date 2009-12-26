@@ -65,12 +65,11 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
   private void printClasses(Collection<JAXBClass> classes) {
     tag("hr");
     open("table");
+    around("caption class='TableCaption'", "Elements");
+    open("tbody");
     open("tr");
-    around("th colspan='2'", "Elements");
-    close("tr");
-    open("tr class='subheader'");
-    around("td", "Name");
-    around("td", "Description");
+    around("th class='TableHeader'", "Name");
+    around("th class='TableHeader'", "Description");
     close("tr");
     for (JAXBClass klass : classes) {
       open("tr");
@@ -85,6 +84,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
       close("tr");
 
     }
+    close("tbody");
     close("table");
   }
 
