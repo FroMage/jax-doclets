@@ -106,36 +106,32 @@ public class ResourceWriter extends DocletWriter {
     close("td");
     close("tr");
     for (String subResourceKey : resources.keySet()) {
-      Resource subResource = resources.get(subResourceKey);
+      Resource subResource = deepFilter(resources.get(subResourceKey));
       open("tr");
       open("td");
-      open("a href='" + subResource.getName() + "/index.html'");
-      print(subResource.getName());
+      String path = subResource.getPathFrom(resource);
+      open("a href='" + path + "/index.html'");
+      print(path);
       close("a");
       close("td");
       open("td");
       Doc javaDoc = subResource.getJavaDoc();
-      if (javaDoc == null) {
-        // Got a method like this?
-        // @PUT
-        // @Path("cancelled")
-        // public PutCancelledResponse setCancelled() {
-        // Then there won't be a javadoc on the class for it. Rather we pull the
-        // javadoc off the method itself.
-        do {
-          List<ResourceMethod> methods = subResource.getMethods();
-          if (methods == null || methods.size() != 1)
-            break;
-          ResourceMethod rm = methods.get(0);
-          javaDoc = rm.getJavaDoc();
-        } while (false);
-      }
       if (javaDoc != null && javaDoc.firstSentenceTags() != null)
         writer.printSummaryComment(javaDoc);
       close("td");
       close("tr");
     }
     close("table");
+  }
+
+  private Resource deepFilter(Resource resource) {
+    if (resource.hasRealMethods())
+      return resource;
+    if (resource.getResources().size() > 1)
+      return resource;
+    // there cannot be any resource with no method, and no subresources
+    // return the first subresource
+    return deepFilter(resource.getResources().values().iterator().next());
   }
 
   private void printResourceInfo() {
