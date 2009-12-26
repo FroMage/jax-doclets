@@ -54,6 +54,7 @@ public class MethodWriter extends DocletWriter {
   }
 
   private void printMethod(String httpMethod) {
+    tag("a name='" + httpMethod + "'");
     printHTTPExample(httpMethod);
     if (!Utils.isEmptyOrNull(method.getDoc())) {
       open("p");
