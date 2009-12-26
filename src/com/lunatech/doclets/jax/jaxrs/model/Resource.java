@@ -160,4 +160,16 @@ public class Resource {
   public Resource getParent() {
     return parent;
   }
+
+  public String getPathFrom(Resource parent) {
+    StringBuffer strbuf = new StringBuffer();
+    Resource resource = this;
+    while (resource != parent) {
+      strbuf.insert(0, resource.getName());
+      resource = resource.getParent();
+      if (resource != parent)
+        strbuf.insert(0, "/");
+    }
+    return strbuf.toString();
+  }
 }
