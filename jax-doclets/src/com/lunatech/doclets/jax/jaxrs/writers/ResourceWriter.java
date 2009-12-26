@@ -135,13 +135,22 @@ public class ResourceWriter extends DocletWriter {
     around("th class='TableHeader'", "Description");
     close("tr");
     for (String subResourceKey : resources.keySet()) {
-      Resource subResource = deepFilter(resources.get(subResourceKey));
+      Resource realSubResource = resources.get(subResourceKey);
+      Resource subResource = deepFilter(realSubResource);
       open("tr");
       open("td");
       String path = subResource.getPathFrom(resource);
-      open("a href='" + path + "/index.html'");
-      print(path);
-      close("a");
+      if (subResource != realSubResource) {
+        String realPath = realSubResource.getName();
+        around("a href='" + realPath + "/index.html'", realPath);
+        tag("br");
+        print(" ↳ ");
+        open("span class='deep-resource'");
+        around("a href='" + path + "/index.html'", path);
+        close("span");
+
+      } else
+        around("a href='" + path + "/index.html'", path);
       close("td");
       open("td");
       Doc javaDoc = subResource.getJavaDoc();
