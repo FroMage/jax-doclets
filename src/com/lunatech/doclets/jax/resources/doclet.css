@@ -63,6 +63,10 @@ td.NavBarCell1 table th.selected {
  font-size: small;
 }
 
+.deep-resource {
+ font-size: smaller;
+}
+
 .footer {
  font-style: italic;
  font-size: smaller;
