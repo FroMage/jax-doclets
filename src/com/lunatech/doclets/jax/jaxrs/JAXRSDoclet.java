@@ -34,6 +34,7 @@ import com.lunatech.doclets.jax.jaxrs.tags.InputWrappedTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ReturnWrappedTaglet;
+import com.lunatech.doclets.jax.jaxrs.writers.IndexWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.DocErrorReporter;
@@ -91,6 +92,7 @@ public class JAXRSDoclet implements JAXDoclet {
     Collections.sort(jaxrsMethods);
     Resource rootResource = Resource.getRootResource(jaxrsMethods);
     rootResource.write(this, htmlDoclet.configuration);
+    new IndexWriter(htmlDoclet.configuration, rootResource).write();
     new SummaryWriter(htmlDoclet.configuration, rootResource).write();
     Utils.copyResources(htmlDoclet.configuration);
   }

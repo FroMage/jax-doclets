@@ -29,6 +29,8 @@ import java.util.Stack;
 
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
+import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
+import com.lunatech.doclets.jax.writers.DocletWriter;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.AnnotationTypeDoc;
 import com.sun.javadoc.AnnotationValue;
@@ -677,6 +679,11 @@ public class Utils {
     public boolean hasParameters() {
       return !parameters.isEmpty();
     }
+  }
+
+  public static String getDisplayURL(DocletWriter writer, Resource resource, ResourceMethod method) {
+    String jaxrscontext = getOption(writer.getConfiguration().root.options(), "-jaxrscontext");
+    return (jaxrscontext == null ? "" : jaxrscontext) + method.getURL(resource);
   }
 
   private static void log(String mesg) {

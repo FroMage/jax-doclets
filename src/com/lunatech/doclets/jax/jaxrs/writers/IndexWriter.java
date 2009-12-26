@@ -19,7 +19,6 @@
 package com.lunatech.doclets.jax.jaxrs.writers;
 
 import java.io.IOException;
-import java.util.Map;
 
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
@@ -29,18 +28,18 @@ import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 import com.sun.tools.doclets.internal.toolkit.Configuration;
 
-public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
+public class IndexWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
 
   private Resource resource;
 
-  public SummaryWriter(Configuration configuration, Resource resource) {
+  public IndexWriter(Configuration configuration, Resource resource) {
     super(configuration, getWriter(configuration));
     this.resource = resource;
   }
 
   private static HtmlDocletWriter getWriter(Configuration configuration) {
     try {
-      return new HtmlDocletWriter((ConfigurationImpl) configuration, "", "overview-summary.html", "");
+      return new HtmlDocletWriter((ConfigurationImpl) configuration, "", "overview-index.html", "");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -48,10 +47,10 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
 
   public void write() {
     printHeader();
-    printMenu("Overview");
+    printMenu("Index");
     printResources();
     tag("hr");
-    printMenu("Overview");
+    printMenu("Index");
     printFooter();
     writer.flush();
     writer.close();
@@ -64,58 +63,55 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
     around("th colspan='3'", "Resources");
     close("tr");
     open("tr class='subheader'");
-    around("td", "Resource");
+    around("td", "Method");
+    around("td", "URL");
     around("td", "Description");
-    around("td", "Methods");
     close("tr");
     printResource(resource);
     close("table");
   }
 
   private void printResource(Resource resource) {
-    if (resource.hasRealMethods())
-      printResourceLine(resource);
-    // now recurse
-    Map<String, Resource> subResources = resource.getResources();
-    for (String name : subResources.keySet()) {
-      Resource subResource = subResources.get(name);
+    for (ResourceMethod method : resource.getMethods()) {
+      // skip resource locator methods
+      if (method.isResourceLocator())
+        continue;
+      for (String httpMethod : method.getMethods()) {
+        printMethod(resource, method, httpMethod);
+      }
+    }
+    for (String name : resource.getResources().keySet()) {
+      Resource subResource = resource.getResources().get(name);
       printResource(subResource);
     }
   }
 
-  private void printResourceLine(Resource resource) {
-    open("tr");
-    open("td");
+  private void printMethod(Resource resource, ResourceMethod method, String httpMethod) {
     String path = Utils.urlToPath(resource);
     if (path.length() == 0)
       path = ".";
-    open("a href='" + path + "/index.html'");
-    around("tt", resource.getAbsolutePath());
+
+    open("tr");
+    open("td");
+    open("a href='" + path + "/index.html#" + httpMethod + "'");
+    around("tt", httpMethod);
     close("a");
     close("td");
     open("td");
-    Doc javaDoc = resource.getJavaDoc();
-    if (javaDoc != null && javaDoc.firstSentenceTags() != null)
-      writer.printSummaryComment(javaDoc);
+    open("a href='" + path + "/index.html'");
+    around("tt", Utils.getDisplayURL(this, resource, method));
+    close("a");
     close("td");
     open("td");
-    boolean first = true;
-    for (ResourceMethod method : resource.getMethods()) {
-      for (String httpMethod : method.getMethods()) {
-        if (!first)
-          print(", ");
-        open("a href='" + path + "/index.html#" + httpMethod + "'");
-        around("tt", httpMethod);
-        close("a");
-        first = false;
-      }
-    }
+    Doc javaDoc = method.getJavaDoc();
+    if (javaDoc != null && javaDoc.firstSentenceTags() != null)
+      writer.printSummaryComment(javaDoc);
     close("td");
     close("tr");
   }
 
   protected void printHeader() {
-    printHeader("Overview of resources");
+    printHeader("Resource index");
   }
 
   protected void printOtherMenuItems(String selected) {
