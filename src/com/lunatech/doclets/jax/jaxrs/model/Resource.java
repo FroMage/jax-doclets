@@ -147,6 +147,16 @@ public class Resource {
     return methods;
   }
 
+  public boolean hasRealMethods() {
+    if (methods.isEmpty())
+      return false;
+    for (ResourceMethod method : methods) {
+      if (!method.isResourceLocator())
+        return true;
+    }
+    return false;
+  }
+
   public Resource getParent() {
     return parent;
   }

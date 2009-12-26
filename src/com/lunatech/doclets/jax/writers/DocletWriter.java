@@ -100,6 +100,7 @@ public class DocletWriter {
     open("table class='menu'");
     open("tr");
     printMenuItem("Overview", writer.relativePath + "overview-summary.html", selected);
+    printMenuItem("Index", writer.relativePath + "overview-index.html", selected);
     printOtherMenuItems(selected);
     close("tr");
     close("table");
