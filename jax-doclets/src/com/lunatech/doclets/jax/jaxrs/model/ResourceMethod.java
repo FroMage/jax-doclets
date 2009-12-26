@@ -183,7 +183,6 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
 
   private void walkFormParameter(ClassDoc formDoc) {
     // walk all fields
-    System.err.println("Walking form: " + formDoc);
     for (FieldDoc field : formDoc.fields(false)) {
       final AnnotationDesc pathParamAnnotation = Utils.findAnnotation(field, PathParam.class);
       if (pathParamAnnotation != null) {
@@ -228,11 +227,9 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
     }
     // and methods
     for (MethodDoc method : formDoc.methods(false)) {
-      System.err.println(method.returnType().qualifiedTypeName());
       if (!method.returnType().qualifiedTypeName().equals("void") || method.parameters().length != 1 || !method.name().startsWith("set"))
         continue;
       Parameter parameter = method.parameters()[0];
-      System.err.println("Got one: " + method.name());
       final AnnotationDesc pathParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, PathParam.class);
       if (pathParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(pathParamAnnotation);

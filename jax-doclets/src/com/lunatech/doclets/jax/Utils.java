@@ -686,7 +686,7 @@ public class Utils {
     return (jaxrscontext == null ? "" : jaxrscontext) + method.getURL(resource);
   }
 
-  private static void log(String mesg) {
+  public static void log(String mesg) {
   // System.err.println(mesg);
   }
 }

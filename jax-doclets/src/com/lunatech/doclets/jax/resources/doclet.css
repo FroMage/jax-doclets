@@ -1,9 +1,9 @@
-table {
+table.info {
  width: 100%;
  border-collapse: collapse;
 }
 
-.TableCaption {
+table.info .TableCaption {
  text-align: left;
  background: #CCCCFF;
  font-weight: bold;
@@ -13,37 +13,54 @@ table {
  border-right: thin solid black;
 }
 
-th, td {
+table.info th,
+table.info td {
  padding: 0.5em 1em;
  border: thin solid black;
 }
 
-.TableHeader {
+table.info .TableHeader {
  font-size: smaller;
  text-align: center;
  font-weight: bold;
 }
 
 table.menu {
- width: auto;
- padding: 0.3em 0.8em;
+ width: 100%;
+}
+
+table.menu col {
+ width: 50%;
+}
+
+td.NavBarCell1 {
  background-color: #EEEEFF;
+}
+
+td.NavBarCell1 table {
+ padding: 0.3em 0.8em;
  border-collapse: separate;
 }
 
-table.menu th.selected, table.menu a {
+td.NavBarCell1 table th.selected,
+td.NavBarCell1 table a {
  font-weight: bold;
 }
 
-table.menu th {
- padding: 0.1em;
+td.NavBarCell1 table th {
+ padding: 0.1em 0.3em;
  background-color: transparent;
  border: none;
 }
 
-table.menu th.selected {
+td.NavBarCell1 table th.selected {
  background: #00008B;
  color: white;
+}
+
+.NavBarCell3 {
+ text-transform: uppercase;
+ font-size: small;
 }
 
 .footer {

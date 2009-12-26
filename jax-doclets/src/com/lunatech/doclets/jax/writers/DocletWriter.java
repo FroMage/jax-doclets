@@ -43,16 +43,19 @@ public class DocletWriter {
     return configuration;
   }
 
-  protected void open(String tag) {
-    print("<" + tag + ">");
+  protected void open(String... tags) {
+    for (String tag : tags)
+      print("<" + tag + ">");
   }
 
-  protected void close(String tag) {
-    print("</" + tag + ">");
+  protected void close(String... tags) {
+    for (String tag : tags)
+      print("</" + tag + ">");
   }
 
-  protected void tag(String tag) {
-    print("<" + tag + "/>");
+  protected void tag(String... tags) {
+    for (String tag : tags)
+      print("<" + tag + "/>");
   }
 
   protected void around(String tag, String value) {
@@ -63,6 +66,13 @@ public class DocletWriter {
       tag = tag.substring(0, space);
     }
     close(tag);
+  }
+
+  protected void printLink(boolean hasLink, String href, String text) {
+    if (!hasLink)
+      print(text);
+    else
+      around("a href='" + href + "'", text);
   }
 
   protected void printHeader(String title) {
@@ -97,13 +107,24 @@ public class DocletWriter {
   }
 
   protected void printMenu(String selected) {
-    open("table class='menu'");
-    open("tr");
-    printMenuItem("Overview", writer.relativePath + "overview-summary.html", selected);
-    printMenuItem("Index", writer.relativePath + "overview-index.html", selected);
-    printOtherMenuItems(selected);
-    close("tr");
+    open("table class='menu'", "colgroup");
+    tag("col", "col");
+    close("colgroup");
+    open("tbody", "tr");
+    open("td class='NavBarCell1' colspan='2'");
+    printTopMenu(selected);
+    close("td", "tr");
+    printThirdMenu();
     close("table");
+  }
+
+  protected void printThirdMenu() {}
+
+  private void printTopMenu(String selected) {
+    open("table", "tbody", "tr");
+    printMenuItem("Overview", writer.relativePath + "overview-summary.html", selected);
+    printOtherMenuItems(selected);
+    close("tr", "tbody", "table");
   }
 
   protected void printOtherMenuItems(String selected) {}
