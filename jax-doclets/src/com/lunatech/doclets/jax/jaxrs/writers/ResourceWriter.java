@@ -63,16 +63,9 @@ public class ResourceWriter extends DocletWriter {
   }
 
   private void printMethods() {
-    List<ResourceMethod> methods = resource.getMethods();
-    boolean hasMethods = false;
-    for (ResourceMethod method : methods) {
-      if (!method.isResourceLocator()) {
-        hasMethods = true;
-        break;
-      }
-    }
-    if (!hasMethods)
+    if (!resource.hasRealMethods())
       return;
+    List<ResourceMethod> methods = resource.getMethods();
     tag("hr");
     open("table");
     open("tr");
