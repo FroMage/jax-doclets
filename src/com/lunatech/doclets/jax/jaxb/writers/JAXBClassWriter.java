@@ -78,7 +78,7 @@ public class JAXBClassWriter extends DocletWriter {
     if (members.isEmpty())
       return;
     tag("hr");
-    open("table");
+    open("table class='info' id='" + title + "'");
     boolean isValue = type == MemberType.Value;
     around("caption class='TableCaption'", title);
     open("tbody");
@@ -184,5 +184,17 @@ public class JAXBClassWriter extends DocletWriter {
 
   protected void printHeader() {
     printHeader("XML element " + jaxbClass.getName());
+  }
+
+  protected void printThirdMenu() {
+    open("tr");
+    open("td class='NavBarCell3' colspan='2'");
+    print("detail: ");
+    printLink(!jaxbClass.getElements().isEmpty(), "#Elements", "element");
+    print(" | ");
+    printLink(!jaxbClass.getAttributes().isEmpty(), "#Attributes", "attribute");
+    print(" | ");
+    printLink(!jaxbClass.getValues().isEmpty(), "#Value", "value");
+    close("td", "tr");
   }
 }

@@ -40,7 +40,7 @@ public class ResourceWriter extends DocletWriter {
 
   private static HtmlDocletWriter getWriter(Configuration configuration, Resource resource) {
     String pathName = Utils.urlToPath(resource);
-    System.err.println(pathName);
+    Utils.log(pathName);
     try {
       return new HtmlDocletWriter((ConfigurationImpl) configuration, pathName, "index.html", Utils.urlToRoot(resource));
     } catch (IOException e) {
@@ -72,7 +72,7 @@ public class ResourceWriter extends DocletWriter {
 
   private void printMethodOverview(List<ResourceMethod> methods) {
     tag("hr");
-    open("table");
+    open("table class='info' id='methods-summary'");
     around("caption class='TableCaption'", "Method Summary");
     open("tbody");
     open("tr");
@@ -104,7 +104,7 @@ public class ResourceWriter extends DocletWriter {
 
   private void printMethodDetails(List<ResourceMethod> methods) {
     tag("hr");
-    open("table");
+    open("table class='info' id='methods-details'");
     around("caption class='TableCaption'", "Method Detail");
     open("tbody");
     close("tr");
@@ -127,7 +127,7 @@ public class ResourceWriter extends DocletWriter {
     if (resources.isEmpty())
       return;
     tag("hr");
-    open("table");
+    open("table class='info' id='resources'");
     around("caption class='TableCaption'", "Resources");
     open("tbody");
     open("tr");
@@ -233,4 +233,17 @@ public class ResourceWriter extends DocletWriter {
     printHeader("Resource " + resource.getName());
   }
 
+  protected void printThirdMenu() {
+    open("tr");
+    open("td class='NavBarCell3'");
+    print("summary: ");
+    printLink(!resource.getResources().isEmpty(), "#resources", "resource");
+    print(" | ");
+    printLink(resource.hasRealMethods(), "#methods-summary", "method");
+    close("td");
+    open("td class='NavBarCell3'");
+    print("detail: ");
+    printLink(resource.hasRealMethods(), "#methods-details", "method");
+    close("td", "tr");
+  }
 }
