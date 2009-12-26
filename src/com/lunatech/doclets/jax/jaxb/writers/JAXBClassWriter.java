@@ -79,17 +79,15 @@ public class JAXBClassWriter extends DocletWriter {
       return;
     tag("hr");
     open("table");
-    open("tr");
     boolean isValue = type == MemberType.Value;
-    int span = isValue ? 2 : 3;
-    around("th colspan='" + span + "'", title);
-    close("tr");
-    open("tr class='subheader'");
+    around("caption class='TableCaption'", title);
+    open("tbody");
+    open("tr");
     if (!isValue) {
-      around("td", "Name");
+      around("th class='TableHeader'", "Name");
     }
-    around("td", "Type");
-    around("td", "Description");
+    around("th class='TableHeader'", "Type");
+    around("th class='TableHeader'", "Description");
     close("tr");
     for (JAXBMember member : members) {
       open("tr");
@@ -107,6 +105,7 @@ public class JAXBClassWriter extends DocletWriter {
       close("tr");
 
     }
+    close("tbody");
     close("table");
   }
 

@@ -59,15 +59,15 @@ public class IndexWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
   private void printResources() {
     tag("hr");
     open("table");
+    around("caption class='TableCaption'", "Resources");
+    open("tbody");
     open("tr");
-    around("th colspan='3'", "Resources");
-    close("tr");
-    open("tr class='subheader'");
-    around("td", "Method");
-    around("td", "URL");
-    around("td", "Description");
+    around("th class='TableHeader'", "Method");
+    around("th class='TableHeader'", "URL");
+    around("th class='TableHeader'", "Description");
     close("tr");
     printResource(resource);
+    close("tbody");
     close("table");
   }
 
