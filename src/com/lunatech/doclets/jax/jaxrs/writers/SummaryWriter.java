@@ -60,15 +60,15 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
   private void printResources() {
     tag("hr");
     open("table");
-    open("tr");
-    around("th colspan='3'", "Resources");
-    close("tr");
+    around("caption class='TableCaption'", "Resources");
+    open("tbody");
     open("tr class='subheader'");
-    around("td", "Resource");
-    around("td", "Description");
-    around("td", "Methods");
+    around("th class='TableHeader'", "Resource");
+    around("th class='TableHeader'", "Description");
+    around("th class='TableHeader'", "Methods");
     close("tr");
     printResource(resource);
+    close("tbody");
     close("table");
   }
 
