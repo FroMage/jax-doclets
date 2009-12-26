@@ -58,7 +58,7 @@ public class IndexWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
 
   private void printResources() {
     tag("hr");
-    open("table");
+    open("table class='info'");
     around("caption class='TableCaption'", "Resources");
     open("tbody");
     open("tr");
@@ -115,6 +115,7 @@ public class IndexWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
   }
 
   protected void printOtherMenuItems(String selected) {
+    printMenuItem("Index", writer.relativePath + "overview-index.html", selected);
     printMenuItem("Root resource", writer.relativePath + "index.html", selected);
   }
 }
