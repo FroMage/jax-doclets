@@ -3,17 +3,22 @@ table {
  border-collapse: collapse;
 }
 
-th {
+.TableCaption {
  text-align: left;
  background: #CCCCFF;
+ font-weight: bold;
+ padding: 0.5em 1em;
+ border-top: thin solid black;
+ border-left: thin solid black;
+ border-right: thin solid black;
 }
 
 th, td {
  padding: 0.5em 1em;
- border: thin inset black;
+ border: thin solid black;
 }
 
-tr.subheader {
+.TableHeader {
  font-size: smaller;
  text-align: center;
  font-weight: bold;

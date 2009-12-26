@@ -66,12 +66,47 @@ public class ResourceWriter extends DocletWriter {
     if (!resource.hasRealMethods())
       return;
     List<ResourceMethod> methods = resource.getMethods();
+    printMethodOverview(methods);
+    printMethodDetails(methods);
+  }
+
+  private void printMethodOverview(List<ResourceMethod> methods) {
     tag("hr");
     open("table");
+    around("caption class='TableCaption'", "Method Summary");
+    open("tbody");
     open("tr");
-    open("th");
-    print("Methods");
-    close("th");
+    around("th class='TableHeader'", "Resource");
+    around("th class='TableHeader'", "Description");
+    close("tr");
+    for (ResourceMethod method : methods) {
+      // skip resource locator methods
+      if (method.isResourceLocator())
+        continue;
+      for (String httpMethod : method.getMethods()) {
+        open("tr");
+        open("td");
+        open("tt");
+        around("a href='#" + httpMethod + "'", httpMethod + " " + Utils.getDisplayURL(this, resource, method));
+        close("tt");
+        close("td");
+        open("td");
+        Doc javaDoc = method.getJavaDoc();
+        if (javaDoc != null && javaDoc.firstSentenceTags() != null)
+          writer.printSummaryComment(javaDoc);
+        close("td");
+        close("tr");
+      }
+    }
+    close("tbody");
+    close("table");
+  }
+
+  private void printMethodDetails(List<ResourceMethod> methods) {
+    tag("hr");
+    open("table");
+    around("caption class='TableCaption'", "Method Detail");
+    open("tbody");
     close("tr");
     for (ResourceMethod method : methods) {
       // skip resource locator methods
@@ -83,6 +118,7 @@ public class ResourceWriter extends DocletWriter {
       close("td");
       close("tr");
     }
+    close("tbody");
     close("table");
   }
 
@@ -92,18 +128,11 @@ public class ResourceWriter extends DocletWriter {
       return;
     tag("hr");
     open("table");
+    around("caption class='TableCaption'", "Resources");
+    open("tbody");
     open("tr");
-    open("th colspan='2'");
-    print("Resources");
-    close("th");
-    close("tr");
-    open("tr class='subheader'");
-    open("td");
-    print("Name");
-    close("td");
-    open("td");
-    print("Description");
-    close("td");
+    around("th class='TableHeader'", "Name");
+    around("th class='TableHeader'", "Description");
     close("tr");
     for (String subResourceKey : resources.keySet()) {
       Resource subResource = deepFilter(resources.get(subResourceKey));
@@ -121,6 +150,7 @@ public class ResourceWriter extends DocletWriter {
       close("td");
       close("tr");
     }
+    close("tbody");
     close("table");
   }
 
