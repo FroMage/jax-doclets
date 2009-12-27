@@ -35,7 +35,7 @@ import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class JAXBClassWriter extends DocletWriter {
 
-  public JAXBClassWriter(Configuration configuration, JAXBClass jaxbClass) {
+  public JAXBClassWriter(ConfigurationImpl configuration, JAXBClass jaxbClass) {
     super(configuration, getWriter(configuration, jaxbClass), jaxbClass);
   }
 

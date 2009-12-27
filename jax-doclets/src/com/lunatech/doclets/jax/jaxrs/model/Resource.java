@@ -27,7 +27,7 @@ import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.writers.ResourceWriter;
 import com.sun.javadoc.Doc;
-import com.sun.tools.doclets.internal.toolkit.Configuration;
+import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 
 public class Resource {
 
@@ -130,7 +130,7 @@ public class Resource {
     return fragment;
   }
 
-  public void write(JAXRSDoclet doclet, Configuration configuration) {
+  public void write(JAXRSDoclet doclet, ConfigurationImpl configuration) {
     ResourceWriter writer = new ResourceWriter(configuration, this, doclet);
     writer.write();
     for (String subResourceKey : subResources.keySet()) {

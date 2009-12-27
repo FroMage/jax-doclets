@@ -36,7 +36,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
 
   private Registry registry;
 
-  public SummaryWriter(Configuration configuration, Registry registry) {
+  public SummaryWriter(ConfigurationImpl configuration, Registry registry) {
     super(configuration, getWriter(configuration));
     this.registry = registry;
   }
