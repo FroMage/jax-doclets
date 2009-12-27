@@ -34,7 +34,7 @@ import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class ResourceWriter extends DocletWriter {
 
-  public ResourceWriter(Configuration configuration, Resource resource, JAXRSDoclet doclet) {
+  public ResourceWriter(ConfigurationImpl configuration, Resource resource, JAXRSDoclet doclet) {
     super(configuration, getWriter(configuration, resource), resource, doclet);
   }
 
