@@ -112,6 +112,7 @@
 			sourcepath="${src.test.dir}"
 			doclet="com.lunatech.doclets.jax.jaxrs.JAXRSDoclet"
 			docletpathref="run.classpath"
+			stylesheetfile="test.css"
 			>
 			<link href="../jaxbdocs/"/>
 			<package name="com.lunatech.doclets.jax.test.*"/>

@@ -33,7 +33,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
 
   private Resource resource;
 
-  public SummaryWriter(Configuration configuration, Resource resource) {
+  public SummaryWriter(ConfigurationImpl configuration, Resource resource) {
     super(configuration, getWriter(configuration));
     this.resource = resource;
   }

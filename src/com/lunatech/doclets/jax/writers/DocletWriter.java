@@ -19,8 +19,8 @@
 package com.lunatech.doclets.jax.writers;
 
 import com.lunatech.doclets.jax.Utils;
+import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
-import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class DocletWriter {
 
@@ -28,9 +28,9 @@ public class DocletWriter {
 
   protected HtmlDocletWriter writer;
 
-  protected Configuration configuration;
+  protected ConfigurationImpl configuration;
 
-  public DocletWriter(Configuration configuration, HtmlDocletWriter writer) {
+  public DocletWriter(ConfigurationImpl configuration, HtmlDocletWriter writer) {
     this.writer = writer;
     this.configuration = configuration;
   }
@@ -39,7 +39,7 @@ public class DocletWriter {
     return writer;
   }
 
-  public Configuration getConfiguration() {
+  public ConfigurationImpl getConfiguration() {
     return configuration;
   }
 

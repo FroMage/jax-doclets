@@ -19,6 +19,7 @@
 package com.lunatech.doclets.jax;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,6 +46,7 @@ import com.sun.javadoc.ProgramElementDoc;
 import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 import com.sun.javadoc.AnnotationDesc.ElementValuePair;
+import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 import com.sun.tools.doclets.internal.toolkit.Configuration;
 import com.sun.tools.doclets.internal.toolkit.taglets.DeprecatedTaglet;
@@ -395,12 +397,15 @@ public class Utils {
     }
   }
 
-  public static void copyResources(Configuration configuration) {
+  public static void copyResources(ConfigurationImpl configuration) {
     File cssFile = new File(configuration.destDirName, "doclet.css");
-    InputStream stream = Utils.class.getResourceAsStream("resources/doclet.css");
-    OutputStream os;
+    InputStream stream;
     try {
-      os = new FileOutputStream(cssFile);
+      if (!isEmptyOrNull(configuration.stylesheetfile))
+        stream = new FileInputStream(configuration.stylesheetfile);
+      else
+        stream = Utils.class.getResourceAsStream("resources/doclet.css");
+      OutputStream os = new FileOutputStream(cssFile);
       byte[] buffer = new byte[1024];
       int read;
       while ((read = stream.read(buffer)) >= 0) {
@@ -408,6 +413,7 @@ public class Utils {
       }
       os.flush();
       os.close();
+      stream.close();
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
