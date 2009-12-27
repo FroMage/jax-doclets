@@ -32,7 +32,7 @@ public class PackageListWriter extends com.lunatech.doclets.jax.writers.DocletWr
 
   private Registry registry;
 
-  public PackageListWriter(Configuration configuration, Registry registry) {
+  public PackageListWriter(ConfigurationImpl configuration, Registry registry) {
     super(configuration, getWriter(configuration));
     this.registry = registry;
   }

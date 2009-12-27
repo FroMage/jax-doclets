@@ -1,0 +1,5 @@
+@IMPORT url("../../src/com/lunatech/doclets/jax/resources/doclet.css");
+
+table.info .TableCaption {
+ background: green;
+}

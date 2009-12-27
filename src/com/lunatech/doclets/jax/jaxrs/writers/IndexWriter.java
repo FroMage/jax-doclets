@@ -32,7 +32,7 @@ public class IndexWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
 
   private Resource resource;
 
-  public IndexWriter(Configuration configuration, Resource resource) {
+  public IndexWriter(ConfigurationImpl configuration, Resource resource) {
     super(configuration, getWriter(configuration));
     this.resource = resource;
   }

@@ -44,7 +44,7 @@ import com.sun.javadoc.Doc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ProgramElementDoc;
-import com.sun.tools.doclets.internal.toolkit.Configuration;
+import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 
 public class JAXBClass implements Comparable<JAXBClass> {
 
@@ -65,7 +65,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
   private Map<String, JAXBMember> members = new HashMap<String, JAXBMember>();
 
   public JAXBClass(ClassDoc klass, Registry registry, JAXBDoclet doclet) {
-    //System.err.println("Root: " + klass.name());
+    // System.err.println("Root: " + klass.name());
     this.klass = klass;
     this.registry = registry;
     this.doclet = doclet;
@@ -83,7 +83,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
     if (accessorAnnotationType != null)
       accessorAnnotation = Utils.findAnnotation(accessorAnnotationType, XmlAccessorType.class);
     XmlAccessType accessType = XmlAccessType.PUBLIC_MEMBER;
-    //System.err.println("Accessor: " + accessorAnnotation);
+    // System.err.println("Accessor: " + accessorAnnotation);
     if (accessorAnnotation != null) {
       FieldDoc value = (FieldDoc) Utils.getAnnotationValue(accessorAnnotation);
       accessType = XmlAccessType.valueOf(value.name());
@@ -231,7 +231,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
     return name;
   }
 
-  public void write(Configuration configuration) {
+  public void write(ConfigurationImpl configuration) {
     new JAXBClassWriter(configuration, this).write();
   }
 
