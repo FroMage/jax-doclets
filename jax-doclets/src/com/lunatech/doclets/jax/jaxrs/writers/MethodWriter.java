@@ -76,9 +76,20 @@ public class MethodWriter extends DocletWriter {
     printHTTPCodes();
     printHTTPRequestHeaders();
     printHTTPResponseHeaders();
+    //printSees();
     close("dl");
   }
 
+  /* Path won't be to jaxb class
+   * private void printSees() {
+      MethodDoc javaDoc = method.getJavaDoc();
+      TagletOutputImpl output = new TagletOutputImpl("");
+      Set<String> tagletsSet = new HashSet<String>();
+      tagletsSet.add("see");
+      Utils.genTagOuput(configuration.tagletManager, javaDoc, configuration.tagletManager.getCustomTags(javaDoc), writer
+          .getTagletWriterInstance(false), output, tagletsSet);
+      writer.print(output.toString());
+  }*/
   private void printTaglets(String tagletName) {
     MethodDoc javaDoc = method.getJavaDoc();
     TagletOutputImpl output = new TagletOutputImpl("");
