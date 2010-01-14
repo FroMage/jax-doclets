@@ -48,6 +48,9 @@ public class JAXBDoclet implements JAXDoclet {
     if ("-matchingjaxbnamesonly".equals(option)) {
       return 2;
     }
+	  if("-disablejaxbmethodoutput".equals(option)) {
+	      return 1;
+	  }
     return HtmlDoclet.optionLength(option);
   }
 
@@ -80,6 +83,7 @@ public class JAXBDoclet implements JAXDoclet {
     if (pattern != null) {
       onlyOutputJAXBClassPackagesMatching = Pattern.compile(pattern);
     }
+    enableJaxBMethodOutput  = !Utils.hasOption(getRootDoc().options(), "-disablejaxbmethodoutput");
   }
 
   public static boolean start(final RootDoc rootDoc) {
@@ -88,7 +92,10 @@ public class JAXBDoclet implements JAXDoclet {
   }
 
   private Pattern onlyOutputJAXBClassPackagesMatching;
-
+  boolean enableJaxBMethodOutput = true;
+  public boolean isJAXBMethodOutputEnabled() {
+      return enableJaxBMethodOutput;
+  }
   private void start() {
     htmlDoclet.configuration.setOptions();
     final ClassDoc[] classes = htmlDoclet.configuration.root.classes();
@@ -117,18 +124,6 @@ public class JAXBDoclet implements JAXDoclet {
           return;
         }
       }
-      /*
-       * do { String typeName = klass.typeName(); boolean hasFoundMatch = false;
-       * PackageDoc packageDocs[] = this.htmlDoclet.configuration().packages;
-       * if(packageDocs==null) { break; } for(PackageDoc packageDoc :
-       * packageDocs) { String packageName = packageDoc.name(); String className
-       * = klass.asClassDoc().qualifiedName(); String a =
-       * packageName+"."+klass.name(); if(!a.equals(className)) { continue; }
-       * if(onlyOutputJAXBClassPackagesMatching!=null) { Matcher m =
-       * onlyOutputJAXBClassPackagesMatching.matcher(className);
-       * if(!m.matches()) { continue; } } hasFoundMatch = true; break; }
-       * if(!hasFoundMatch) return; } while(false);
-       */
       JAXBClass jaxbClass = new JAXBClass(klass, registry, this);
       jaxbClasses.add(jaxbClass);
       registry.addJAXBClass(jaxbClass);

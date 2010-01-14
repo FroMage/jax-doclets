@@ -179,7 +179,7 @@ public class ResourceWriter extends DocletWriter {
     String jaxrscontext = Utils.getOption(this.configuration.root.options(), "-jaxrscontext");
     String name = resource.getName();
     if (Utils.isEmptyOrNull(name))
-      name = jaxrscontext == null ? "/" : Utils.slashify(jaxrscontext);
+      name = Utils.unStartSlashify(Utils.unEndSlashify(jaxrscontext));
     StringBuffer buf = new StringBuffer(name);
     Resource _resource = this.resource;
     String rel = "";
@@ -188,7 +188,7 @@ public class ResourceWriter extends DocletWriter {
       String resourceName = _resource.getName();
       if (Utils.isEmptyOrNull(resourceName)) {
         if (!Utils.isEmptyOrNull(jaxrscontext)) {
-          resourceName = Utils.slashify(jaxrscontext);
+          resourceName = Utils.unStartSlashify(Utils.unEndSlashify(jaxrscontext));
         } else {
           // start with slash
           resourceName = "/";
@@ -196,13 +196,13 @@ public class ResourceWriter extends DocletWriter {
       }
       String href = "<a href='" + rel + "index.html'>" + resourceName;
       if (_resource.getName().length() == 0)
-        href += "</a> ";
+        href += "</a> / ";
       else
         href += "</a> / ";
       buf.insert(0, href);
     }
 
-    print(buf.toString());
+    print("/ " + buf.toString());
     close("h2");
     Doc javaDoc = this.resource.getJavaDoc();
     if (javaDoc != null && javaDoc.tags() != null) {
