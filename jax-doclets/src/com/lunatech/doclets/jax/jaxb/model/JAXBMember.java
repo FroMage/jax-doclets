@@ -18,6 +18,7 @@
  */
 package com.lunatech.doclets.jax.jaxb.model;
 
+import java.util.HashMap;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
@@ -61,7 +62,7 @@ public class JAXBMember implements Comparable<JAXBMember> {
     return property;
   }
 
-  private Type getType() {
+    private Type getType() {
     if (property.isMethod()) {
       return ((MethodDoc) property).returnType();
     } else
@@ -125,10 +126,14 @@ public class JAXBMember implements Comparable<JAXBMember> {
       return ret.toString();
     }
 
-    System.err.println("WARNING: unknown XSD type " + typeName);
+    if(null==hmKnownUnknownXSDTypes.get(typeName)) {
+        System.err.println("WARNING: unknown XSD type " + typeName);
+        hmKnownUnknownXSDTypes.put(typeName, Boolean.TRUE);
+    }
 
     return typeName;
   }
+  private static HashMap<String, Object> hmKnownUnknownXSDTypes = new HashMap<String, Object>();
 
   public boolean isIDREF() {
     return isIDREF;

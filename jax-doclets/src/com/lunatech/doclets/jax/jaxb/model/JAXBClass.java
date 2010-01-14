@@ -136,7 +136,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
       break;
     case PUBLIC_MEMBER:
       // all public or annotated members
-      include = property.isPublic() || hasXmlAnnotation;
+      include = (property.isPublic() || hasXmlAnnotation) && (this.doclet.isJAXBMethodOutputEnabled()||!property.isMethod());
       break;
     }
     if (include)
