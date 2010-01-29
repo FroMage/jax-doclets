@@ -90,7 +90,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
     if (path.length() == 0)
       path = ".";
     open("a href='" + path + "/index.html'");
-    around("tt", resource.getAbsolutePath());
+    around("tt", Utils.getAbsolutePath(this, resource));
     close("a");
     close("td");
     open("td");
