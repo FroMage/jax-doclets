@@ -13,8 +13,8 @@
       <title>jax-doclets</title>
       <productname>jax-doclets</productname>
       <subtitle>JavaDoc doclets for Java Extension APIs</subtitle>
-      <releaseinfo>0.5</releaseinfo>
-	  <productnumber>0.5</productnumber>
+      <releaseinfo>0.6</releaseinfo>
+	  <productnumber>0.6</productnumber>
       <copyright><year>2009</year><holder>Lunatech Labs</holder></copyright>
       <corpauthor>
        Lunatech Labs
