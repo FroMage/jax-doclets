@@ -11,24 +11,25 @@ img#header-logo {
 }
 
 .figure .title {
- text-align: center;
  margin-top: 0px;
- border-bottom: solid #61911B 1px;
- padding-top: 0.5em;
- padding-bottom: 0.5em;
+ border-bottom: solid #aaa 1px;
+ padding: 0.5em;
  background: #DBFFA6;
 }
 
 .figure {
- border: solid #61911B 1px;
+ text-align: center;
+ border: solid #aaa 1px;
+ padding-bottom:0.5em;
 }
 
 .figure .figure-contents {
  margin-left: 2em;
+ text-align: left;
 }
 
 .section table {
- border: solid #61911B 1px;
+ border: solid #aaa 1px;
  border-collapse: collapse;
 }
 
@@ -45,23 +46,29 @@ img#header-logo {
 }
 
 .section table caption {
- border-top: solid #61911B 1px;
- border-left: solid #61911B 1px;
- border-right: solid #61911B 1px;
- padding-top: 0.5em;
- padding-bottom: 0.5em;
+ border-top: solid #aaa 1px;
+ border-left: solid #aaa 1px;
+ border-right: solid #aaa 1px;
+ padding: 0.5em;
  background: #DBFFA6;
  font-weight: bold;
+ text-align: left;
+}
+
+.title {
+	text-align:left;
+	margin-top:1.5em;
 }
 
 p.remark {
  padding: 1em;
- border: solid #61911B 1px;
- background: #DBFFA6;
+ border: solid #aaa 1px;
+ background: #FFFCAB;
 }
 
 p.remark:before {
  content: 'Remark: ';
+ font-weight: bold;
 }
 
 a {
