@@ -54,7 +54,7 @@ public class MethodWriter extends DocletWriter {
   }
 
   private void printMethod(String httpMethod) {
-    tag("a name='" + httpMethod + "'");
+    around("a name='" + httpMethod + "'", "");
     printHTTPExample(httpMethod);
     if (!Utils.isEmptyOrNull(method.getDoc())) {
       open("p");
@@ -76,20 +76,19 @@ public class MethodWriter extends DocletWriter {
     printHTTPCodes();
     printHTTPRequestHeaders();
     printHTTPResponseHeaders();
-    //printSees();
+    // printSees();
     close("dl");
   }
 
-  /* Path won't be to jaxb class
-   * private void printSees() {
-      MethodDoc javaDoc = method.getJavaDoc();
-      TagletOutputImpl output = new TagletOutputImpl("");
-      Set<String> tagletsSet = new HashSet<String>();
-      tagletsSet.add("see");
-      Utils.genTagOuput(configuration.tagletManager, javaDoc, configuration.tagletManager.getCustomTags(javaDoc), writer
-          .getTagletWriterInstance(false), output, tagletsSet);
-      writer.print(output.toString());
-  }*/
+  /*
+   * Path won't be to jaxb class private void printSees() { MethodDoc javaDoc =
+   * method.getJavaDoc(); TagletOutputImpl output = new TagletOutputImpl("");
+   * Set<String> tagletsSet = new HashSet<String>(); tagletsSet.add("see");
+   * Utils.genTagOuput(configuration.tagletManager, javaDoc,
+   * configuration.tagletManager.getCustomTags(javaDoc), writer
+   * .getTagletWriterInstance(false), output, tagletsSet);
+   * writer.print(output.toString()); }
+   */
   private void printTaglets(String tagletName) {
     MethodDoc javaDoc = method.getJavaDoc();
     TagletOutputImpl output = new TagletOutputImpl("");
@@ -291,11 +290,7 @@ public class MethodWriter extends DocletWriter {
 
   private void printHTTPExample(String httpMethod) {
     open("pre");
-    String absPath = resource.getAbsolutePath();
-    String jaxrscontext = Utils.getOption(this.configuration.root.options(), "-jaxrscontext");
-    if (jaxrscontext != null) {
-      absPath = jaxrscontext + absPath;
-    }
+    String absPath = Utils.getAbsolutePath(this, resource);
 
     print(httpMethod + " " + absPath);
     Map<String, MethodParameter> matrixParameters = method.getMatrixParameters();

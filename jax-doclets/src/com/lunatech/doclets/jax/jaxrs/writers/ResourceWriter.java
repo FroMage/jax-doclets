@@ -51,7 +51,7 @@ public class ResourceWriter extends DocletWriter {
   public void write() {
     boolean isRoot = resource.getParent() == null;
     String selected = isRoot ? "Root resource" : "";
-    printHeader();
+    printHeader(isRoot);
     printMenu(selected);
     printResourceInfo();
     printSubresources();
@@ -195,14 +195,19 @@ public class ResourceWriter extends DocletWriter {
         }
       }
       String href = "<a href='" + rel + "index.html'>" + resourceName;
-      if (_resource.getName().length() == 0)
-        href += "</a> / ";
+      if (resourceName.equals("/"))
+        href += "</a> ";
       else
         href += "</a> / ";
       buf.insert(0, href);
     }
 
-    print("/ " + buf.toString());
+    if (!Utils.isEmptyOrNull(jaxrscontext))
+      print("/ ");
+    if (buf.length() == 0)
+      print("/");
+    else
+      print(buf.toString());
     close("h2");
     Doc javaDoc = this.resource.getJavaDoc();
     if (javaDoc != null && javaDoc.tags() != null) {
@@ -238,8 +243,11 @@ public class ResourceWriter extends DocletWriter {
 
   }
 
-  private void printHeader() {
-    printHeader("Resource " + resource.getName());
+  private void printHeader(boolean isRoot) {
+    if (isRoot)
+      printHeader("Root Resource");
+    else
+      printHeader("Resource " + resource.getName());
   }
 
   protected void printThirdMenu() {
