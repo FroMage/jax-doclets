@@ -279,29 +279,31 @@ public class Utils {
   }
 
   public static String slashify(String url) {
-      if(url==null)
-          return "";
+    if (url == null)
+      return "";
     if (!url.endsWith("/"))
       return url + "/";
     return url;
   }
+
   public static String unEndSlashify(String url) {
-      if(url==null)
-          return "";
-      if (url.endsWith("/"))
-        return url.substring(0, url.length()-1);
-      return url;
-    }
+    if (url == null)
+      return "";
+    if (url.endsWith("/"))
+      return url.substring(0, url.length() - 1);
+    return url;
+  }
+
   public static String unStartSlashify(String url) {
-      if(url==null)
-          return "";
-      if (!url.startsWith("/"))
-        return url;
-      if(url.length()==1) {
-          return "";
-      }
-      return url.substring(1);
+    if (url == null)
+      return "";
+    if (!url.startsWith("/"))
+      return url;
+    if (url.length() == 1) {
+      return "";
     }
+    return url.substring(1);
+  }
 
   public static String classToPath(JAXBClass jaxbClass) {
     return DirectoryManager.getPath(jaxbClass.getPackageName());
@@ -530,19 +532,20 @@ public class Utils {
     }
     return null;
   }
+
   /**
    * @return true if optionName exists in one of the options.
    */
   public static boolean hasOption(String options[][], String optionName) {
-      for (String option[] : options) {
-        String name = option[0];
-        if (!optionName.equals(name)) {
-          continue;
-        }
-        return true;
+    for (String option[] : options) {
+      String name = option[0];
+      if (!optionName.equals(name)) {
+        continue;
       }
-      return false;
+      return true;
     }
+    return false;
+  }
 
   public static boolean isCollection(Type type) {
     String dimension = type.dimension();
@@ -719,9 +722,20 @@ public class Utils {
     }
   }
 
-  public static String getDisplayURL(DocletWriter writer, Resource resource, ResourceMethod method) {
+  private static String addContextPath(DocletWriter writer, String url) {
     String jaxrscontext = getOption(writer.getConfiguration().root.options(), "-jaxrscontext");
-    return (jaxrscontext == null ? "" : jaxrscontext) + method.getURL(resource);
+    if (jaxrscontext == null)
+      return url;
+    else
+      return appendURLFragments(jaxrscontext, url);
+  }
+
+  public static String getDisplayURL(DocletWriter writer, Resource resource, ResourceMethod method) {
+    return addContextPath(writer, method.getURL(resource));
+  }
+
+  public static String getAbsolutePath(DocletWriter writer, Resource resource) {
+    return addContextPath(writer, resource.getAbsolutePath());
   }
 
   public static void log(String mesg) {
