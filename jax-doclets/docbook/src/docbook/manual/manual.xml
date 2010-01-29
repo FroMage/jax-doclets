@@ -23,7 +23,7 @@
           <imagedata fileref="images/labs-logo.svg" width="400" format="SVG"/>
          </imageobject>
          <imageobject role="html">
-          <imagedata fileref="images/labs-logo-60.png" width="164" format="PNG"/>
+          <imagedata fileref="images/labs-logo-274x100.png" width="164" format="PNG"/>
          </imageobject>
         </inlinemediaobject>
        </ulink>
@@ -31,11 +31,7 @@
       <author>
        <firstname>Stéphane</firstname>
        <surname>Épardaud</surname>
-       <email>stephane@epardaud.fr</email>
-       <affiliation>
-        <jobtitle>Senior Software Developer</jobtitle>
-        <orgname>Lunatech Labs</orgname>
-       </affiliation>
+       <email>stephane@lunatech.com</email>
       </author>
       <abstract>
        <para>
