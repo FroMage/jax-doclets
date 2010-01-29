@@ -1,5 +1,22 @@
 @IMPORT url("../../src/com/lunatech/doclets/jax/resources/doclet.css");
 
-table.info .TableCaption {
- background: green;
+table.info .TableCaption, td.NavBarCell1 {
+ background: #8BD027;
+}
+
+td.NavBarCell1 table th.selected {
+ background-color: #61911B;
+}
+
+img.logo {
+ margin: 1em;
+ border: none;
+}
+
+a {
+ color: #61911B;
+}
+
+a:visited {
+ color: #3F5E12;
 }

@@ -114,7 +114,12 @@
 			docletpathref="run.classpath"
 			stylesheetfile="test.css"
 			>
+			<arg value="-jaxrscontext"/>
+			<arg value="rest"/>
 			<link href="../jaxbdocs/"/>
+			<header><![CDATA[
+				<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png"/></a>
+				]]></header>
 			<package name="com.lunatech.doclets.jax.test.*"/>
 			<package name="com.lunatech.doclets.jax.test.interfaces.*"/>
 		</javadoc>
@@ -126,7 +131,11 @@
 			sourcepath="${src.test.dir}"
 			doclet="com.lunatech.doclets.jax.jaxb.JAXBDoclet"
 			docletpathref="run.classpath"
+			stylesheetfile="test.css"
 			>
+			<header><![CDATA[
+				<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png"/></a>
+				]]></header>
 			<package name="com.lunatech.doclets.jax.test.*"/>
 			<package name="com.lunatech.doclets.jax.test.interfaces.*"/>
 		</javadoc>
