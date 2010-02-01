@@ -91,6 +91,10 @@ com.lunatech.doclets.jax.test
     </thead>
     <tbody>
      <tr>
+      <td><literal>-stylesheet</literal></td>
+      <td>The CSS stylesheet to copy and use.</td>
+     </tr>
+     <tr>
       <td><literal>-header</literal></td>
       <td>The header which is inserted on every page header.</td>
      </tr>
