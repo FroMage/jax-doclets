@@ -136,7 +136,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
       break;
     case PUBLIC_MEMBER:
       // all public or annotated members
-      include = (property.isPublic() || hasXmlAnnotation) && (this.doclet.isJAXBMethodOutputEnabled()||!property.isMethod());
+      include = (property.isPublic() || hasXmlAnnotation) && (this.doclet.isJAXBMethodOutputEnabled() || !property.isMethod());
       break;
     }
     if (include)
@@ -214,7 +214,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
     if (wrapperName == null)
       element = new Element(this, property, name, xmlElementAnnotation);
     else
-      element = new Element(this, property, wrapperName, name, xmlElementAnnotation);
+      element = new Element(this, property, name, wrapperName, xmlElementAnnotation);
     members.put(propertyName, element);
     elements.add(element);
   }

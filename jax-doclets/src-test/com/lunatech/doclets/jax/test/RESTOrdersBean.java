@@ -88,8 +88,7 @@ public class RESTOrdersBean implements RESTOrders {
     @XmlValue
     Comment comment;
 
-    @XmlElementWrapper(name = "string-list")
-    @XmlElement(name = "string")
+    @XmlElement(name = "strings")
     List<String> stringList;
 
     @XmlElementWrapper(name = "object-list")
