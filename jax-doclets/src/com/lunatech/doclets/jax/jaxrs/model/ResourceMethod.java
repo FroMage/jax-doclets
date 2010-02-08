@@ -463,4 +463,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
     return resourceLocator != null;
   }
 
+  public String getAPIFunctionName() {
+    return declaringClass.name() + "." + declaringMethod.name();
+  }
 }

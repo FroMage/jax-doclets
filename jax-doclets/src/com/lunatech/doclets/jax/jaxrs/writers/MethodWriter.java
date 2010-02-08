@@ -35,6 +35,7 @@ import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ParameterizedType;
+import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.TagletOutputImpl;
 
@@ -55,7 +56,12 @@ public class MethodWriter extends DocletWriter {
 
   private void printMethod(String httpMethod) {
     around("a name='" + httpMethod + "'", "");
+    open("table class='examples'", "tr", "td");
     printHTTPExample(httpMethod);
+    close("td");
+    open("td");
+    printAPIExample();
+    close("td", "tr", "table");
     if (!Utils.isEmptyOrNull(method.getDoc())) {
       open("p");
       print(method.getDoc());
@@ -288,7 +294,59 @@ public class MethodWriter extends DocletWriter {
     }
   }
 
+  private void printAPIExample() {
+    around("b", "API Example:");
+    /*
+     * We are using tt instead of pre to avoid whitespace issues in the doc's
+     * first sentence tags that would show up in a pre and would not in a tt.
+     * This is annoying.
+     */
+    open("p");
+    open("tt");
+    print(method.getAPIFunctionName());
+    print("({");
+    boolean hasOne = printAPIParameters(method.getMatrixParameters(), false);
+    hasOne |= printAPIParameters(method.getQueryParameters(), hasOne);
+    hasOne |= printAPIParameters(method.getPathParameters(), hasOne);
+    hasOne |= printAPIParameters(method.getHeaderParameters(), hasOne);
+    hasOne |= printAPIParameters(method.getCookieParameters(), hasOne);
+    hasOne |= printAPIParameters(method.getFormParameters(), hasOne);
+    MethodParameter input = method.getInputParameter();
+    if (input != null) {
+      printAPIParameter("$entity", input, hasOne);
+    }
+    print("});");
+    close("tt");
+    close("p");
+  }
+
+  private boolean printAPIParameters(Map<String, MethodParameter> parameters, boolean hasOne) {
+    for (String name : parameters.keySet()) {
+      printAPIParameter(name, parameters.get(name), hasOne);
+      hasOne = true;
+    }
+    return hasOne;
+  }
+
+  private void printAPIParameter(String name, MethodParameter param, boolean hasOne) {
+    if (hasOne) {
+      print(",");
+      tag("br");
+      print("&nbsp;&nbsp;");
+    }
+    hasOne = true;
+    print("'" + name + "': ");
+    Tag[] tags = param.getFirstSentenceTags();
+    if (tags != null) {
+      print("/* ");
+      writer.printSummaryComment(param.getParameterDoc(), tags);
+      print(" */");
+    } else
+      print("…");
+  }
+
   private void printHTTPExample(String httpMethod) {
+    around("b", "HTTP Example:");
     open("pre");
     String absPath = Utils.getAbsolutePath(this, resource);
 
