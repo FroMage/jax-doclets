@@ -337,7 +337,7 @@ public class MethodWriter extends DocletWriter {
     hasOne = true;
     print("'" + name + "': ");
     Tag[] tags = param.getFirstSentenceTags();
-    if (tags != null) {
+    if (tags != null && tags.length > 0) {
       print("/* ");
       writer.printSummaryComment(param.getParameterDoc(), tags);
       print(" */");
