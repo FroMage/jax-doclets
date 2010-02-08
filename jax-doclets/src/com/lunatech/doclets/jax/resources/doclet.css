@@ -33,6 +33,10 @@ table.menu col {
  width: 50%;
 }
 
+span.comment {
+ color: gray;
+}
+
 td.NavBarCell1 {
  background-color: #EEEEFF;
 }
