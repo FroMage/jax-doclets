@@ -92,10 +92,15 @@ public class JAXBClassWriter extends DocletWriter {
     for (JAXBMember member : members) {
       open("tr");
       if (!isValue) {
-        around("td", member.getName());
+        open("td id='m_" + member.getName() + "'");
+        print(member.getName());
+        if (type == MemberType.Element && ((Element) member).isWrapped()) {
+          print(" (wrapped by " + ((Element) member).getWrapperName() + ")");
+        }
+        close("td");
       }
       open("td");
-      printMemberType(member, true);
+      printXMLMemberType(member, true);
       close("td");
       open("td");
       Doc javaDoc = member.getJavaDoc();
@@ -109,7 +114,7 @@ public class JAXBClassWriter extends DocletWriter {
     close("table");
   }
 
-  private void printMemberType(JAXBMember member, boolean markCollections) {
+  private void printXMLMemberType(JAXBMember member, boolean markCollections) {
     if (markCollections && member.isCollection())
       print("xsd:list[");
     if (member.isIDREF())
@@ -130,6 +135,23 @@ public class JAXBClassWriter extends DocletWriter {
       print("]");
   }
 
+  private void printJSONMemberType(JAXBMember member, boolean markCollections) {
+    if (markCollections && member.isCollection())
+      print("[");
+    if (member.isJAXBType()) {
+      String name = member.getJavaTypeName();
+      JAXBClass typeClass = jaxbClass.getRegistry().getJAXBClass(name);
+      around("a href='" + Utils.urlToClass(jaxbClass, typeClass) + "'", typeClass.getName());
+    } else
+      print(member.getJSONType());
+    if (member.isID())
+      print(" /* ID */");
+    if (member.isIDREF())
+      print(" /* IDREF */");
+    if (markCollections && member.isCollection())
+      print("]");
+  }
+
   private void printSummary() {
     open("h2");
     around("h2", "Name: " + jaxbClass.getName());
@@ -137,40 +159,12 @@ public class JAXBClassWriter extends DocletWriter {
     if (javaDoc != null && javaDoc.tags() != null) {
       writer.printInlineComment(javaDoc);
     }
-    around("b", "Example:");
-    open("pre");
-    print("&lt;" + jaxbClass.getName());
-    Collection<Attribute> attributes = jaxbClass.getAttributes();
-    for (Attribute attribute : attributes) {
-      print("\n " + attribute.getName() + "=\"");
-      printMemberType(attribute, false);
-      print("\"");
-    }
-    print(">\n");
-    Collection<Element> elements = jaxbClass.getElements();
-    for (Element element : elements) {
-      print("  &lt;" + element.getName() + ">");
-      if (element.isWrapped()) {
-        print("\n   &lt;" + element.getWrappedName() + ">");
-        printMemberType(element, true);
-        print("&lt;/" + element.getWrappedName() + ">");
-        // if (element.isCollection())
-        // print("…");
-        print("\n  ");
-      } else
-        printMemberType(element, true);
-      print("&lt;/" + element.getName() + ">");
-      // if (!element.isWrapped() && element.isCollection())
-      // print("…");
-      print("\n");
-    }
-    for (Value value : jaxbClass.getValues()) {
-      print(" ");
-      printMemberType(value, true);
-      print("\n");
-    }
-    print("&lt;/" + jaxbClass.getName() + ">\n");
-    close("pre");
+    open("table class='examples'", "tr", "td");
+    printXMLExample();
+    close("td");
+    open("td");
+    printJSONExample();
+    close("td", "tr", "table");
     open("dl");
     JAXBMember idMember = jaxbClass.getID();
     if (idMember != null) {
@@ -180,6 +174,80 @@ public class JAXBClassWriter extends DocletWriter {
       around("dd", idMember.getName());
     }
     close("dl");
+  }
+
+  private void printXMLExample() {
+    around("b", "XML Example:");
+    open("pre");
+    print("&lt;" + jaxbClass.getName());
+    Collection<Attribute> attributes = jaxbClass.getAttributes();
+    for (Attribute attribute : attributes) {
+      print("\n ");
+      around("a href='#m_" + attribute.getName() + "'", attribute.getName());
+      print("=\"");
+      printXMLMemberType(attribute, false);
+      print("\"");
+    }
+    print(">\n");
+    Collection<Element> elements = jaxbClass.getElements();
+    for (Element element : elements) {
+      if (element.isWrapped()) {
+        print("  &lt;" + element.getWrapperName() + ">\n ");
+      }
+      print("  ");
+      if (element.isCollection())
+        print("xsd:list[");
+
+      print("&lt;");
+      around("a href='#m_" + element.getName() + "'", element.getName());
+      print(">");
+      printXMLMemberType(element, false);
+      print("&lt;/" + element.getName() + ">");
+
+      if (element.isCollection())
+        print("]");
+      if (element.isWrapped())
+        print("\n  &lt;/" + element.getWrapperName() + ">");
+      print("\n");
+    }
+    for (Value value : jaxbClass.getValues()) {
+      print(" ");
+      printXMLMemberType(value, true);
+      print("\n");
+    }
+    print("&lt;/" + jaxbClass.getName() + ">\n");
+    close("pre");
+  }
+
+  private void printJSONExample() {
+    around("b", "JSON Example:");
+    open("pre");
+    print("{'" + jaxbClass.getName() + "' :\n");
+    print(" {\n");
+    Collection<Attribute> attributes = jaxbClass.getAttributes();
+    for (Attribute attribute : attributes) {
+      print("  '@");
+      around("a href='#m_" + attribute.getName() + "'", attribute.getName());
+      print("': ");
+      printJSONMemberType(attribute, false);
+      print(",\n");
+    }
+    Collection<Element> elements = jaxbClass.getElements();
+    for (Element element : elements) {
+      print("   '");
+      around("a href='#m_" + element.getName() + "'", element.isWrapped() ? element.getWrapperName() : element.getName());
+      print("': ");
+      printJSONMemberType(element, true);
+      print(",\n");
+    }
+    for (Value value : jaxbClass.getValues()) {
+      print("   ");
+      printJSONMemberType(value, true);
+      print(",\n");
+    }
+    print(" }\n");
+    print("}\n");
+    close("pre");
   }
 
   protected void printHeader() {

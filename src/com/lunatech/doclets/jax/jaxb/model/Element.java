@@ -23,22 +23,22 @@ import com.sun.javadoc.ProgramElementDoc;
 
 public class Element extends JAXBMember {
 
-  private String wrappedName;
+  private String wrapperName;
 
   public Element(JAXBClass klass, ProgramElementDoc property, String name, AnnotationDesc xmlElementAnnotation) {
     super(klass, property, name, xmlElementAnnotation);
   }
 
-  public Element(JAXBClass klass, ProgramElementDoc property, String wrapperName, String name, AnnotationDesc xmlElementAnnotation) {
-    super(klass, property, wrapperName, xmlElementAnnotation);
-    this.wrappedName = name;
+  public Element(JAXBClass klass, ProgramElementDoc property, String name, String wrapperName, AnnotationDesc xmlElementAnnotation) {
+    super(klass, property, name, xmlElementAnnotation);
+    this.wrapperName = wrapperName;
   }
 
   public boolean isWrapped() {
-    return wrappedName != null;
+    return wrapperName != null;
   }
 
-  public String getWrappedName() {
-    return wrappedName;
+  public String getWrapperName() {
+    return wrapperName;
   }
 }
