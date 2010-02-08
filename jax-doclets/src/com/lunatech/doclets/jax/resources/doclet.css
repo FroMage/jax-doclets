@@ -67,6 +67,15 @@ td.NavBarCell1 table th.selected {
  font-size: smaller;
 }
 
+table.examples {
+ width: 100%;
+}
+
+table.examples td {
+ width: 50%;
+ vertical-align: top;
+}
+
 .footer {
  font-style: italic;
  font-size: smaller;
