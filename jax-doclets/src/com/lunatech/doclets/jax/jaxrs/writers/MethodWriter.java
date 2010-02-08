@@ -237,32 +237,29 @@ public class MethodWriter extends DocletWriter {
     open("dt");
     around("b", "Input:");
     close("dt");
-    open("dd");
-    Type type = inputParameter.getType();
-    String link = null;
-    String typeName = inputParameter.getTypeString();
-    if (!type.isPrimitive()) {
-      // check if we have it wrapped
-      if (inputParameter.isWrapped()) {
-        String wrappedType = inputParameter.getWrappedType();
-        link = Utils.getExternalLink(configuration, wrappedType, writer);
-        if (link != null)
-          typeName = Utils.getLinkTypeName(link);
-      } else {
-        link = Utils.getExternalLink(configuration, type, writer);
-        if (link != null)
-          typeName = type.typeName() + type.dimension();
+    if (inputParameter.isWrapped()) {
+      open("dd");
+      String typeName = inputParameter.getWrappedType();
+      JaxType returnType = null;
+      try {
+        returnType = Utils.parseType(typeName, method.getJavaDoc().containingClass(), doclet);
+      } catch (InvalidJaxTypeException e) {
+        doclet.warn("Invalid @returnWrapped type: " + typeName);
+        e.printStackTrace();
       }
-    }
-    if (link == null) {
-      around("tt", typeName);
+      if (returnType != null)
+        printOutputType(returnType);
+      else
+        around("tt", escape(typeName));
     } else {
-      around("a href='" + link + "'", typeName);
+      open("dd");
+      Type returnType = inputParameter.getType();
+      printOutputType(returnType);
     }
-    String d = inputParameter.getDoc();
-    if (d != null) {
-      writer.print(" - ");
-      writer.print(d);
+    String doc = inputParameter.getDoc();
+    if (!Utils.isEmptyOrNull(doc)) {
+      print(" - ");
+      print(doc);
     }
     close("dd");
   }
@@ -276,7 +273,9 @@ public class MethodWriter extends DocletWriter {
     for (MethodParameter param : parameters.values()) {
       open("dd");
       around("b", param.getName());
-      print(" - " + param.getDoc());
+      String doc = param.getDoc();
+      if (!Utils.isEmptyOrNull(doc))
+        print(" - " + param.getDoc());
       close("dd");
     }
   }
@@ -338,9 +337,11 @@ public class MethodWriter extends DocletWriter {
     print("'" + name + "': ");
     Tag[] tags = param.getFirstSentenceTags();
     if (tags != null && tags.length > 0) {
+      open("span class='comment'");
       print("/* ");
       writer.printSummaryComment(param.getParameterDoc(), tags);
       print(" */");
+      close("span");
     } else
       print("…");
   }
