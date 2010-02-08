@@ -52,7 +52,7 @@
 			<arg value="--no-newline" />
 		</exec>
 		<property name="major.version" value="0"/>
-		<property name="minor.version" value="6"/>
+		<property name="minor.version" value="7"/>
 		<property name="patch.version" value="r${svnversion}"/>
 		<property name="version" value="${major.version}.${minor.version}.${patch.version}"/>
 

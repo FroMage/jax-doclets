@@ -24,7 +24,7 @@ import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class DocletWriter {
 
-  private static final String VERSION = "0.6";
+  private static final String VERSION = "0.7";
 
   protected HtmlDocletWriter writer;
 
