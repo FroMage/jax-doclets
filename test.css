@@ -1,7 +1,7 @@
 @IMPORT url("../../src/com/lunatech/doclets/jax/resources/doclet.css");
 
 table.info .TableCaption, td.NavBarCell1 {
- background: #8BD027;
+ background: #EEEEEE;
 }
 
 td.NavBarCell1 table th.selected {
