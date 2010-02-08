@@ -56,7 +56,9 @@ public abstract class MethodParameter {
 
   protected abstract Type getParameterType();
 
-  protected abstract Doc getParameterDoc();
+  public abstract Doc getParameterDoc();
+
+  public abstract Tag[] getFirstSentenceTags();
 
   public String getTypeString() {
     return getParameterType().qualifiedTypeName() + getParameterType().dimension();

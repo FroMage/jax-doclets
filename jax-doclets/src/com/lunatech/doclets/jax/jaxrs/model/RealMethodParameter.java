@@ -23,6 +23,7 @@ import com.sun.javadoc.Doc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ParamTag;
 import com.sun.javadoc.Parameter;
+import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 
 public class RealMethodParameter extends MethodParameter {
@@ -41,6 +42,7 @@ public class RealMethodParameter extends MethodParameter {
     this.parameterIndex = parameterIndex;
   }
 
+  @Override
   public String getDoc() {
     Parameter overriddenParameter = method.parameters()[parameterIndex];
     for (ParamTag paramTag : method.paramTags()) {
@@ -51,8 +53,18 @@ public class RealMethodParameter extends MethodParameter {
   }
 
   @Override
-  protected Doc getParameterDoc() {
+  public Doc getParameterDoc() {
     return method;
+  }
+
+  @Override
+  public Tag[] getFirstSentenceTags() {
+    Parameter overriddenParameter = method.parameters()[parameterIndex];
+    for (ParamTag paramTag : method.paramTags()) {
+      if (overriddenParameter.name().equals(paramTag.parameterName()))
+        return paramTag.firstSentenceTags();
+    }
+    return method.firstSentenceTags();
   }
 
   @Override
