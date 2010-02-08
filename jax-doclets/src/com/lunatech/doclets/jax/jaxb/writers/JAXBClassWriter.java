@@ -171,7 +171,9 @@ public class JAXBClassWriter extends DocletWriter {
       open("dt");
       around("b", "ID");
       close("dt");
-      around("dd", idMember.getName());
+      open("dd");
+      around("a href='#m_" + idMember.getName() + "'", idMember.getName());
+      close("dd");
     }
     close("dl");
   }
@@ -222,7 +224,7 @@ public class JAXBClassWriter extends DocletWriter {
   private void printJSONExample() {
     around("b", "JSON Example:");
     open("pre");
-    print("{'" + jaxbClass.getName() + "' :\n");
+    print("{'" + jaxbClass.getName() + "':\n");
     print(" {\n");
     Collection<Attribute> attributes = jaxbClass.getAttributes();
     for (Attribute attribute : attributes) {
