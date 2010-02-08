@@ -19,6 +19,7 @@
 package com.lunatech.doclets.jax.jaxb.model;
 
 import java.util.HashMap;
+
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
@@ -62,7 +63,7 @@ public class JAXBMember implements Comparable<JAXBMember> {
     return property;
   }
 
-    private Type getType() {
+  private Type getType() {
     if (property.isMethod()) {
       return ((MethodDoc) property).returnType();
     } else
@@ -126,13 +127,14 @@ public class JAXBMember implements Comparable<JAXBMember> {
       return ret.toString();
     }
 
-    if(null==hmKnownUnknownXSDTypes.get(typeName)) {
-        System.err.println("WARNING: unknown XSD type " + typeName);
-        hmKnownUnknownXSDTypes.put(typeName, Boolean.TRUE);
+    if (null == hmKnownUnknownXSDTypes.get(typeName)) {
+      System.err.println("WARNING: unknown XSD type " + typeName);
+      hmKnownUnknownXSDTypes.put(typeName, Boolean.TRUE);
     }
 
     return typeName;
   }
+
   private static HashMap<String, Object> hmKnownUnknownXSDTypes = new HashMap<String, Object>();
 
   public boolean isIDREF() {
@@ -145,6 +147,54 @@ public class JAXBMember implements Comparable<JAXBMember> {
 
   public int compareTo(JAXBMember other) {
     return name.compareToIgnoreCase(other.name);
+  }
+
+  public String getJSONType() {
+    String typeName = getJavaTypeName();
+    if (typeName.equals("java.lang.String"))
+      return "String";
+    if (typeName.equals("java.lang.Character") || typeName.equals("char"))
+      return "String";
+    if (typeName.equals("java.util.Date"))
+      return "Date";
+    if (typeName.equals("java.lang.Integer") || typeName.equals("int"))
+      return "Number";
+    if (typeName.equals("java.lang.Long") || typeName.equals("long"))
+      return "Number";
+    if (typeName.equals("java.lang.Short") || typeName.equals("short"))
+      return "Number";
+    if (typeName.equals("java.lang.Byte") || typeName.equals("byte"))
+      return "Number";
+    if (typeName.equals("java.lang.Float") || typeName.equals("float"))
+      return "Number";
+    if (typeName.equals("java.lang.Double") || typeName.equals("double"))
+      return "Number";
+    if (typeName.equals("java.lang.Boolean") || typeName.equals("boolean"))
+      return "Boolean";
+    if (typeName.equals("java.lang.Object"))
+      return "Object";
+
+    ClassDoc type = getJavaType().asClassDoc();
+    if (type.isEnum()) {
+      FieldDoc[] constants = type.enumConstants();
+      StringBuffer ret = new StringBuffer();
+      boolean first = true;
+      for (FieldDoc constant : constants) {
+        if (!first)
+          ret.append(" | ");
+        else
+          first = false;
+        ret.append("'").append(constant.name()).append("'");
+      }
+      return ret.toString();
+    }
+
+    if (null == hmKnownUnknownXSDTypes.get(typeName)) {
+      System.err.println("WARNING: unknown XSD type " + typeName);
+      hmKnownUnknownXSDTypes.put(typeName, Boolean.TRUE);
+    }
+
+    return typeName;
   }
 
 }
