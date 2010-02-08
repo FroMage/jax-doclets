@@ -21,6 +21,7 @@ package com.lunatech.doclets.jax.jaxrs.model;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.Doc;
 import com.sun.javadoc.FieldDoc;
+import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 
 public class FormFieldParameter extends MethodParameter {
@@ -37,8 +38,13 @@ public class FormFieldParameter extends MethodParameter {
   }
 
   @Override
-  protected Doc getParameterDoc() {
+  public Doc getParameterDoc() {
     return field;
+  }
+
+  @Override
+  public Tag[] getFirstSentenceTags() {
+    return field.firstSentenceTags();
   }
 
   @Override
