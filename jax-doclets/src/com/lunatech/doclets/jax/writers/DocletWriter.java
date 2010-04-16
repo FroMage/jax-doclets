@@ -94,7 +94,7 @@ public class DocletWriter {
   }
 
   protected void printFooter() {
-    String msg = Utils.getOption(this.getConfiguration().root.options(), "-bottom");
+    String msg = Utils.getOption(this.getConfiguration().root.options(), "-footer");
     if (msg != null) {
       print(msg);
     }
