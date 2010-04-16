@@ -87,14 +87,14 @@ public class DocletWriter {
     print("<META http-equiv=\"Content-Type\" content=\"text/html; " + "charset=" + charset + "\">\n");
     close("HEAD");
     open("BODY");
-    String msg = Utils.getOption(this.getConfiguration().root.options(), "-header");
+    String msg = configuration.header;
     if (msg != null) {
       print(msg);
     }
   }
 
   protected void printFooter() {
-    String msg = Utils.getOption(this.getConfiguration().root.options(), "-footer");
+    String msg = configuration.footer;
     if (msg != null) {
       print(msg);
     }
