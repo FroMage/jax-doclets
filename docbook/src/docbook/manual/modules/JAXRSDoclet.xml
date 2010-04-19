@@ -9,8 +9,9 @@ on your JAX-RS resource methods.</para>
 <section>
  <title>Where should you write JavaDoc</title>
  <para>JavaDoc is read either on the JAX-RS resource methods, or their interface. Only method-level
- JavaDoc is used. Documentation for a given RESTful URL is taken from the method annotated with <literal>@GET</literal>
- for that URL.</para>
+ JavaDoc is used. Documentation for a given RESTful URL is taken from the method annotated with <literal>@GET</literal>,
+ <literal>@HEAD</literal>, <literal>@POST</literal>, <literal>@PUT</literal> or <literal>@DELETE</literal>
+ for that URL (in order of preference).</para>
  <para>JAX-RS resource locators are supported.</para>
 <remark>
 Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then

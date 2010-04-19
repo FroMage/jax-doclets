@@ -15,7 +15,7 @@
       <subtitle>JavaDoc doclets for Java Extension APIs</subtitle>
       <releaseinfo>0.7</releaseinfo>
 	  <productnumber>0.7</productnumber>
-      <copyright><year>2009</year><holder>Lunatech Labs</holder></copyright>
+      <copyright><year>2009</year><year>2010</year><holder>Lunatech Labs</holder></copyright>
       <corpauthor>
        <ulink url="http://www.lunatech-labs.com" >
         <inlinemediaobject>

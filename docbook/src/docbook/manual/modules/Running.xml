@@ -21,7 +21,7 @@ the JAX-RS doclet using the <link linkend="-link"><literal>-link</literal></link
   <title>Running the JAXB doclet</title>
   <command>
 javadoc -doclet com.lunatech.doclets.jax.jaxb.JAXBDoclet
--docletpath lib/jax-doclets-0.5.jar
+-docletpath lib/jax-doclets-0.7.jar
 com.lunatech.doclets.jax.test
 </command>
   </figure>
@@ -33,7 +33,7 @@ com.lunatech.doclets.jax.test
   <title>Running the JAX-RS doclet</title>
  <command>
 javadoc -doclet com.lunatech.doclets.jax.jaxrs.JAXRSDoclet
--docletpath lib/jax-doclets-0.5.jar
+-docletpath lib/jax-doclets-0.7.jar
 com.lunatech.doclets.jax.test
 </command>
   </figure>
@@ -50,7 +50,7 @@ com.lunatech.doclets.jax.test
 <![CDATA[
 	<target name="doc-jaxb" depends="jars" description="Run the JAXB doclet">
 		<javadoc doclet="com.lunatech.doclets.jax.jaxb.JAXBDoclet"
-			docletpath="lib/jax-doclets-0.5.jar">
+			docletpath="lib/jax-doclets-0.7.jar">
 			<package name="com.lunatech.doclets.jax.test.*"/>
 		</javadoc>
 	</target>
@@ -67,7 +67,7 @@ com.lunatech.doclets.jax.test
 <![CDATA[
 	<target name="doc-jaxrs" depends="jars" description="Run the JAXRS doclet">
 		<javadoc doclet="com.lunatech.doclets.jax.jaxrs.JAXRSDoclet" 
-			docletpath="lib/jax-doclets-0.5.jar">
+			docletpath="lib/jax-doclets-0.7.jar">
 			<package name="com.lunatech.doclets.jax.test.*"/>
 		</javadoc>
 	</target>
