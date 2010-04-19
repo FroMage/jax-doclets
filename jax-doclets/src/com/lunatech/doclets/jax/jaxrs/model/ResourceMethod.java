@@ -18,6 +18,7 @@
  */
 package com.lunatech.doclets.jax.jaxrs.model;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -405,11 +406,11 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   }
 
   public boolean isGET() {
-    for (AnnotationDesc method : methods) {
-      if (method.annotationType().name().equals("GET"))
-        return true;
-    }
-    return false;
+    return hasHTTPMethod(GET.class);
+  }
+
+  public boolean hasHTTPMethod(Class<? extends Annotation> method) {
+    return Utils.findAnnotation(methods.toArray(new AnnotationDesc[0]), method) != null;
   }
 
   public String getURL(Resource resource) {
