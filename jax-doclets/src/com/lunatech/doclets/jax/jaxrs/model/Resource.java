@@ -18,10 +18,17 @@
  */
 package com.lunatech.doclets.jax.jaxrs.model;
 
+import java.lang.annotation.Annotation;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
@@ -30,6 +37,9 @@ import com.sun.javadoc.Doc;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 
 public class Resource {
+
+  final static Class<? extends Annotation>[] PreferredHttpMethods = new Class[] { GET.class, HEAD.class, POST.class, PUT.class,
+                                                                                 DELETE.class };
 
   Map<String, Resource> subResources = new TreeMap<String, Resource>();
 
@@ -45,18 +55,28 @@ public class Resource {
   }
 
   private ResourceMethod getDocMethod() {
-    // find the first GET method with doc
-    for (ResourceMethod resourceMethod : methods) {
-      if (resourceMethod.isGET()) {
-        String doc = resourceMethod.getDoc();
-        if (!Utils.isEmptyOrNull(doc))
-          return resourceMethod;
-      }
+    // find the first method in order of preference
+    for (Class<? extends Annotation> httpMethod : PreferredHttpMethods) {
+      ResourceMethod method = getMethodForHTTPMethod(httpMethod);
+      if (method != null)
+        return method;
     }
     // if we don't have any GET method and only one subresource, try that
     if (methods.isEmpty() && subResources.size() == 1) {
       return subResources.values().iterator().next().getDocMethod();
     }
+    return null;
+  }
+
+  private ResourceMethod getMethodForHTTPMethod(Class<? extends Annotation> type) {
+    for (ResourceMethod resourceMethod : methods) {
+      if (resourceMethod.hasHTTPMethod(type)) {
+        String doc = resourceMethod.getDoc();
+        if (!Utils.isEmptyOrNull(doc))
+          return resourceMethod;
+      }
+    }
+    // not found
     return null;
   }
 
