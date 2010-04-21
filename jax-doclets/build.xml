@@ -119,11 +119,8 @@
 			<link href="../jaxbdocs/"/>
 			<link href="http://java.sun.com/javase/7/docs/api/"/>
 			<header><![CDATA[
-				<a href="http://www.lunatech-labs.com"><img class="logo" src="file:///home/stephane/labs-logo-green.png"/></a>
+				<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png"/></a>
 				]]></header>
-			<footer><![CDATA[
-				Footer test
-				]]></footer>
 			<package name="com.lunatech.doclets.jax.test"/>
 			<package name="com.lunatech.doclets.jax.test.interfaces"/>
 		</javadoc>
@@ -138,11 +135,8 @@
 			stylesheetfile="test.css"
 			>
 			<header><![CDATA[
-				<a href="http://www.lunatech-labs.com"><img class="logo" src="file:///home/stephane/labs-logo-green.png"/></a>
+				<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png"/></a>
 				]]></header>
-			<footer><![CDATA[
-				Footer test
-				]]></footer>
 			<package name="com.lunatech.doclets.jax.test"/>
 			<package name="com.lunatech.doclets.jax.test.interfaces"/>
 		</javadoc>
