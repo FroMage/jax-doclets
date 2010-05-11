@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2009 Lunatech Research
+
+    This file is part of jax-doclets.
+
+    jax-doclets is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    jax-doclets is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with jax-doclets.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<ivy-module version="2.0" 
+		xmlns:m="http://ant.apache.org/ivy/maven" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+    <info 
+        organisation="com.lunatech"
+        module="jax-doclets"
+        status="integration"
+        revision="${version}">
+	</info>
+	<configurations>
+		<conf name="compile" transitive="true"/>
+		<conf name="default" transitive="true" extends="compile"/>
+	</configurations>
+	<publications>
+		<artifact name="jax-doclets" ext="jar"/>
+		<artifact name="jax-doclets" ext="jar" m:classifier="sources" type="source"/>
+	</publications>
+    <dependencies>
+		<dependency org="javax.ws.rs" name="jsr311-api" rev="1.1" conf="default->*" force="true"/>
+		<dependency org="org.jboss.resteasy" name="resteasy-jaxrs" rev="1.2.1.GA" conf="default" force="true"/>
+	</dependencies>
+</ivy-module>
