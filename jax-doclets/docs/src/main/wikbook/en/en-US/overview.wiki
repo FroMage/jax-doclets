@@ -1,0 +1,92 @@
+h1. Overview
+
+jax-doclets allows you to generate [JavaDoc|http://java.sun.com/j2se/javadoc] 
+documentation for specific Java annotation-based extensions such as:
+
+* [JAX-RS|https://jsr311.dev.java.net]: the RESTful API for Java
+* [JAXB|https://jaxb.dev.java.net]: the XML binding API for Java
+
+The goal of jax-doclets is to let you write documentation for your JAX-RS API and JAXB structures
+in JavaDoc, where it belongs, where it is maintainable, and produce a quality JavaDoc-style
+documentation.
+
+h2. Information
+ 
+jax-doclets is an open-source project maintained by [Lunatech Labs|http://www.lunatech-labs.com].
+
+||Home page|[http://www.lunatech-labs.com/content/jax-doclets]|
+||Download|[http://code.google.com/p/jax-doclets/downloads/list]|
+||Issue Tracker|[http://code.google.com/p/jax-doclets/issues/list]|
+||Source Control Management|[http://code.google.com/p/jax-doclets/source/checkout]|
+
+h2. Example
+
+Here is an example of documented JAX-RS and JAXB code:
+
+{example:title=Example of documented JAX-RS and JAXB code}
+{code:java}
+package com.lunatech.doclets.jax.test;
+
+import javax.ws.rs.*;
+import javax.xml.bind.annotation.*;
+
+/**
+ * An example JAX-RS resource
+ */
+@Path("/example")
+@Produces( { "application/xml", "application/*+xml" })
+public class JAXRSExample {
+
+  /**
+   * An example resource
+   */
+  @XmlRootElement
+  public static class JAXBExample {
+
+    /**
+     * The resource ID
+     */
+    @XmlID
+    @XmlElement
+    String id;
+
+    /**
+     * The example contents
+     */
+    @XmlValue
+    String contents;
+
+    /**
+     * An optional attribute
+     */
+    @XmlAttribute
+    String type;
+  }
+
+  /**
+   * Gets an example resource
+   * 
+   * @param id
+   *          the example id
+   * @param type
+   *          the type of resource we prefer
+   * @param startIndex
+   *          the start index
+   * @return an example resource suitable for the given parameters
+   * @HTTP 404 if there is no such example resource
+   * @RequestHeader X-Example-Auth the authentication header
+   * @ResponseHeader Location a pointer to the example details
+   */
+  @Path("{id}")
+  @GET
+  public JAXBExample getExample(@PathParam("id") String id, 
+                                @MatrixParam("type") String type, 
+                                @QueryParam("start") int startIndex) {
+    return new JAXBExample();
+  }
+}
+{code}
+{example}
+
+!images/jaxrs-example.png|title=Result of documented JAX-RS code!
+!images/jaxb-example.png|title=Result of documented JAXB code!

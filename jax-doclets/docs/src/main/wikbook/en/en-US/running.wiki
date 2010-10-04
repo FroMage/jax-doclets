@@ -1,0 +1,76 @@
+h1. Running the jax-doclets
+
+The jax-doclets are run by JavaDoc either as standalone or via ant.
+
+{note}Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then
+the JAX-RS doclet using the [{{-link}}|#-link] parameter.{note}
+
+h2. Running jax-doclets in standalone
+
+h3. JAXB doclet
+
+You can use the following command to run the JAXB doclet on your code:
+
+{screen}
+javadoc -doclet com.lunatech.doclets.jax.jaxb.JAXBDoclet \\
+-docletpath lib/jax-doclets-0.7.jar \\
+com.lunatech.doclets.jax.test
+{screen}
+
+h3. JAX-RS doclet
+
+You can use the following command to run the JAX-RS doclet on your code:
+
+{screen}
+javadoc -doclet com.lunatech.doclets.jax.jaxrs.JAXRSDoclet \\
+-docletpath lib/jax-doclets-0.7.jar \\
+com.lunatech.doclets.jax.test
+{screen}
+
+h2. Running jax-doclets in ant
+ 
+h3. JAXB doclet
+
+You can use the following ant XML to run the JAXB doclet on your code:
+
+{code:xml}
+<target name="doc-jaxb" depends="jars" description="Run the JAXB doclet">
+ <javadoc doclet="com.lunatech.doclets.jax.jaxb.JAXBDoclet"
+          docletpath="lib/jax-doclets-0.7.jar">
+  <package name="com.lunatech.doclets.jax.test.*"/>
+ </javadoc>
+</target>
+{code}
+
+h3. JAX-RS doclet
+
+You can use the following ant XML to run the JAX-RS doclet on your code:
+
+{code:xml}
+<target name="doc-jaxrs" depends="jars" description="Run the JAXRS doclet">
+ <javadoc doclet="com.lunatech.doclets.jax.jaxrs.JAXRSDoclet" 
+          docletpath="lib/jax-doclets-0.7.jar">
+  <package name="com.lunatech.doclets.jax.test.*"/>
+ </javadoc>
+</target>
+{code}
+
+h2. Doclet parameters
+
+h3. Generic parameters
+
+These parameters are valid for all jax-doclets
+
+||Parameter||Function||
+|{{-stylesheet}}|The CSS stylesheet to copy and use.|
+|{{-header}}|The header which is inserted on every page header.|
+|{{-footer}}|The footer which is inserted on every page footer.|
+|{{-charset}}|The charset to use for source files and produced HTML documentation.|
+|{{-link}}{anchor:id=-link}|Path to another JavaDoc documentation. This is used to produce links to other package's documentation, either regular JavaDoc or to JAXB documentation in the case of the JAX-RS doclet.|
+
+h3. JAX-RS doclet parameters
+
+These parameters are only valid for the JAX-RS doclet
+
+||Parameter||Function||
+|{{-jaxrscontext}}|The URL path to your RESTful API, if there is a prefix prepended to it on your deploy site.|
