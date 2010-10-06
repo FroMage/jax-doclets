@@ -3,7 +3,5 @@
 	<classpathentry kind="src" path="src-test"/>
 	<classpathentry kind="src" path="doclets/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib-ivy/default/jar/jsr311-api.jar"/>
-	<classpathentry kind="lib" path="lib-ivy/default/jar/resteasy-jaxrs.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
