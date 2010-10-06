@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.lunatech.jax-doclets</groupId>
 	<artifactId>parent</artifactId>
@@ -10,7 +11,54 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
+	<url>http://www.lunatech-labs.com/open-source/jax-doclets</url>
+
+	<licenses>
+		<license>
+			<name>GNU LESSER GENERAL PUBLIC LICENSE</name>
+			<url>http://www.gnu.org/licenses/lgpl.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:svn:http://jax-doclets.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://jax-doclets.googlecode.com/svn/trunk/</developerConnection>
+		<url>http://code.google.com/p/jax-doclets/source/browse/</url>
+	</scm>
+
+	<distributionManagement>
+	</distributionManagement>
+
+	<issueManagement>
+		<system>Google Code</system>
+		<url>http://code.google.com/p/jax-doclets/issues/list</url>
+	</issueManagement>
+
+	<developers>
+		<developer>
+			<name>Stéphane Épardaud</name>
+			<email>stef@lunatech.com</email>
+			<url>http://www.lunatech-research.com/users/st%C3%A9phane-%C3%A9pardaud</url>
+			<roles>
+				<role>project-owner</role>
+			</roles>
+			<timezone>+1</timezone>
+			<organization>Lunatech Research</organization>
+			<organizationUrl>http://www.lunatech-research.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<contributors>
+		<contributor>
+			<name>Peter Bryant</name>
+		</contributor>
+		<contributor>
+			<name>Sietse de Kaper</name>
+		</contributor>
+	</contributors>
+
 	<repositories>
 		<repository>
 			<id>jboss</id>
@@ -27,7 +75,7 @@
 		<module>doclets</module>
 		<module>docs</module>
 	</modules>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -39,8 +87,47 @@
 						<target>1.5</target>
 					</configuration>
 				</plugin>
+				<plugin>
+					<inherited>true</inherited>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<configuration>
+						<createChecksum>true</createChecksum>
+					</configuration>
+				</plugin>
+
 			</plugins>
 		</pluginManagement>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
 	</build>
 	<dependencyManagement>
 		<dependencies>
