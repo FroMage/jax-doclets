@@ -1,0 +1,55 @@
+h1. JAXB doclet documentation
+
+The JAXB doclet generates documentation for your XML schema based on JAXB annotations and JavaDoc comments
+on your JAXB classes.
+
+h2. Where should we write JavaDoc
+
+JavaDoc is read either on the JAXB properties (getter methods or fields), or their interface (only for the getters)
+as well as on the JAXB classes.
+
+{note}Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then
+the JAX-RS doclet using the [{{-link}}|#-link] parameter.{note}
+
+h2. Supported standard JavaDoc tags
+
+There are no standard JavaDoc tags supported. Everything comes from JavaDoc comments.
+
+h2. Supported specific JavaDoc tags
+
+There are no specific JavaDoc tags supported.
+
+h2. Supported JAXB annotations
+
+The following standard JAXB annotations are supported on properties or classes:
+    
+* {{@XmlAccessorType}}
+* {{@XmlRootElement}}
+* {{@XmlElement}}
+* {{@XmlElementWrapper}}
+* {{@XmlAttribute}}
+* {{@XmlValue}}
+* {{@XmlID}}
+* {{@XmlIDREF}}
+* {{@XmlTransient}} (ignored)
+    
+h2. Mapping Java types to XML tpes
+
+The following Java types have a special mapping in XML:
+
+||Type||XML mapping||
+|{{java.lang.String}}|{{xsd:string}}|
+|{{java.lang.Character}}, {{char}}|{{xsd:string}}|
+|{{java.lang.Date}}|{{xsd:datetime}}|
+|{{java.lang.Integer}}, {{int}}|{{xsd:int}}|
+|{{java.lang.Long}}, {{long}}|{{xsd:long}}|
+|{{java.lang.Short}}, {{short}}|{{xsd:short}}|
+|{{java.lang.Byte}}, {{byte}}|{{xsd:byte}}|
+|{{java.lang.Float}}, {{float}}|{{xsd:float}}|
+|{{java.lang.Double}}, {{double}}|{{xsd:double}}|
+|{{java.lang.Boolean}}, {{boolean}}|{{xsd:boolean}}|
+|{{java.lang.Object}}|{{xsd:any}}|
+|{{java.lang.Enum}}|List of enum values|
+|{{java.util.Collection}}|{{xsd:list}}|
+
+Any other type is taken to be either a Java type or a JAXB type, for whom proper links will be generated.
