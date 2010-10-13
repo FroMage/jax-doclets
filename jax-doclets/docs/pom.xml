@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>com.lunatech.jax-doclets</groupId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.8.0</version>
 	</parent>
 
 	<groupId>com.lunatech.jax-doclets</groupId>
