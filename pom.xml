@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.lunatech.jax-doclets</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.8.0-SNAPSHOT</version>
+	<version>0.8.0</version>
 	<name>jax-doclets</name>
 	<packaging>pom</packaging>
 	<description>jax-doclets allows you to generate JavaDoc documentation for specific Java annotation-based extensions.</description>
@@ -29,9 +28,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://jax-doclets.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://jax-doclets.googlecode.com/svn/trunk/</developerConnection>
-		<url>http://code.google.com/p/jax-doclets/source/browse/</url>
+		<connection>scm:svn:http://jax-doclets.googlecode.com/svn/tags/0.8</connection>
+		<developerConnection>scm:svn:https://jax-doclets.googlecode.com/svn/tags/0.8</developerConnection>
+		<url>http://code.google.com/p/jax-doclets/source/browse/tags/0.8</url>
 	</scm>
 
 	<issueManagement>
@@ -151,7 +150,7 @@
 			<dependency>
 				<groupId>sun.jdk</groupId>
 				<artifactId>tools</artifactId>
-				<version>1.5.0</version>
+				<version>1.6.0</version>
 				<scope>system</scope>
 				<systemPath>${java.home}/../lib/tools.jar</systemPath>
 			</dependency>
@@ -160,7 +159,6 @@
 				<artifactId>jsr311-api</artifactId>
 				<version>1.1</version>
 				<type>jar</type>
-				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.jboss.resteasy</groupId>

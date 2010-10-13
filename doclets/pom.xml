@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>doclets</artifactId>
 	<parent>
 		<groupId>com.lunatech.jax-doclets</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.8.0</version>
 	</parent>
 	<name>jax-doclets doclets</name>
 	<description>jax-doclets allows you to generate JavaDoc documentation for specific Java annotation-based extensions.</description>
@@ -45,7 +44,7 @@
 							<reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
 							<header>
 								<![CDATA[
-									<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png"/></a>
+									<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png" /></a>
 								]]>
 							</header>
 							<stylesheetfile>${basedir}/src/test/resources/test.css</stylesheetfile>
@@ -80,7 +79,7 @@
 							<reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
 							<header>
 								<![CDATA[
-									<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png"/></a>
+									<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png" /></a>
 								]]>
 							</header>
 							<stylesheetfile>${basedir}/src/test/resources/test.css</stylesheetfile>
