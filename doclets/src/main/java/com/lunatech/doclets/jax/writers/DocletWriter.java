@@ -19,12 +19,10 @@
 package com.lunatech.doclets.jax.writers;
 
 import com.lunatech.doclets.jax.Utils;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
-import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class DocletWriter {
 
-  private static final String VERSION = "0.7";
+  private static final String VERSION = "0.8";
 
   protected HtmlDocletWriter writer;
 
