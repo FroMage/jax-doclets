@@ -1,0 +1,104 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>doclets</artifactId>
+	<parent>
+		<groupId>com.lunatech.jax-doclets</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.8.0</version>
+	</parent>
+	<name>jax-doclets doclets</name>
+	<description>jax-doclets allows you to generate JavaDoc documentation for specific Java annotation-based extensions.</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>sun.jdk</groupId>
+			<artifactId>tools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+      			<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>jaxb</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>test-javadoc</goal>
+						</goals>
+						<configuration>
+							<doclet>com.lunatech.doclets.jax.jaxb.JAXBDoclet</doclet>
+ 							<docletPath>${basedir}/target/doclets-${version}.jar</docletPath>
+							<destDir>jaxbdocs</destDir>
+							<reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
+							<header>
+								<![CDATA[
+									<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png" /></a>
+								]]>
+							</header>
+							<stylesheetfile>${basedir}/src/test/resources/test.css</stylesheetfile>
+							<links>
+								<link>http://java.sun.com/javase/7/docs/api/</link>
+							</links>
+						</configuration>
+					</execution>
+					<execution>
+						<id>jaxrs</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>test-javadoc</goal>
+						</goals>
+						<configuration>
+							<doclet>com.lunatech.doclets.jax.jaxrs.JAXRSDoclet</doclet>
+ 							<docletPath>:a:${basedir}/target/doclets-${version}.jar</docletPath>
+ 							<docletArtifacts>
+	 							<docletArtifact>
+									<groupId>javax.ws.rs</groupId>
+									<artifactId>jsr311-api</artifactId>
+									<version>1.1</version> 							
+ 								</docletArtifact>
+ 								<docletArtifact>
+									<groupId>org.jboss.resteasy</groupId>
+									<artifactId>resteasy-jaxrs</artifactId>
+ 									<version>1.2.1.GA</version>
+ 								</docletArtifact>
+ 							</docletArtifacts>
+							<additionalparam>-jaxrscontext rest</additionalparam>
+							<destDir>jaxrsdocs</destDir>
+							<reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
+							<header>
+								<![CDATA[
+									<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png" /></a>
+								]]>
+							</header>
+							<stylesheetfile>${basedir}/src/test/resources/test.css</stylesheetfile>
+							<links>
+								<link>../jaxbdocs/</link>
+								<link>http://java.sun.com/javase/7/docs/api/</link>
+							</links>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>javax.ws.rs</groupId>
+						<artifactId>jsr311-api</artifactId>
+						<version>1.1</version>
+						<scope>test</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>
