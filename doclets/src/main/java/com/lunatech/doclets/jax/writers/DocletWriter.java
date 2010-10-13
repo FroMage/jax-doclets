@@ -19,6 +19,8 @@
 package com.lunatech.doclets.jax.writers;
 
 import com.lunatech.doclets.jax.Utils;
+import com.sun.tools.doclets.formats.html.ConfigurationImpl;
+import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class DocletWriter {
 
