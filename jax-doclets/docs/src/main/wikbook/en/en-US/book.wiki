@@ -1,5 +1,0 @@
-{include:document="overview.wiki"}
-{include:document="running.wiki"}
-{include:document="JAXRSDoclet.wiki"}
-{include:document="JAXBDoclet.wiki"}
-{include:document="License.wiki"}
