@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.lunatech.jax-doclets</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.8.0</version>
 	</parent>
 	<name>jax-doclets doclets</name>
 	<description>jax-doclets allows you to generate JavaDoc documentation for specific Java annotation-based extensions.</description>
