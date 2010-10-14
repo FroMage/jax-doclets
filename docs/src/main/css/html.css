@@ -142,6 +142,11 @@ p.remark {
  border: none !important;
 }
 
+.note table th {
+ background-color: transparent !important;
+ border: none !important;
+}
+
 .section table tr.odd {
  background-color: white;
 }
