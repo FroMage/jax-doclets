@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>com.lunatech.jax-doclets</groupId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.8.1-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.lunatech.jax-doclets</groupId>
@@ -26,6 +27,7 @@
 	<properties>
 		<wikbook.source>${pom.basedir}/src/main/wikbook</wikbook.source>
 		<wikbook.target>${project.build.directory}/wikbook</wikbook.target>
+		<wikbook.version>${project.version}</wikbook.version>
 	</properties>
 
 	<build>
@@ -59,7 +61,8 @@
 					<destinationDirectory>${wikbook.target}/src</destinationDirectory>
 					<destinationFileName>index.xml</destinationFileName>
 					<beforeBookBodyXML>&lt;xi:include href="bookinfo.xml" xmlns:xi="http://www.w3.org/2001/XInclude" /&gt;
-						&lt;xi:include href="acknowledgements.xml" xmlns:xi="http://www.w3.org/2001/XInclude" /&gt;</beforeBookBodyXML>
+						&lt;xi:include
+						href="acknowledgements.xml" xmlns:xi="http://www.w3.org/2001/XInclude" /&gt;</beforeBookBodyXML>
 				</configuration>
 			</plugin>
 
@@ -146,6 +149,26 @@
 							</fileset>
 						</copy>
 					</preProcess>
+					
+<!-- 
+This doesn't work because it yields this:
+[DEBUG] <!ENTITY % ____next SYSTEM "jar:file:/home/stephane/.m2/repository/org/docbook/docbook-xml/4.4/docbook-xml-4.4.jar!/ent/isoamsa.ent">
+%____next;
+<!ENTITY version "0.8.1-SNAPSHOT">
+<!ENTITY % ____type SYSTEM "docbkx.html.ent">
+%____type;
+java.lang.IllegalArgumentException: URI scheme is not "file"
+        at java.io.File.<init>(File.java:366)
+        at com.agilejava.docbkx.maven.InjectingEntityResolver.resolveEntity(InjectingEntityResolver.java:101)
+        at org.xml.sax.helpers.XMLFilterImpl.resolveEntity(XMLFilterImpl.java:376)
+
+ 					<entities>
+						<entity>
+							<name>version</name>
+							<value>${project.version}</value>
+						</entity>
+					</entities>
+ -->
 
 				</configuration>
 

@@ -1,4 +1,4 @@
-@IMPORT url("../../src/main/java/com/lunatech/doclets/jax/resources/doclet.css");
+@IMPORT url("default-doclet.css");
 
 table.info .TableCaption, td.NavBarCell1 {
  background: #EEEEEE;

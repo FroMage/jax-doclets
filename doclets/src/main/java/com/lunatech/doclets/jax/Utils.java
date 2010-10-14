@@ -33,6 +33,7 @@ import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.lunatech.doclets.jax.writers.DocletWriter;
 import com.sun.javadoc.AnnotationDesc;
+import com.sun.javadoc.AnnotationDesc.ElementValuePair;
 import com.sun.javadoc.AnnotationTypeDoc;
 import com.sun.javadoc.AnnotationValue;
 import com.sun.javadoc.ClassDoc;
@@ -45,7 +46,6 @@ import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.ProgramElementDoc;
 import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
-import com.sun.javadoc.AnnotationDesc.ElementValuePair;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 import com.sun.tools.doclets.internal.toolkit.Configuration;
@@ -419,14 +419,25 @@ public class Utils {
   }
 
   public static void copyResources(ConfigurationImpl configuration) {
-    File cssFile = new File(configuration.destDirName, "doclet.css");
-    InputStream stream;
+    InputStream defaultCSS = Utils.class.getResourceAsStream("/doclet.css");
+    if (defaultCSS == null)
+      throw new RuntimeException("Failed to find doclet CSS (incorrect jax-doclets packaging?)");
+    if (!isEmptyOrNull(configuration.stylesheetfile)) {
+      try {
+        InputStream stream = new FileInputStream(configuration.stylesheetfile);
+        copyResource(stream, new File(configuration.destDirName, "doclet.css"));
+        // also put the original stylesheet in case it's needed
+        copyResource(defaultCSS, new File(configuration.destDirName, "default-doclet.css"));
+      } catch (Exception x) {
+        throw new RuntimeException("Failed to read user stylesheet " + configuration.stylesheetfile, x);
+      }
+    } else
+      copyResource(defaultCSS, new File(configuration.destDirName, "doclet.css"));
+  }
+
+  private static void copyResource(InputStream stream, File output) {
     try {
-      if (!isEmptyOrNull(configuration.stylesheetfile))
-        stream = new FileInputStream(configuration.stylesheetfile);
-      else
-        stream = Utils.class.getResourceAsStream("resources/doclet.css");
-      OutputStream os = new FileOutputStream(cssFile);
+      OutputStream os = new FileOutputStream(output);
       byte[] buffer = new byte[1024];
       int read;
       while ((read = stream.read(buffer)) >= 0) {
@@ -739,6 +750,6 @@ public class Utils {
   }
 
   public static void log(String mesg) {
-  // System.err.println(mesg);
+    // System.err.println(mesg);
   }
 }
