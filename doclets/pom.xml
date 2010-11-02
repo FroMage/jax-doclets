@@ -11,7 +11,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>sun.jdk</groupId>
+			<groupId>com.sun</groupId>
 			<artifactId>tools</artifactId>
 		</dependency>
 		<dependency>
