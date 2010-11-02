@@ -168,6 +168,7 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<!-- Only depend on the tools.jar for the Sun JDK. See http://maven.apache.org/general.html#tools-jar-dependency -->
 	<profiles>
 		<profile>
 			<id>default-tools.jar</id>
