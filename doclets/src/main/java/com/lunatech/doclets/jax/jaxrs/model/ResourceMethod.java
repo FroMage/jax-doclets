@@ -57,6 +57,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   private MethodDoc declaringMethod;
 
   private String path;
+  private Map<String,String> regexFragments = new HashMap<String,String>();
 
   private ResourceClass resource;
 
@@ -277,9 +278,9 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   private void setupPath() {
     final AnnotationDesc pathAnnotation = Utils.findMethodAnnotation(declaringClass, method, Path.class);
     final String rootPath = resource.getPath();
-
     if (pathAnnotation != null) {
       String path = (String) Utils.getAnnotationValue(pathAnnotation);
+      path = Utils.removeFragmentRegexes(path, regexFragments);
       this.path = Utils.appendURLFragments(rootPath, path);
     } else
       this.path = rootPath;
@@ -466,5 +467,11 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
 
   public String getAPIFunctionName() {
     return declaringClass.name() + "." + declaringMethod.name();
+  }
+
+  public String getPathParamRegex(String name) {
+    if(regexFragments.containsKey(name))
+      return regexFragments.get(name);
+    return resource.getPathParamRegex(name);    
   }
 }

@@ -19,10 +19,9 @@
 package com.lunatech.doclets.jax.jaxrs.model;
 
 import java.lang.annotation.Annotation;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -46,15 +45,22 @@ public class Resource {
   List<ResourceMethod> methods = new LinkedList<ResourceMethod>();
 
   String fragment;
+  String fragmentWithNoRegex;
+  Map<String,String> regexFragments = new HashMap<String,String>();
 
   private Resource parent;
 
-  public Resource(String fragment, Resource parent) {
+    public Resource(String fragment, Resource parent) {
     this.fragment = fragment;
     this.parent = parent;
+    parseFragment();
   }
 
-  private ResourceMethod getDocMethod() {
+    private void parseFragment() {
+        fragmentWithNoRegex = Utils.removeFragmentRegexes(fragment, regexFragments);
+    }
+
+    private ResourceMethod getDocMethod() {
     // find the first method in order of preference
     for (Class<? extends Annotation> httpMethod : PreferredHttpMethods) {
       ResourceMethod method = getMethodForHTTPMethod(httpMethod);
@@ -96,7 +102,7 @@ public class Resource {
 
   public String getAbsolutePath() {
     if (parent != null)
-      return Utils.appendURLFragments(parent.getAbsolutePath(), fragment);
+      return Utils.appendURLFragments(parent.getAbsolutePath(), getName());
     else
       return "/";
   }
@@ -147,7 +153,7 @@ public class Resource {
   }
 
   public String getName() {
-    return fragment;
+    return fragmentWithNoRegex;
   }
 
   public void write(JAXRSDoclet doclet, ConfigurationImpl configuration) {

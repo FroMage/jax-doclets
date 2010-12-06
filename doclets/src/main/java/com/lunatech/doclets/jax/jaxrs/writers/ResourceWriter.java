@@ -233,6 +233,10 @@ public class ResourceWriter extends DocletWriter {
         }
         open("dd");
         around("b", param.getName());
+        String regex = rm.getPathParamRegex(param.getName());
+        if(regex != null){
+          around("tt", " ("+regex+")");
+        }
         print(" - " + param.getDoc());
         close("dd");
       }

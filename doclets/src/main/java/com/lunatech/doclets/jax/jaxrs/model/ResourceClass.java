@@ -18,9 +18,7 @@
  */
 package com.lunatech.doclets.jax.jaxrs.model;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -48,6 +46,10 @@ public class ResourceClass {
 
   private ResourceMethod parentMethod;
 
+  private String path;
+
+  private Map<String,String> regexFragments = new HashMap<String,String>();
+
   public ResourceClass(ClassDoc resourceClass, ResourceMethod methodLocator) {
     this.parentMethod = methodLocator;
     // find the annotated class or interface
@@ -58,6 +60,8 @@ public class ResourceClass {
     rootPathAnnotation = Utils.findAnnotation(declaringClass, Path.class);
     rootProducesAnnotation = Utils.findAnnotation(declaringClass, Utils.getProducesClass());
     rootConsumesAnnotation = Utils.findAnnotation(declaringClass, Utils.getConsumesClass());
+    // this needs to be done before we create the methods
+    setupPath();
     for (final MethodDoc method : resourceClass.methods(false)) {
       MethodDoc declaringMethod = Utils.findAnnotatedMethod(declaringClass, method, Path.class, GET.class, PUT.class, DELETE.class,
                                                             HEAD.class, POST.class);
@@ -65,24 +69,26 @@ public class ResourceClass {
         methods.add(new ResourceMethod(method, declaringMethod, this));
       }
     }
-
   }
 
-  public ClassDoc getDeclaringClass() {
+    private void setupPath() {
+        if (rootPathAnnotation != null) {
+          path = (String) Utils.getAnnotationValue(rootPathAnnotation);
+          path = Utils.removeFragmentRegexes(path, regexFragments);
+          if (!path.startsWith("/"))
+            path = "/" + path;
+        } else
+          path = null;
+        if (parentMethod != null)
+          path = Utils.appendURLFragments(parentMethod.getPath(), path);
+    }
+
+    public ClassDoc getDeclaringClass() {
     return declaringClass;
   }
 
   public String getPath() {
-    String myPath;
-    if (rootPathAnnotation != null) {
-      myPath = (String) Utils.getAnnotationValue(rootPathAnnotation);
-      if (!myPath.startsWith("/"))
-        myPath = "/" + myPath;
-    } else
-      myPath = null;
-    if (parentMethod != null)
-      return Utils.appendURLFragments(parentMethod.getPath(), myPath);
-    return myPath;
+    return path;
   }
 
   public AnnotationDesc getProducesAnnotation() {
@@ -116,5 +122,13 @@ public class ResourceClass {
 
   public boolean isSubResource() {
     return parentMethod != null;
+  }
+
+  public String getPathParamRegex(String name) {
+    if(regexFragments.containsKey(name))
+      return regexFragments.get(name);
+    if(isSubResource())
+      return parentMethod.getPathParamRegex(name);
+    return null;
   }
 }

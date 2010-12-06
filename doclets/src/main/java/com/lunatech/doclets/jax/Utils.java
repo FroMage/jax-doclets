@@ -23,10 +23,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
@@ -690,7 +689,42 @@ public class Utils {
     return currentType;
   }
 
-  public static class InvalidJaxTypeException extends Exception {}
+    public static String removeFragmentRegexes(String fragment, Map<String, String> regexFragments) {
+        Pattern regexPattern = Pattern.compile("\\{(\\w[\\w\\.-]*):");
+        Matcher regexMatcher = regexPattern.matcher(fragment);
+        int start = 0;
+        char[] fragmentArray = fragment.toCharArray();
+        StringBuffer strbuf = new StringBuffer();
+        while(regexMatcher.find(start)){
+            strbuf.append(fragment.substring(start, regexMatcher.start()));
+            String name = regexMatcher.group(1);
+            strbuf.append("{").append(name);
+            // now move on until after the last "}"
+            int openBraces = 1;
+            start = regexMatcher.end();
+            while(start < fragmentArray.length){
+                char c = fragmentArray[start++];
+                if(c == '{')
+                    openBraces++;
+                else if(c == '}'){
+                    openBraces--;
+                    if(openBraces == 0)
+                        break;
+                }
+            }
+            if(openBraces > 0)
+                throw new RuntimeException("Invalid Path fragment: "+fragment);
+            String regex = fragment.substring(regexMatcher.end(), start-1);
+            if(regexFragments != null)
+                regexFragments.put(name, regex);
+            strbuf.append("}");
+        }
+        // add all that remains
+        strbuf.append(fragment.substring(start, fragmentArray.length));
+        return strbuf.toString();
+    }
+
+    public static class InvalidJaxTypeException extends Exception {}
 
   private static void setupType(JaxType currentType, StringBuffer currentTypeName, ClassDoc containingClass, JAXDoclet doclet)
       throws InvalidJaxTypeException {
