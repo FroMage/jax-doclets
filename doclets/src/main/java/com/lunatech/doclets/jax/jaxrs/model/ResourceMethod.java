@@ -40,8 +40,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
-import org.jboss.resteasy.annotations.Form;
-
 import com.lunatech.doclets.jax.Utils;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
@@ -88,6 +86,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   private MethodOutput output;
 
   private ResourceClass resourceLocator;
+  private Class<?> formClass;
 
   public ResourceMethod(MethodDoc method, MethodDoc declaringMethod, ResourceClass resource) {
     this.resource = resource;
@@ -95,6 +94,11 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
     this.declaringClass = resource.getDeclaringClass();
     this.declaringMethod = declaringMethod;
     this.output = new MethodOutput(declaringMethod);
+    try{
+      formClass = Class.forName("org.jboss.resteasy.annotations.Form");
+    } catch (ClassNotFoundException e) {
+      // we won't support @Form
+    }
     setupPath();
     setupParameters();
     setupMethods();
@@ -171,10 +175,12 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
                              new RealMethodParameter(parameter, i, headerParamAnnotation, MethodParameterType.Header, declaringMethod));
         continue;
       }
-      final AnnotationDesc formAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, Form.class);
-      if (formAnnotation != null) {
-        walkFormParameter(parameter.type().asClassDoc());
-        continue;
+      if(formClass != null){
+        final AnnotationDesc formAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, formClass);
+        if (formAnnotation != null) {
+          walkFormParameter(parameter.type().asClassDoc());
+          continue;
+        }
       }
       final AnnotationDesc contextAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, Context.class);
       if (contextAnnotation == null) {
