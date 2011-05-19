@@ -33,6 +33,7 @@ The following specific JavaDoc tags are supported on resource methods:
 |{{@returnWrapped \{fq-classname\} \{doc\} }}|Used in place of {{@return}} when output type is {{String}}, {{void}} or {{Response}} to specify the real type of output and documentation for each possible type. Can be used multiple times.|
 |{{@RequestHeader \{header\} \{doc\} }}|This is used to document HTTP request headers. Can be used multiple times.|
 |{{@ResponseHeader \{header\} \{doc\} }}|This is used to document HTTP response headers. Can be used multiple times.|
+|{{@include \{file\} }}|Includes the specified relative file in the resource documentation. Can be used multiple times.|
 
 h2. Supported JAX-RS annotations
 
