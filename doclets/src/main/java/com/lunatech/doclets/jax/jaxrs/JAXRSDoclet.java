@@ -24,8 +24,10 @@ import java.util.List;
 
 import javax.ws.rs.Path;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.JAXDoclet;
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
@@ -40,13 +42,14 @@ import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;
+import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
 import com.sun.tools.doclets.internal.toolkit.taglets.LegacyTaglet;
 
-public class JAXRSDoclet implements JAXDoclet {
+public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
 
-  public static final HtmlDoclet htmlDoclet = new HtmlDoclet();
+  public final HtmlDoclet htmlDoclet = new HtmlDoclet();
 
   private static final Class<?>[] jaxrsAnnotations = new Class<?>[] { Path.class };
 
@@ -65,7 +68,7 @@ public class JAXRSDoclet implements JAXDoclet {
     return AbstractDoclet.languageVersion();
   }
 
-  private static List<ResourceMethod> jaxrsMethods = new LinkedList<ResourceMethod>();
+  private List<ResourceMethod> jaxrsMethods = new LinkedList<ResourceMethod>();
 
   public static boolean start(final RootDoc rootDoc) {
     new JAXRSDoclet(rootDoc).start();
@@ -73,8 +76,7 @@ public class JAXRSDoclet implements JAXDoclet {
   }
 
   public JAXRSDoclet(RootDoc rootDoc) {
-    htmlDoclet.configuration.root = rootDoc;
-    htmlDoclet.configuration.setOptions();
+    super(rootDoc);
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new ResponseHeaderTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new RequestHeaderTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new HTTPTaglet()));
@@ -82,8 +84,13 @@ public class JAXRSDoclet implements JAXDoclet {
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new InputWrappedTaglet()));
   }
 
+  @Override
+  protected JAXRSConfiguration makeConfiguration(ConfigurationImpl configuration) {
+    return new JAXRSConfiguration(configuration);
+  }
+
   public void start() {
-    final ClassDoc[] classes = htmlDoclet.configuration.root.classes();
+    final ClassDoc[] classes = conf.parentConfiguration.root.classes();
     for (final ClassDoc klass : classes) {
       if (Utils.findAnnotatedClass(klass, jaxrsAnnotations) != null) {
         handleJAXRSClass(klass);
@@ -91,22 +98,14 @@ public class JAXRSDoclet implements JAXDoclet {
     }
     Collections.sort(jaxrsMethods);
     Resource rootResource = Resource.getRootResource(jaxrsMethods);
-    rootResource.write(this, htmlDoclet.configuration);
-    new IndexWriter(htmlDoclet.configuration, rootResource).write();
-    new SummaryWriter(htmlDoclet.configuration, rootResource).write();
-    Utils.copyResources(htmlDoclet.configuration);
+    rootResource.write(this, conf);
+    new IndexWriter(conf, rootResource).write();
+    new SummaryWriter(conf, rootResource).write();
+    Utils.copyResources(conf);
   }
 
-  private static void handleJAXRSClass(final ClassDoc klass) {
+  private void handleJAXRSClass(final ClassDoc klass) {
     jaxrsMethods.addAll(new ResourceClass(klass, null).getMethods());
-  }
-
-  public RootDoc getRootDoc() {
-    return htmlDoclet.configuration.root;
-  }
-
-  public ClassDoc forName(String className) {
-    return getRootDoc().classNamed(className);
   }
 
   public void warn(String string) {

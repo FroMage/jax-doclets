@@ -156,6 +156,13 @@ These parameters are only valid for the JAX-RS doclet
 ||Parameter||Function||
 |{{-jaxrscontext}}|The URL path to your RESTful API, if there is a prefix prepended to it on your deploy site.|
 
+h3. JAXB doclet parameters
+
+These parameters are only valid for the JAXB doclet
+
+||Parameter||Function||
+|{{-disablejsontypename}}|If you want to hide the serialised type name from the JSON examples.|
+
 h2. About stylesheets
 
 If you do not specify a stylesheet, one will be provided for you that closely matches the default

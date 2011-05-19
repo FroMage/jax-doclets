@@ -35,7 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.lunatech.doclets.jax.jaxb.JAXBDoclet;
 import com.lunatech.doclets.jax.jaxb.writers.JAXBClassWriter;
 import com.sun.javadoc.AnnotationDesc;
@@ -136,7 +138,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
       break;
     case PUBLIC_MEMBER:
       // all public or annotated members
-      include = (property.isPublic() || hasXmlAnnotation) && (this.doclet.isJAXBMethodOutputEnabled() || !property.isMethod());
+      include = (property.isPublic() || hasXmlAnnotation) && (this.doclet.conf.enableJaxBMethodOutput || !property.isMethod());
       break;
     }
     if (include)
@@ -231,7 +233,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
     return name;
   }
 
-  public void write(ConfigurationImpl configuration) {
+  public void write(JAXConfiguration configuration) {
     new JAXBClassWriter(configuration, this).write();
   }
 

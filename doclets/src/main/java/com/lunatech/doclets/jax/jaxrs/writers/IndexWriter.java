@@ -20,26 +20,25 @@ package com.lunatech.doclets.jax.jaxrs.writers;
 
 import java.io.IOException;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.sun.javadoc.Doc;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
-import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class IndexWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
 
   private Resource resource;
 
-  public IndexWriter(ConfigurationImpl configuration, Resource resource) {
+  public IndexWriter(JAXConfiguration configuration, Resource resource) {
     super(configuration, getWriter(configuration));
     this.resource = resource;
   }
 
-  private static HtmlDocletWriter getWriter(Configuration configuration) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration) {
     try {
-      return new HtmlDocletWriter((ConfigurationImpl) configuration, "", "overview-index.html", "");
+      return new HtmlDocletWriter(configuration.parentConfiguration, "", "overview-index.html", "");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

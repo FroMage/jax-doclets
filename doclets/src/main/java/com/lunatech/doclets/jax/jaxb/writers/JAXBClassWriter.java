@@ -21,7 +21,9 @@ package com.lunatech.doclets.jax.jaxb.writers;
 import java.io.IOException;
 import java.util.Collection;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.lunatech.doclets.jax.jaxb.model.Attribute;
 import com.lunatech.doclets.jax.jaxb.model.Element;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
@@ -29,19 +31,17 @@ import com.lunatech.doclets.jax.jaxb.model.JAXBMember;
 import com.lunatech.doclets.jax.jaxb.model.MemberType;
 import com.lunatech.doclets.jax.jaxb.model.Value;
 import com.sun.javadoc.Doc;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
-import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class JAXBClassWriter extends DocletWriter {
 
-  public JAXBClassWriter(ConfigurationImpl configuration, JAXBClass jaxbClass) {
+  public JAXBClassWriter(JAXConfiguration configuration, JAXBClass jaxbClass) {
     super(configuration, getWriter(configuration, jaxbClass), jaxbClass);
   }
 
-  private static HtmlDocletWriter getWriter(Configuration configuration, JAXBClass jaxbClass) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, JAXBClass jaxbClass) {
     try {
-      return new HtmlDocletWriter((ConfigurationImpl) configuration, Utils.classToPath(jaxbClass), jaxbClass.getShortClassName() + ".html",
+      return new HtmlDocletWriter(configuration.parentConfiguration, Utils.classToPath(jaxbClass), jaxbClass.getShortClassName() + ".html",
           Utils.classToRoot(jaxbClass));
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -224,7 +224,8 @@ public class JAXBClassWriter extends DocletWriter {
   private void printJSONExample() {
     around("b", "JSON Example:");
     open("pre");
-    print("{'" + jaxbClass.getName() + "':\n");
+    if(((JAXBConfiguration)configuration).enableJSONTypeName)
+      print("{'" + jaxbClass.getName() + "':\n");
     print(" {\n");
     Collection<Attribute> attributes = jaxbClass.getAttributes();
     for (Attribute attribute : attributes) {
@@ -248,7 +249,8 @@ public class JAXBClassWriter extends DocletWriter {
       print(",\n");
     }
     print(" }\n");
-    print("}\n");
+    if(((JAXBConfiguration)configuration).enableJSONTypeName)
+      print("}\n");
     close("pre");
   }
 

@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.JAXDoclet;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
@@ -37,10 +38,11 @@ import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.Type;
+import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
 
-public class JAXBDoclet implements JAXDoclet {
+public class JAXBDoclet extends JAXDoclet<JAXBConfiguration> {
 
   private static final Class<?>[] jaxbAnnotations = new Class<?>[] { XmlRootElement.class };
 
@@ -49,8 +51,11 @@ public class JAXBDoclet implements JAXDoclet {
       return 2;
     }
 	  if("-disablejaxbmethodoutput".equals(option)) {
-	      return 1;
+      return 1;
 	  }
+    if("-disablejsontypename".equals(option)) {
+      return 1;
+    }
     return HtmlDoclet.optionLength(option);
   }
 
@@ -71,19 +76,17 @@ public class JAXBDoclet implements JAXDoclet {
     return AbstractDoclet.languageVersion();
   }
 
-  private final HtmlDoclet htmlDoclet = new HtmlDoclet();
-
   private List<JAXBClass> jaxbClasses = new LinkedList<JAXBClass>();
 
   private Registry registry = new Registry();
 
   public JAXBDoclet(RootDoc rootDoc) {
-    htmlDoclet.configuration.root = rootDoc;
-    String pattern = Utils.getOption(getRootDoc().options(), "-matchingjaxbnamesonly");
-    if (pattern != null) {
-      onlyOutputJAXBClassPackagesMatching = Pattern.compile(pattern);
-    }
-    enableJaxBMethodOutput  = !Utils.hasOption(getRootDoc().options(), "-disablejaxbmethodoutput");
+    super(rootDoc);
+  }
+
+  @Override
+  protected JAXBConfiguration makeConfiguration(ConfigurationImpl configuration) {
+    return new JAXBConfiguration(configuration);
   }
 
   public static boolean start(final RootDoc rootDoc) {
@@ -91,14 +94,8 @@ public class JAXBDoclet implements JAXDoclet {
     return true;
   }
 
-  private Pattern onlyOutputJAXBClassPackagesMatching;
-  boolean enableJaxBMethodOutput = true;
-  public boolean isJAXBMethodOutputEnabled() {
-      return enableJaxBMethodOutput;
-  }
   private void start() {
-    htmlDoclet.configuration.setOptions();
-    final ClassDoc[] classes = htmlDoclet.configuration.root.classes();
+    final ClassDoc[] classes = conf.parentConfiguration.root.classes();
     for (final ClassDoc klass : classes) {
       if (Utils.findAnnotatedClass(klass, jaxbAnnotations) != null) {
         handleJAXBClass(klass);
@@ -106,11 +103,11 @@ public class JAXBDoclet implements JAXDoclet {
     }
     for (final JAXBClass klass : jaxbClasses) {
       // System.err.println("JAXB class: " + klass);
-      klass.write(htmlDoclet.configuration);
+      klass.write(conf);
     }
-    new PackageListWriter(htmlDoclet.configuration, registry).write();
-    new SummaryWriter(htmlDoclet.configuration, registry).write();
-    Utils.copyResources(htmlDoclet.configuration);
+    new PackageListWriter(conf, registry).write();
+    new SummaryWriter(conf, registry).write();
+    Utils.copyResources(conf);
   }
 
   private void handleJAXBClass(final ClassDoc klass) {
@@ -118,8 +115,8 @@ public class JAXBDoclet implements JAXDoclet {
     if (!registry.isJAXBClass(klass.qualifiedTypeName()) && !klass.isPrimitive() && !klass.qualifiedTypeName().startsWith("java.")
         && !klass.isEnum()) {
       String fqName = klass.qualifiedTypeName();
-      if (onlyOutputJAXBClassPackagesMatching != null) {
-        Matcher m = onlyOutputJAXBClassPackagesMatching.matcher(fqName);
+      if (conf.onlyOutputJAXBClassPackagesMatching != null) {
+        Matcher m = conf.onlyOutputJAXBClassPackagesMatching.matcher(fqName);
         if (!m.matches()) {
           return;
         }
@@ -139,11 +136,4 @@ public class JAXBDoclet implements JAXDoclet {
     }
   }
 
-  public RootDoc getRootDoc() {
-    return htmlDoclet.configuration.root;
-  }
-
-  public ClassDoc forName(String className) {
-    return getRootDoc().classNamed(className);
-  }
 }

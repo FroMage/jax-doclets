@@ -45,7 +45,6 @@ import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.ProgramElementDoc;
 import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 import com.sun.tools.doclets.internal.toolkit.Configuration;
 import com.sun.tools.doclets.internal.toolkit.taglets.DeprecatedTaglet;
@@ -417,21 +416,21 @@ public class Utils {
     }
   }
 
-  public static void copyResources(ConfigurationImpl configuration) {
+  public static void copyResources(JAXConfiguration configuration) {
     InputStream defaultCSS = Utils.class.getResourceAsStream("/doclet.css");
     if (defaultCSS == null)
       throw new RuntimeException("Failed to find doclet CSS (incorrect jax-doclets packaging?)");
-    if (!isEmptyOrNull(configuration.stylesheetfile)) {
+    if (!isEmptyOrNull(configuration.parentConfiguration.stylesheetfile)) {
       try {
-        InputStream stream = new FileInputStream(configuration.stylesheetfile);
-        copyResource(stream, new File(configuration.destDirName, "doclet.css"));
+        InputStream stream = new FileInputStream(configuration.parentConfiguration.stylesheetfile);
+        copyResource(stream, new File(configuration.parentConfiguration.destDirName, "doclet.css"));
         // also put the original stylesheet in case it's needed
-        copyResource(defaultCSS, new File(configuration.destDirName, "default-doclet.css"));
+        copyResource(defaultCSS, new File(configuration.parentConfiguration.destDirName, "default-doclet.css"));
       } catch (Exception x) {
-        throw new RuntimeException("Failed to read user stylesheet " + configuration.stylesheetfile, x);
+        throw new RuntimeException("Failed to read user stylesheet " + configuration.parentConfiguration.stylesheetfile, x);
       }
     } else
-      copyResource(defaultCSS, new File(configuration.destDirName, "doclet.css"));
+      copyResource(defaultCSS, new File(configuration.parentConfiguration.destDirName, "doclet.css"));
   }
 
   private static void copyResource(InputStream stream, File output) {
@@ -768,7 +767,8 @@ public class Utils {
   }
 
   private static String addContextPath(DocletWriter writer, String url) {
-    String jaxrscontext = getOption(writer.getConfiguration().root.options(), "-jaxrscontext");
+    // FIXME: move this to JAXRSConfiguration
+    String jaxrscontext = getOption(writer.getConfiguration().parentConfiguration.root.options(), "-jaxrscontext");
     if (jaxrscontext == null)
       return url;
     else

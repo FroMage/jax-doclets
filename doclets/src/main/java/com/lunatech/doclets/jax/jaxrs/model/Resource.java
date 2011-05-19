@@ -29,6 +29,7 @@ import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.writers.ResourceWriter;
@@ -156,7 +157,7 @@ public class Resource {
     return fragmentWithNoRegex;
   }
 
-  public void write(JAXRSDoclet doclet, ConfigurationImpl configuration) {
+  public void write(JAXRSDoclet doclet, JAXConfiguration configuration) {
     ResourceWriter writer = new ResourceWriter(configuration, this, doclet);
     writer.write();
     for (String subResourceKey : subResources.keySet()) {

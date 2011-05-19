@@ -21,26 +21,25 @@ package com.lunatech.doclets.jax.jaxrs.writers;
 import java.io.IOException;
 import java.util.Map;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.sun.javadoc.Doc;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
-import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
 
   private Resource resource;
 
-  public SummaryWriter(ConfigurationImpl configuration, Resource resource) {
+  public SummaryWriter(JAXConfiguration configuration, Resource resource) {
     super(configuration, getWriter(configuration));
     this.resource = resource;
   }
 
-  private static HtmlDocletWriter getWriter(Configuration configuration) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration) {
     try {
-      return new HtmlDocletWriter((ConfigurationImpl) configuration, "", "overview-summary.html", "");
+      return new HtmlDocletWriter(configuration.parentConfiguration, "", "overview-summary.html", "");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
