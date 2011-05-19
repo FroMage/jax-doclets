@@ -18,11 +18,7 @@
  */
 package com.lunatech.doclets.jax;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -444,6 +440,22 @@ public class Utils {
       os.flush();
       os.close();
       stream.close();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static String readResource(File input) {
+    try {
+      Reader stream = new FileReader(input);
+      StringBuilder output = new StringBuilder();
+      char[] buffer = new char[1024];
+      int read;
+      while ((read = stream.read(buffer)) >= 0) {
+        output.append(buffer, 0, read);
+      }
+      stream.close();
+      return output.toString();
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

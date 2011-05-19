@@ -31,17 +31,10 @@ import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
-import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.InputWrappedTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.ReturnWrappedTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.*;
 import com.lunatech.doclets.jax.jaxrs.writers.IndexWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
-import com.sun.javadoc.ClassDoc;
-import com.sun.javadoc.DocErrorReporter;
-import com.sun.javadoc.LanguageVersion;
-import com.sun.javadoc.RootDoc;
+import com.sun.javadoc.*;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
@@ -82,6 +75,7 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new HTTPTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new ReturnWrappedTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new InputWrappedTaglet()));
+    htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new IncludeTaglet()));
   }
 
   @Override
@@ -108,8 +102,11 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     jaxrsMethods.addAll(new ResourceClass(klass, null).getMethods());
   }
 
-  public void warn(String string) {
-    System.err.println("Warning: " + string);
+  public void warn(String warning) {
+    conf.parentConfiguration.root.printWarning(warning);
   }
 
+  public void printError(SourcePosition position, String error) {
+    conf.parentConfiguration.root.printError(position, error);
+  }
 }
