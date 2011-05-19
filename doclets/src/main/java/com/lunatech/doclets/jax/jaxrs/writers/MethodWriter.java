@@ -18,6 +18,7 @@
  */
 package com.lunatech.doclets.jax.jaxrs.writers;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,7 @@ public class MethodWriter extends DocletWriter {
       print(method.getDoc());
       close("p");
     }
+    printIncludes();
     open("dl");
     printInput();
     printOutput();
@@ -84,6 +86,24 @@ public class MethodWriter extends DocletWriter {
     printHTTPResponseHeaders();
     // printSees();
     close("dl");
+  }
+
+  private void printIncludes() {
+    MethodDoc javaDoc = method.getJavaDoc();
+    Tag[] includes = Utils.getTags(javaDoc, "include");
+    if(includes == null)
+      return;
+    File relativeTo = javaDoc.containingClass().position().file().getParentFile();
+    for(Tag include : includes){
+      String fileName = include.text();
+      File file = new File(relativeTo, fileName);
+      if(!file.exists()){
+        doclet.printError(include.position(), "Missing included file: "+fileName);
+        continue;
+      }
+      String text = Utils.readResource(file);
+      print(text);
+    }
   }
 
   /*
