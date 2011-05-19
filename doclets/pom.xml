@@ -67,6 +67,7 @@
 							<links>
 								<link>http://java.sun.com/javase/7/docs/api/</link>
 							</links>
+              <additionalparam>-disablejsontypename true</additionalparam>
 						</configuration>
 					</execution>
 					<execution>

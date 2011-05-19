@@ -100,7 +100,7 @@ public class MethodWriter extends DocletWriter {
     TagletOutputImpl output = new TagletOutputImpl("");
     Set<String> tagletsSet = new HashSet<String>();
     tagletsSet.add(tagletName);
-    Utils.genTagOuput(configuration.tagletManager, javaDoc, configuration.tagletManager.getCustomTags(javaDoc), writer
+    Utils.genTagOuput(configuration.parentConfiguration.tagletManager, javaDoc, configuration.parentConfiguration.tagletManager.getCustomTags(javaDoc), writer
         .getTagletWriterInstance(false), output, tagletsSet);
     writer.print(output.toString());
   }
@@ -166,7 +166,7 @@ public class MethodWriter extends DocletWriter {
   private void printOutputGenericType(Type type) {
     String link = null;
     if (!type.isPrimitive()) {
-      link = Utils.getExternalLink(configuration, type, writer);
+      link = Utils.getExternalLink(configuration.parentConfiguration, type, writer);
     }
 
     if (link == null) {
@@ -206,7 +206,7 @@ public class MethodWriter extends DocletWriter {
     }
 
     if (!type.getType().isPrimitive()) {
-      link = Utils.getExternalLink(configuration, type.getType(), writer);
+      link = Utils.getExternalLink(configuration.parentConfiguration, type.getType(), writer);
     }
 
     if (link == null) {

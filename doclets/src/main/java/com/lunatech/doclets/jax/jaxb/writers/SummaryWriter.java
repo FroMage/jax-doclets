@@ -24,26 +24,26 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.lunatech.doclets.jax.jaxb.model.Registry;
 import com.sun.javadoc.Doc;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
-import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
 
   private Registry registry;
 
-  public SummaryWriter(ConfigurationImpl configuration, Registry registry) {
+  public SummaryWriter(JAXConfiguration configuration, Registry registry) {
     super(configuration, getWriter(configuration));
     this.registry = registry;
   }
 
-  private static HtmlDocletWriter getWriter(Configuration configuration) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration) {
     try {
-      return new HtmlDocletWriter((ConfigurationImpl) configuration, "", "overview-summary.html", "");
+      return new HtmlDocletWriter(configuration.parentConfiguration, "", "overview-summary.html", "");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

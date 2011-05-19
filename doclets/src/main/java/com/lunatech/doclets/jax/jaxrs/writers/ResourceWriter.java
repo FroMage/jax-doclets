@@ -22,27 +22,27 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxrs.JAXRSConfiguration;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.sun.javadoc.Doc;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
-import com.sun.tools.doclets.internal.toolkit.Configuration;
 
 public class ResourceWriter extends DocletWriter {
 
-  public ResourceWriter(ConfigurationImpl configuration, Resource resource, JAXRSDoclet doclet) {
+  public ResourceWriter(JAXConfiguration configuration, Resource resource, JAXRSDoclet doclet) {
     super(configuration, getWriter(configuration, resource), resource, doclet);
   }
 
-  private static HtmlDocletWriter getWriter(Configuration configuration, Resource resource) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, Resource resource) {
     String pathName = Utils.urlToPath(resource);
     Utils.log(pathName);
     try {
-      return new HtmlDocletWriter((ConfigurationImpl) configuration, pathName, "index.html", Utils.urlToRoot(resource));
+      return new HtmlDocletWriter(configuration.parentConfiguration, pathName, "index.html", Utils.urlToRoot(resource));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -176,7 +176,7 @@ public class ResourceWriter extends DocletWriter {
   private void printResourceInfo() {
     open("h2");
     print("Path: ");
-    String jaxrscontext = Utils.getOption(this.configuration.root.options(), "-jaxrscontext");
+    String jaxrscontext = ((JAXRSConfiguration)configuration).jaxrscontext;
     String name = resource.getName();
     if (Utils.isEmptyOrNull(name))
       name = Utils.unStartSlashify(Utils.unEndSlashify(jaxrscontext));

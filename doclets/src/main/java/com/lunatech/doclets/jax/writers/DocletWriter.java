@@ -18,8 +18,8 @@
  */
 package com.lunatech.doclets.jax.writers;
 
+import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class DocletWriter {
@@ -28,9 +28,9 @@ public class DocletWriter {
 
   protected HtmlDocletWriter writer;
 
-  protected ConfigurationImpl configuration;
+  protected JAXConfiguration configuration;
 
-  public DocletWriter(ConfigurationImpl configuration, HtmlDocletWriter writer) {
+  public DocletWriter(JAXConfiguration configuration, HtmlDocletWriter writer) {
     this.writer = writer;
     this.configuration = configuration;
   }
@@ -39,7 +39,7 @@ public class DocletWriter {
     return writer;
   }
 
-  public ConfigurationImpl getConfiguration() {
+  public JAXConfiguration getConfiguration() {
     return configuration;
   }
 
@@ -81,20 +81,20 @@ public class DocletWriter {
     around("TITLE", title);
     close("TITLE");
     tag("LINK REL='stylesheet' TYPE='text/css' HREF='" + writer.relativePath + "doclet.css' TITLE='Style'");
-    String charset = configuration.charset;
+    String charset = configuration.parentConfiguration.charset;
     if (Utils.isEmptyOrNull(charset))
       charset = "UTF-8";
     print("<META http-equiv=\"Content-Type\" content=\"text/html; " + "charset=" + charset + "\">\n");
     close("HEAD");
     open("BODY");
-    String msg = configuration.header;
+    String msg = configuration.parentConfiguration.header;
     if (msg != null) {
       print(msg);
     }
   }
 
   protected void printFooter() {
-    String msg = configuration.footer;
+    String msg = configuration.parentConfiguration.footer;
     if (msg != null) {
       print(msg);
     }
