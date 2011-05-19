@@ -106,7 +106,7 @@ public class Utils {
     }
     // try on the declaring class
     for (final MethodDoc declaringMethod : declaringClass.methods(false)) {
-      if (method.overrides(declaringMethod)) {
+      if (overrides(method, declaringMethod)) {
         if (hasAnnotation(declaringMethod, soughtAnnotations)) {
           return declaringMethod;
         }
@@ -114,6 +114,15 @@ public class Utils {
       }
     }
     return null;
+  }
+
+  /**
+   * JavaDoc's MethodDoc.overrides(MethodDoc) is just broken as it doesn't do interfaces properly
+   */
+  private static boolean overrides(MethodDoc overridingMethod, MethodDoc overriddenMethod){
+    return
+            overridingMethod.name().equals(overriddenMethod.name())
+                    && overridingMethod.signature().equals(overriddenMethod.signature());
   }
 
   public static AnnotationDesc findMethodAnnotation(final ClassDoc declaringClass, final MethodDoc method,
@@ -124,7 +133,7 @@ public class Utils {
     }
     // try on the declaring class
     for (final MethodDoc declaringMethod : declaringClass.methods(false)) {
-      if (method.overrides(declaringMethod)) {
+      if (overrides(method, declaringMethod)) {
         return findAnnotation(declaringMethod, soughtAnnotations);
       }
     }

@@ -31,6 +31,7 @@ import com.lunatech.doclets.jax.Utils;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.MethodDoc;
+import sun.reflect.generics.scope.MethodScope;
 
 public class ResourceClass {
 
@@ -62,13 +63,33 @@ public class ResourceClass {
     rootConsumesAnnotation = Utils.findAnnotation(declaringClass, Utils.getConsumesClass());
     // this needs to be done before we create the methods
     setupPath();
-    for (final MethodDoc method : resourceClass.methods(false)) {
-      MethodDoc declaringMethod = Utils.findAnnotatedMethod(declaringClass, method, Path.class, GET.class, PUT.class, DELETE.class,
-                                                            HEAD.class, POST.class);
-      if (declaringMethod != null) {
-        methods.add(new ResourceMethod(method, declaringMethod, this));
+    Map<String, List<MethodDoc>> handledMethods = new HashMap<String, List<MethodDoc>>();
+    do{
+      METHODS:
+      for (final MethodDoc method : resourceClass.methods(false)) {
+        // only consider methods we haven't already overridden
+        List<MethodDoc> overridingMethods = handledMethods.get(method.name());
+        if(overridingMethods != null){
+          for(MethodDoc overridingMethod : overridingMethods){
+            if(overridingMethod.overrides(method))
+              // skip it we've already done it
+              continue METHODS;
+          }
+        }
+        MethodDoc declaringMethod = Utils.findAnnotatedMethod(declaringClass, method, Path.class, GET.class, PUT.class, DELETE.class,
+                HEAD.class, POST.class);
+        if (declaringMethod != null) {
+          methods.add(new ResourceMethod(method, declaringMethod, this));
+          // ok we've handled it
+          if(overridingMethods == null){
+            overridingMethods = new LinkedList<MethodDoc>();
+            handledMethods.put(method.name(), overridingMethods);
+          }
+          overridingMethods.add(method);
+        }
       }
-    }
+      resourceClass = resourceClass.superclass();
+    }while(resourceClass != null);
   }
 
     private void setupPath() {
