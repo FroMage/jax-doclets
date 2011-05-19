@@ -51,6 +51,7 @@ The following standard JAX-RS annotations are supported on resource methods or c
     
 h2. Supported RESTEasy JAX-RS extension annotations
 
-The following RESTEasy annotations are supported on resource methods or classes:
+If the optional RESTEasy dependency is present,
+the following RESTEasy annotations are supported on resource methods or classes:
 
 * {{@Form}}
