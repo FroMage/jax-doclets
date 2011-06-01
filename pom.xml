@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.lunatech.jax-doclets</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.9.0-SNAPSHOT</version>
+	<version>0.9.0</version>
 	<name>jax-doclets</name>
 	<packaging>pom</packaging>
 	<description>jax-doclets allows you to generate JavaDoc documentation for specific Java annotation-based extensions.</description>
@@ -28,9 +28,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://jax-doclets.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://jax-doclets.googlecode.com/svn/trunk/</developerConnection>
-		<url>http://code.google.com/p/jax-doclets/source/browse/</url>
+		<connection>scm:svn:http://jax-doclets.googlecode.com/svn/tags/0.9.0</connection>
+		<developerConnection>scm:svn:https://jax-doclets.googlecode.com/svn/tags/0.9.0</developerConnection>
+		<url>http://code.google.com/p/jax-doclets/source/browse/tags/0.9.0</url>
 	</scm>
 
 	<issueManagement>
