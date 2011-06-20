@@ -97,6 +97,9 @@ public class JAXBClassWriter extends DocletWriter {
         if (type == MemberType.Element && ((Element) member).isWrapped()) {
           print(" (wrapped by " + ((Element) member).getWrapperName() + ")");
         }
+        if (member.getNamespace() != null) {
+          around("span class='namespace'", "(" + member.getNamespace() + ")");
+        }
         close("td");
       }
       open("td");
@@ -153,8 +156,13 @@ public class JAXBClassWriter extends DocletWriter {
   }
 
   private void printSummary() {
-    open("h2");
-    around("h2", "Name: " + jaxbClass.getName());
+    open("h2 class='classname'");
+    around("span class='name'", "Name: " + jaxbClass.getName());
+    String namespace = jaxbClass.getNamespace();
+    if (namespace != null) {
+      around("span class='namespace'", "Namespace: " + namespace);
+    }
+    close("h2");
     Doc javaDoc = jaxbClass.getJavaDoc();
     if (javaDoc != null && javaDoc.tags() != null) {
       writer.printInlineComment(javaDoc);
@@ -182,6 +190,10 @@ public class JAXBClassWriter extends DocletWriter {
     around("b", "XML Example:");
     open("pre");
     print("&lt;" + jaxbClass.getName());
+    String namespace = jaxbClass.getNamespace();
+    if (namespace != null) {
+      print(" xmlns='" + namespace + "'");
+    }
     Collection<Attribute> attributes = jaxbClass.getAttributes();
     for (Attribute attribute : attributes) {
       print("\n ");
@@ -193,8 +205,15 @@ public class JAXBClassWriter extends DocletWriter {
     print(">\n");
     Collection<Element> elements = jaxbClass.getElements();
     for (Element element : elements) {
+      String elementNamespace = element.getNamespace();
       if (element.isWrapped()) {
-        print("  &lt;" + element.getWrapperName() + ">\n ");
+        //TODO test wrapper namespace ?
+        print("  &lt;" + element.getWrapperName());
+        //equals with null will return false and display 'null' namespace which is a user error
+        if (namespace != null && !namespace.equals(elementNamespace)) {
+          print(" xmlns='" + elementNamespace + "'");
+        }
+        print(">\n ");
       }
       print("  ");
       if (element.isCollection())
@@ -202,6 +221,11 @@ public class JAXBClassWriter extends DocletWriter {
 
       print("&lt;");
       around("a href='#m_" + element.getName() + "'", element.getName());
+      //if wrapper, namespace is already dumped
+      //equals with null will return false and display 'null' namespace which is a user error
+      if (!element.isWrapped() && namespace != null && !namespace.equals(elementNamespace)) {
+        print(" xmlns='" + elementNamespace + "'");
+      }
       print(">");
       printXMLMemberType(element, false);
       print("&lt;/" + element.getName() + ">");

@@ -41,6 +41,8 @@ public class JAXBMember implements Comparable<JAXBMember> {
 
   protected String name;
 
+  protected String namespace;
+  
   protected JAXBClass klass;
 
   private boolean isIDREF;
@@ -51,6 +53,9 @@ public class JAXBMember implements Comparable<JAXBMember> {
     this.xmlAnnotation = xmlAnnotation;
     this.property = property;
     this.name = name;
+    if (xmlAnnotation != null) {
+      this.namespace = (String) Utils.getAnnotationValue(xmlAnnotation, "namespace");
+    }
     this.klass = klass;
     this.isIDREF = Utils.findAnnotation(property, XmlIDREF.class) != null;
     this.isID = Utils.findAnnotation(property, XmlID.class) != null;
@@ -58,6 +63,10 @@ public class JAXBMember implements Comparable<JAXBMember> {
 
   public String getName() {
     return name;
+  }
+  
+  public String getNamespace() {
+    return namespace;
   }
 
   public Doc getJavaDoc() {
