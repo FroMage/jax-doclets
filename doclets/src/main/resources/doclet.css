@@ -1,3 +1,13 @@
+h2.classname .namespace {
+ font-size: small;
+ padding-left: 50px;
+}
+
+#Elements .namespace {
+ font-size: small;
+ padding-left: 5px;
+}
+
 table.info {
  width: 100%;
  border-collapse: collapse;
