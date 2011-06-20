@@ -89,13 +89,13 @@ public class JAXBMember implements Comparable<JAXBMember> {
   }
 
   public String getXSDType() {
-	AnnotationDesc xmlSchemaTypeAnnot = Utils.findAnnotation(property, XmlSchemaType.class);
-	if (xmlSchemaTypeAnnot != null) {
-		String name = (String) Utils.getAnnotationValue(xmlSchemaTypeAnnot, "name");
-		if (name != null) {
-			return "xsd:" + name;
-		}
-	}
+    AnnotationDesc xmlSchemaTypeAnnot = Utils.findAnnotation(property, XmlSchemaType.class);
+    if (xmlSchemaTypeAnnot != null) {
+      String name = (String) Utils.getAnnotationValue(xmlSchemaTypeAnnot, "name");
+      if (name != null) {
+        return "xsd:" + name;
+      }
+    }
     String typeName = getJavaTypeName();
     if (typeName.equals("java.lang.String"))
       return "xsd:string";
