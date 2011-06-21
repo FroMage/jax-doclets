@@ -43,7 +43,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
 
   private static HtmlDocletWriter getWriter(JAXConfiguration configuration) {
     try {
-      return new HtmlDocletWriter(configuration.parentConfiguration, "", "overview-summary.html", "");
+      return new HtmlDocletWriter(configuration.parentConfiguration, "", "index.html", "");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -91,4 +91,14 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
   protected void printHeader() {
     printHeader("Overview of XML elements");
   }
+  
+  @Override
+  protected void printTopMenu(String selected) {
+    open("table", "tbody", "tr");
+    printMenuItem("Overview", writer.relativePath + "index.html", selected);
+    printOtherMenuItems(selected);
+    close("tr", "tbody", "table");
+  }
+  
+  
 }

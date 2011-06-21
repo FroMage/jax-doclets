@@ -281,6 +281,14 @@ public class JAXBClassWriter extends DocletWriter {
   protected void printHeader() {
     printHeader("XML element " + jaxbClass.getName());
   }
+  
+  @Override
+  protected void printTopMenu(String selected) {
+    open("table", "tbody", "tr");
+    printMenuItem("Overview", writer.relativePath + "index.html", selected);
+    printOtherMenuItems(selected);
+    close("tr", "tbody", "table");
+  }
 
   protected void printThirdMenu() {
     open("tr");

@@ -24,7 +24,7 @@ import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class DocletWriter {
 
-  private static final String VERSION = "0.8";
+  private static final String VERSION = "0.9.1";
 
   protected HtmlDocletWriter writer;
 
@@ -120,7 +120,7 @@ public class DocletWriter {
 
   protected void printThirdMenu() {}
 
-  private void printTopMenu(String selected) {
+  protected void printTopMenu(String selected) {
     open("table", "tbody", "tr");
     printMenuItem("Overview", writer.relativePath + "overview-summary.html", selected);
     printOtherMenuItems(selected);
