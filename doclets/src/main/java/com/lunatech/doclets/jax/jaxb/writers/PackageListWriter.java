@@ -55,4 +55,12 @@ public class PackageListWriter extends com.lunatech.doclets.jax.writers.DocletWr
     writer.flush();
     writer.close();
   }
+  
+  @Override
+  protected void printTopMenu(String selected) {
+    open("table", "tbody", "tr");
+    printMenuItem("Overview", writer.relativePath + "index.html", selected);
+    printOtherMenuItems(selected);
+    close("tr", "tbody", "table");
+  }
 }
