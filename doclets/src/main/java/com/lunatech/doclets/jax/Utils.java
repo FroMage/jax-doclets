@@ -316,23 +316,14 @@ public class Utils {
     String name = resource.getAbsolutePath();
     if (name.startsWith("/"))
       name = name.substring(1);
-    return urlToPath(name);
+    return name;
   }
 
-  public static String urlToPath(String name) {
-    if (name == null || name.length() == 0) {
-      return "";
-    }
-    StringBuffer pathstr = new StringBuffer();
-    for (int i = 0; i < name.length(); i++) {
-      char ch = name.charAt(i);
-      if (ch == '/') {
-        pathstr.append(File.separator);
-      } else {
-        pathstr.append(ch);
-      }
-    }
-    return pathstr.toString();
+  public static String urlToSystemPath(Resource resource) {
+    String name = resource.getAbsolutePath();
+    if (name.startsWith("/"))
+      name = name.substring(1);
+    return name.replaceAll("/", File.separator);
   }
 
   public static String urlToClass(JAXBClass from, JAXBClass to) {
