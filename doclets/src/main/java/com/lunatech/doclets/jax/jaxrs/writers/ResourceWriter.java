@@ -39,8 +39,7 @@ public class ResourceWriter extends DocletWriter {
   }
 
   private static HtmlDocletWriter getWriter(JAXConfiguration configuration, Resource resource) {
-    String pathName = Utils.urlToPath(resource);
-    Utils.log(pathName);
+    String pathName = Utils.urlToSystemPath(resource);
     try {
       return new HtmlDocletWriter(configuration.parentConfiguration, pathName, "index.html", Utils.urlToRoot(resource));
     } catch (IOException e) {
