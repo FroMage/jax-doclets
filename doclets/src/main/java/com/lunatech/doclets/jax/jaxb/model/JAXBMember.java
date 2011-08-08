@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSchemaType;
 
 import com.lunatech.doclets.jax.Utils;
@@ -113,6 +114,14 @@ public class JAXBMember implements Comparable<JAXBMember> {
         return "xsd:" + name;
       }
     }
+    AnnotationDesc xmlListAnnot = Utils.findAnnotation(property, XmlList.class);
+    if (xmlListAnnot != null) {
+      return "xsd:list[" + getXSDTypeFromJavaType() + "]";
+    }
+    return getXSDTypeFromJavaType();
+  }
+
+  public String getXSDTypeFromJavaType() {
     String typeName = getJavaTypeName();
     if (typeName.equals("java.lang.String"))
       return "xsd:string";

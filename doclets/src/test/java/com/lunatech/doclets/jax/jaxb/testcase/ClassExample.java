@@ -15,5 +15,14 @@ public class ClassExample {
 		this.byteArray = byteArray;
 	}
 
+	@XmlList
+	@XmlElement
+	private String[] stringArray;
+	public String[] getStringArray() {
+    return stringArray;
+  }
+	public void setStringArray(String[] stringArray) {
+    this.stringArray = stringArray;
+  }
 
 }
