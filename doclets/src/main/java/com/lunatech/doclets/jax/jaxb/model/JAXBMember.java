@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSchemaType;
 
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxb.writers.JAXBClassWriter;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.Doc;
@@ -82,15 +83,40 @@ public class JAXBMember implements Comparable<JAXBMember> {
   }
 
   public boolean isCollectionOrArray() {
-    return isCollection() || isArray();
+    return Utils.isCollection(getType()) || isArray();
   }
 
   public boolean isCollection() {
-    return Utils.isCollection(getType());
+    if (Utils.isCollection(getType())) {
+      if (isXmlList()) {
+        return false;
+      }
+      return true;
+    }
+    if (isArray()) {
+      if (isByteType()) {
+        return false;
+      }
+      if (isXmlList()) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  private boolean isXmlList() {
+    AnnotationDesc xmlListAnnot = Utils.findAnnotation(property, XmlList.class);
+    return xmlListAnnot != null;
   }
 
   public boolean isArray() {
     return Utils.isArray(getType());
+  }
+
+  public boolean isByteType() {
+    String typeName = getJavaTypeName();
+    return typeName.equals("java.lang.Byte") || typeName.equals("byte");
   }
 
   public Type getJavaType() {
@@ -114,8 +140,7 @@ public class JAXBMember implements Comparable<JAXBMember> {
         return "xsd:" + name;
       }
     }
-    AnnotationDesc xmlListAnnot = Utils.findAnnotation(property, XmlList.class);
-    if (xmlListAnnot != null) {
+    if (isXmlList()) {
       return "xsd:list[" + getXSDTypeFromJavaType() + "]";
     }
     return getXSDTypeFromJavaType();
