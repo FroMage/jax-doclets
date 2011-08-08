@@ -569,14 +569,15 @@ public class Utils {
   }
 
   public static boolean isCollection(Type type) {
-    String dimension = type.dimension();
-    if (dimension != null && dimension.length() > 0) {
-      return true;
-    }
     ParameterizedType parameterizedType = type.asParameterizedType();
     Type collectionType = Utils.findSuperType(type, "java.util.Collection");
     // FIXME: this is dodgy at best
     return collectionType != null;
+  }
+
+  public static boolean isArray(Type type) {
+    String dimension = type.dimension();
+    return dimension != null && dimension.length() > 0;
   }
 
   public static Type getCollectionType(Type type, JAXDoclet doclet) {

@@ -4,8 +4,6 @@ import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 
-import java.util.regex.Pattern;
-
 public class JAXRSConfiguration extends JAXConfiguration {
 
 

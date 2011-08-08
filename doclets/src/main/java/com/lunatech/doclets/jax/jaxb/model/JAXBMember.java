@@ -64,7 +64,7 @@ public class JAXBMember implements Comparable<JAXBMember> {
   public String getName() {
     return name;
   }
-  
+
   public String getNamespace() {
     return namespace;
   }
@@ -80,8 +80,16 @@ public class JAXBMember implements Comparable<JAXBMember> {
       return ((FieldDoc) property).type();
   }
 
+  public boolean isCollectionOrArray() {
+    return isCollection() || isArray();
+  }
+
   public boolean isCollection() {
     return Utils.isCollection(getType());
+  }
+
+  public boolean isArray() {
+    return Utils.isArray(getType());
   }
 
   public Type getJavaType() {
@@ -118,8 +126,13 @@ public class JAXBMember implements Comparable<JAXBMember> {
       return "xsd:long";
     if (typeName.equals("java.lang.Short") || typeName.equals("short"))
       return "xsd:short";
-    if (typeName.equals("java.lang.Byte") || typeName.equals("byte"))
+    if (typeName.equals("java.lang.Byte") || typeName.equals("byte")) {
+      if (isArray()) {
+        //TODO how to decide between base64Binary and hexbinary ?
+        return "xsd:base64Binary";
+      }
       return "xsd:byte";
+    }
     if (typeName.equals("java.lang.Float") || typeName.equals("float"))
       return "xsd:float";
     if (typeName.equals("java.lang.Double") || typeName.equals("double"))

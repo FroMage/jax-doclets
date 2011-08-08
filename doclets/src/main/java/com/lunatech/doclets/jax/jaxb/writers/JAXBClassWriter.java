@@ -35,6 +35,8 @@ import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class JAXBClassWriter extends DocletWriter {
 
+  public static final String ZERO_OR_N = "zero or N[";
+
   public JAXBClassWriter(JAXConfiguration configuration, JAXBClass jaxbClass) {
     super(configuration, getWriter(configuration, jaxbClass), jaxbClass);
   }
@@ -119,7 +121,7 @@ public class JAXBClassWriter extends DocletWriter {
 
   private void printXMLMemberType(JAXBMember member, boolean markCollections) {
     if (markCollections && member.isCollection())
-      print("xsd:list[");
+      print(ZERO_OR_N);
     if (member.isIDREF())
       print("xsd:IDREF[");
     if (member.isID())
@@ -139,7 +141,7 @@ public class JAXBClassWriter extends DocletWriter {
   }
 
   private void printJSONMemberType(JAXBMember member, boolean markCollections) {
-    if (markCollections && member.isCollection())
+    if (markCollections && member.isCollectionOrArray())
       print("[");
     if (member.isJAXBType()) {
       String name = member.getJavaTypeName();
@@ -151,7 +153,7 @@ public class JAXBClassWriter extends DocletWriter {
       print(" /* ID */");
     if (member.isIDREF())
       print(" /* IDREF */");
-    if (markCollections && member.isCollection())
+    if (markCollections && member.isCollectionOrArray())
       print("]");
   }
 
@@ -217,7 +219,7 @@ public class JAXBClassWriter extends DocletWriter {
       }
       print("  ");
       if (element.isCollection())
-        print("xsd:list[");
+        print(ZERO_OR_N);
 
       print("&lt;");
       around("a href='#m_" + element.getName() + "'", element.getName());
