@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
+import com.lunatech.doclets.jax.jpa.model.JPAClass;
 import com.lunatech.doclets.jax.writers.DocletWriter;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.AnnotationDesc.ElementValuePair;
@@ -151,6 +152,10 @@ public class Utils {
     return findAnnotation(overriddenParameter, soughtAnnotations);
   }
 
+  public static List<AnnotationDesc> findAnnotations(final ProgramElementDoc programElementDoc, final Class<?>... soughtAnnotations) {
+	  return findAnnotations(programElementDoc.annotations(), soughtAnnotations);
+  }
+
   public static AnnotationDesc findAnnotation(final ProgramElementDoc programElementDoc, final Class<?>... soughtAnnotations) {
     return findAnnotation(programElementDoc.annotations(), soughtAnnotations);
   }
@@ -170,6 +175,19 @@ public class Utils {
     }
     return null;
   }
+
+  public static List<AnnotationDesc> findAnnotations(final AnnotationDesc[] annotations, final Class<?>... soughtAnnotations) {
+	  List<AnnotationDesc> ret = new LinkedList<AnnotationDesc>();
+	    for (final AnnotationDesc annotation : annotations) {
+	      final AnnotationTypeDoc annotationType = annotation.annotationType();
+	      for (final Class<?> soughtAnnotation : soughtAnnotations) {
+	        if (annotationType.qualifiedTypeName().equals(soughtAnnotation.getName())) {
+	          ret.add(annotation);
+	        }
+	      }
+	    }
+	    return ret;
+	  }
 
   public static ClassDoc findAnnotatedInterface(final ClassDoc klass, final Class<?>... soughtAnnotations) {
     // find it in the interfaces
@@ -312,6 +330,10 @@ public class Utils {
     return DirectoryManager.getPath(jaxbClass.getPackageName());
   }
 
+  public static String classToPath(JPAClass jpaClass) {
+	  return DirectoryManager.getPath(jpaClass.getPackageName());
+  }
+
   public static String urlToPath(Resource resource) {
     String name = resource.getAbsolutePath();
     if (name.startsWith("/"))
@@ -330,12 +352,20 @@ public class Utils {
     return classToRoot(from) + classToPath(to) + "/" + to.getShortClassName() + ".html";
   }
 
+  public static String urlToClass(JPAClass from, JPAClass to) {
+	  return classToRoot(from) + classToPath(to) + "/" + to.getShortClassName() + ".html";
+  }
+
   public static String urlToType(ClassDoc klass) {
     return DirectoryManager.getPathToClass(klass);
   }
 
   public static String classToRoot(JAXBClass klass) {
     return DirectoryManager.getRelativePath(klass.getPackageName());
+  }
+
+  public static String classToRoot(JPAClass klass) {
+	  return DirectoryManager.getRelativePath(klass.getPackageName());
   }
 
   public static String urlToRoot(Resource resource) {
