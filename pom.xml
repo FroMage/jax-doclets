@@ -65,13 +65,41 @@
 		<repository>
 			<id>jboss</id>
 			<name>JBoss Repo</name>
-			<url>https://repository.jboss.org/nexus</url>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>jboss-3dparty</id>
+			<name>JBoss Repo</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
 		</repository>
 		<repository>
 			<id>exo</id>
 			<url>http://repository.exoplatform.org/public</url>
 		</repository>
 	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jboss</id>
+			<name>JBoss Repo</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>jboss-3dparty</id>
+			<name>JBoss Repo</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>exo</id>
+			<url>http://repository.exoplatform.org/public</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<modules>
 		<module>doclets</module>
@@ -112,9 +140,27 @@
 				<type>jar</type>
 			</dependency>
 			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.0-api</artifactId>
+				<version>1.0.1.Final</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>3.6.0.Final</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.2</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
 				<groupId>org.jboss.resteasy</groupId>
 				<artifactId>resteasy-jaxrs</artifactId>
-				<version>1.2.1.GA</version>
+				<version>2.0.0.GA</version>
 				<exclusions>
 					<exclusion>
 						<artifactId>httpclient</artifactId>
