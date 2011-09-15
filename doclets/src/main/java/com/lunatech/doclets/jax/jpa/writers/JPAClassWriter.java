@@ -178,4 +178,9 @@ public class JPAClassWriter extends DocletWriter {
 		printLink(!jpaClass.getRelations().isEmpty(), "#Relations", "relation");
 		close("td", "tr");
 	}
+	
+  protected void printOtherMenuItems(String selected) {
+    printMenuItem("Graph", writer.relativePath + "graph.html", selected);
+  }
+
 }

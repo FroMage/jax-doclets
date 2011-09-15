@@ -99,5 +99,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
     close("tr", "tbody", "table");
   }
   
-  
+  protected void printOtherMenuItems(String selected) {
+    printMenuItem("Graph", writer.relativePath + "graph.html", selected);
+  }
 }
