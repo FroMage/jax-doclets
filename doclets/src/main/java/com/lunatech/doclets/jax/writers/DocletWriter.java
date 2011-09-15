@@ -85,6 +85,7 @@ public class DocletWriter {
     if (Utils.isEmptyOrNull(charset))
       charset = "UTF-8";
     print("<META http-equiv=\"Content-Type\" content=\"text/html; " + "charset=" + charset + "\">\n");
+    printAdditionalHeader();
     close("HEAD");
     open("BODY");
     String msg = configuration.parentConfiguration.header;
@@ -92,6 +93,8 @@ public class DocletWriter {
       print(msg);
     }
   }
+
+  protected void printAdditionalHeader() {}
 
   protected void printFooter() {
     String msg = configuration.parentConfiguration.footer;
