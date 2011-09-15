@@ -459,6 +459,18 @@ public class Utils {
       copyResource(defaultCSS, new File(configuration.parentConfiguration.destDirName, "doclet.css"));
   }
 
+  public static void copyJPAResources(JAXConfiguration configuration) {
+    copyResource(configuration, "graph.js");
+    copyResource(configuration, "jit.js");
+  }
+
+  private static void copyResource(JAXConfiguration configuration, String name) {
+    InputStream graphHTML = Utils.class.getResourceAsStream("/"+name);
+    if (graphHTML == null)
+      throw new RuntimeException("Failed to find "+name+" (incorrect jax-doclets packaging?)");
+    copyResource(graphHTML, new File(configuration.parentConfiguration.destDirName, name));
+  }
+
   private static void copyResource(InputStream stream, File output) {
     try {
       OutputStream os = new FileOutputStream(output);

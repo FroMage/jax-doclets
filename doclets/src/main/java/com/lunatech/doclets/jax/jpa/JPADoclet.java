@@ -89,6 +89,7 @@ public class JPADoclet extends JAXDoclet<JPAConfiguration> {
     new PackageListWriter(conf, registry).write();
     new SummaryWriter(conf, registry).write();
     Utils.copyResources(conf);
+    Utils.copyJPAResources(conf);
   }
 
   private void handleJPAClass(final ClassDoc klass) {
