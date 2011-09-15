@@ -28,6 +28,8 @@ import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jpa.model.JPAClass;
 import com.lunatech.doclets.jax.jpa.model.JPAMember;
 import com.lunatech.doclets.jax.jpa.model.Registry;
+import com.lunatech.doclets.jax.jpa.writers.GraphDataWriter;
+import com.lunatech.doclets.jax.jpa.writers.GraphWriter;
 import com.lunatech.doclets.jax.jpa.writers.PackageListWriter;
 import com.lunatech.doclets.jax.jpa.writers.SummaryWriter;
 import com.sun.javadoc.ClassDoc;
@@ -88,6 +90,8 @@ public class JPADoclet extends JAXDoclet<JPAConfiguration> {
     }
     new PackageListWriter(conf, registry).write();
     new SummaryWriter(conf, registry).write();
+    new GraphWriter(conf, registry).write();
+    new GraphDataWriter(conf, registry).write();
     Utils.copyResources(conf);
     Utils.copyJPAResources(conf);
   }
