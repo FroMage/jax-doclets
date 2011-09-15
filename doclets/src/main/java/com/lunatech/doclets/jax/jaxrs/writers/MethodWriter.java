@@ -387,7 +387,7 @@ public class MethodWriter extends DocletWriter {
       boolean first = true;
       for (String name : queryParameters.keySet()) {
         if (!first)
-          print("&");
+          print("&amp;");
         print(name);
         print("=…");
         first = false;
@@ -417,7 +417,7 @@ public class MethodWriter extends DocletWriter {
       boolean first = true;
       for (String name : formParameters.keySet()) {
         if (!first)
-          print("&");
+          print("&amp;");
         print(name);
         print("=…");
         first = false;

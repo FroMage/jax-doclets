@@ -438,7 +438,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
       boolean first = true;
       for (String name : queryParameters.keySet()) {
         if (!first)
-          strbuf.append("&");
+          strbuf.append("&amp;");
         strbuf.append(name);
         strbuf.append("=…");
         first = false;
