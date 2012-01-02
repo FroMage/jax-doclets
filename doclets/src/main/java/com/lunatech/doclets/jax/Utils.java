@@ -344,7 +344,7 @@ public class Utils {
     String name = resource.getAbsolutePath();
     if (name.startsWith("/"))
       name = name.substring(1);
-    return name.replaceAll("/", File.separator);
+    return name.replace('/', File.separatorChar);
   }
 
   public static String urlToClass(JAXBClass from, JAXBClass to) {
