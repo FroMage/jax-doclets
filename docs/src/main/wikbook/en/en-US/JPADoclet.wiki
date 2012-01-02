@@ -1,0 +1,35 @@
+h1. JPA doclet documentation
+
+The JPA doclet generates documentation for your data model based on JPA annotations and JavaDoc comments
+on your JPA classes.
+
+h2. Supported standard JavaDoc tags
+
+There are no standard JavaDoc tags supported. Everything comes from JavaDoc comments.
+
+h2. Supported specific JavaDoc tags
+
+There are no specific JavaDoc tags supported.
+
+h2. Supported JPA annotations
+
+The following standard JPA annotations are supported on classes or properties:
+    
+* {{@Entity}}
+* {{@Id}}
+* {{@ManyToMany}}
+* {{@OneToMany}}
+* {{@ManyToOne}}
+* {{@OneToOne}}
+* {{@Table}}
+* {{@Transient}}
+* {{@GeneratedValue}}
+* {{@Id}}
+* {{@Lob}}
+    
+h2. Supported Hibernate JPA extension annotations
+
+If the optional Hibernate dependency is present,
+the following Hibernate annotations are supported on classes or properties:
+
+* {{@GenericGenerator}}
