@@ -28,14 +28,14 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://jax-doclets.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://jax-doclets.googlecode.com/svn/trunk/</developerConnection>
-		<url>http://code.google.com/p/jax-doclets/source/browse/</url>
+		<connection>scm:git:git://github.com/FroMage/jax-doclets.git</connection>
+		<developerConnection>scm:git:git@github.com:FroMage/jax-doclets.git</developerConnection>
+		<url>https://github.com/FroMage/jax-doclets</url>
 	</scm>
 
 	<issueManagement>
-		<system>Google Code</system>
-		<url>http://code.google.com/p/jax-doclets/issues/list</url>
+		<system>github</system>
+		<url>https://github.com/FroMage/jax-doclets/issues</url>
 	</issueManagement>
 
 	<developers>
