@@ -19,6 +19,7 @@
 package com.lunatech.doclets.jax.jaxb.model;
 
 import com.sun.javadoc.AnnotationDesc;
+import com.sun.javadoc.AnnotationDesc.ElementValuePair;
 import com.sun.javadoc.ProgramElementDoc;
 
 public class Element extends JAXBMember {
@@ -40,5 +41,40 @@ public class Element extends JAXBMember {
 
   public String getWrapperName() {
     return wrapperName;
+  }
+  
+  private ElementValuePair getElementAttribute(String attributeName){
+	  if(xmlAnnotation != null && xmlAnnotation.elementValues() != null){
+		  for (ElementValuePair elementValuePair : xmlAnnotation.elementValues()) {
+			  if(attributeName.equals(elementValuePair.element().name())){
+				  return elementValuePair;
+			  }
+		  }
+	  }
+	  return null;
+  }
+  
+  public boolean isRequired(){
+	  ElementValuePair elementValuePair = getElementAttribute("required");
+	  if(elementValuePair != null){
+		  return "true".equalsIgnoreCase(elementValuePair.value().toString());
+	  }
+	  return false;
+  }
+  
+  public boolean isNillable(){
+	  ElementValuePair elementValuePair = getElementAttribute("nillable");
+	  if(elementValuePair != null){
+		  return "true".equalsIgnoreCase(elementValuePair.value().toString());
+	  }
+	  return false;
+  }
+  
+  public String getDefaultValue(){
+	  ElementValuePair elementValuePair = getElementAttribute("defaultValue");
+	  if(elementValuePair != null){
+		  return elementValuePair.value().toString();
+	  }
+	  return "";
   }
 }

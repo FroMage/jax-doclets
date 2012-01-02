@@ -89,6 +89,11 @@ public class JAXBClassWriter extends DocletWriter {
       around("th class='TableHeader'", "Name");
     }
     around("th class='TableHeader'", "Type");
+    if(type == MemberType.Element){
+      around("th class='TableHeader'", "Required");
+      around("th class='TableHeader'", "Nillable");
+      around("th class='TableHeader'", "Default Value");
+    }
     around("th class='TableHeader'", "Description");
     close("tr");
     for (JAXBMember member : members) {
@@ -107,6 +112,18 @@ public class JAXBClassWriter extends DocletWriter {
       open("td");
       printXMLMemberType(member, true);
       close("td");
+      if(type == MemberType.Element){
+        Element element = (Element) member;
+        open("td");
+        print("" + element.isRequired());
+        close("td");
+        open("td");
+        print("" + element.isNillable());
+        close("td");
+        open("td");
+        print(element.getDefaultValue());
+        close("td");
+      }
       open("td");
       Doc javaDoc = member.getJavaDoc();
       if (javaDoc != null && javaDoc.firstSentenceTags() != null)
