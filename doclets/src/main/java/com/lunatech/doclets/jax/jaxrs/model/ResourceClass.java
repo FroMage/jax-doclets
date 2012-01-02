@@ -18,7 +18,11 @@
  */
 package com.lunatech.doclets.jax.jaxrs.model;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,7 +35,6 @@ import com.lunatech.doclets.jax.Utils;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.MethodDoc;
-import sun.reflect.generics.scope.MethodScope;
 
 public class ResourceClass {
 

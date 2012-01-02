@@ -59,6 +59,7 @@ public class ReturnWrappedTaglet implements Taglet {
     return false;
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void register(Map tagletMap) {
     ReturnWrappedTaglet tag = new ReturnWrappedTaglet();
     Taglet t = (Taglet) tagletMap.get(tag.getName());

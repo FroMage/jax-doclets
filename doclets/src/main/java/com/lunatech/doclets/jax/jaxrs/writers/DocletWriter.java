@@ -21,7 +21,6 @@ package com.lunatech.doclets.jax.jaxrs.writers;
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class DocletWriter extends com.lunatech.doclets.jax.writers.DocletWriter {

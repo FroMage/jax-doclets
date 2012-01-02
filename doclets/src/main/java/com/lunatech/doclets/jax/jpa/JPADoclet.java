@@ -110,10 +110,8 @@ public class JPADoclet extends JAXDoclet<JPAConfiguration> {
   }
 
   private void handleJPAClass(final ClassDoc klass) {
-    ClassDoc superDoc = klass.superclass();
     if (!registry.isJPAClass(klass.qualifiedTypeName()) && !klass.isPrimitive() && !klass.qualifiedTypeName().startsWith("java.")
         && !klass.isEnum()) {
-      String fqName = klass.qualifiedTypeName();
       JPAClass jpaClass = new JPAClass(klass, registry, this);
       jpaClasses.add(jpaClass);
       registry.addJPAClass(jpaClass);

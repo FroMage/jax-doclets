@@ -61,6 +61,7 @@ public class HTTPTaglet implements Taglet {
     return false;
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void register(Map tagletMap) {
     HTTPTaglet tag = new HTTPTaglet();
     Taglet t = (Taglet) tagletMap.get(tag.getName());

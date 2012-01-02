@@ -610,7 +610,6 @@ public class Utils {
   }
 
   public static boolean isCollection(Type type) {
-    ParameterizedType parameterizedType = type.asParameterizedType();
     Type collectionType = Utils.findSuperType(type, "java.util.Collection");
     // FIXME: this is dodgy at best
     return collectionType != null;
@@ -621,7 +620,7 @@ public class Utils {
     return dimension != null && dimension.length() > 0;
   }
 
-  public static Type getCollectionType(Type type, JAXDoclet doclet) {
+  public static Type getCollectionType(Type type, JAXDoclet<?> doclet) {
     Type collectionType = Utils.findSuperType(type, "java.util.Collection");
     // FIXME: this is dodgy at best
     if (collectionType != null) {
@@ -634,7 +633,8 @@ public class Utils {
     return type;
   }
 
-  public static Type resolveType(String typeName, ClassDoc klass, JAXDoclet doclet) {
+  @SuppressWarnings("deprecation")
+  public static Type resolveType(String typeName, ClassDoc klass, JAXDoclet<?> doclet) {
     log("resolving " + typeName + " in " + klass.qualifiedTypeName());
     // first look in inner classes
     for (ClassDoc innerClass : klass.innerClasses(false)) {
@@ -664,7 +664,7 @@ public class Utils {
     return null;
   }
 
-  public static JaxType parseType(String typeName, ClassDoc containingClass, JAXDoclet doclet) throws InvalidJaxTypeException {
+  public static JaxType parseType(String typeName, ClassDoc containingClass, JAXDoclet<?> doclet) throws InvalidJaxTypeException {
     typeName = typeName.trim();
     char[] chars = typeName.toCharArray();
     Stack<JaxType> types = new Stack<JaxType>();
@@ -777,9 +777,10 @@ public class Utils {
     return strbuf.toString();
   }
 
+  @SuppressWarnings("serial")
   public static class InvalidJaxTypeException extends Exception {}
 
-  private static void setupType(JaxType currentType, StringBuffer currentTypeName, ClassDoc containingClass, JAXDoclet doclet)
+  private static void setupType(JaxType currentType, StringBuffer currentTypeName, ClassDoc containingClass, JAXDoclet<?> doclet)
       throws InvalidJaxTypeException {
     if (currentTypeName.length() == 0) {
       throw new InvalidJaxTypeException();

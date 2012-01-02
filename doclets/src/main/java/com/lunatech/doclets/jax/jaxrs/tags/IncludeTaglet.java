@@ -59,6 +59,7 @@ public class IncludeTaglet implements Taglet {
     return false;
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void register(Map tagletMap) {
     IncludeTaglet tag = new IncludeTaglet();
     Taglet t = (Taglet) tagletMap.get(tag.getName());

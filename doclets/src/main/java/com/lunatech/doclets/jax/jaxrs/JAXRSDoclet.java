@@ -24,17 +24,24 @@ import java.util.List;
 
 import javax.ws.rs.Path;
 
-import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.JAXDoclet;
 import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
-import com.lunatech.doclets.jax.jaxrs.tags.*;
+import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.IncludeTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.InputWrappedTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.ReturnWrappedTaglet;
 import com.lunatech.doclets.jax.jaxrs.writers.IndexWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
-import com.sun.javadoc.*;
+import com.sun.javadoc.ClassDoc;
+import com.sun.javadoc.DocErrorReporter;
+import com.sun.javadoc.LanguageVersion;
+import com.sun.javadoc.RootDoc;
+import com.sun.javadoc.SourcePosition;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;

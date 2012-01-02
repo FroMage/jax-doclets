@@ -59,6 +59,7 @@ public class InputWrappedTaglet implements Taglet {
     return false;
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void register(Map tagletMap) {
     InputWrappedTaglet tag = new InputWrappedTaglet();
     Taglet t = (Taglet) tagletMap.get(tag.getName());

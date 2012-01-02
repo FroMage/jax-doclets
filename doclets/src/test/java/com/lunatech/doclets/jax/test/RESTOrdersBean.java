@@ -93,7 +93,7 @@ public class RESTOrdersBean implements RESTOrders {
 
     @XmlElementWrapper(name = "object-list")
     @XmlElement(name = "object")
-    List objectList;
+    List<?> objectList;
 
     OrderStatusType status;
 

@@ -19,24 +19,15 @@
 package com.lunatech.doclets.jax.jpa.writers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
-import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jpa.model.JPAClass;
 import com.lunatech.doclets.jax.jpa.model.Registry;
-import com.lunatech.doclets.jax.jpa.model.Relation;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class GraphWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
 
-  private Registry registry;
-
   public GraphWriter(JAXConfiguration configuration, Registry registry) {
     super(configuration, getWriter(configuration));
-    this.registry = registry;
   }
 
   private static HtmlDocletWriter getWriter(JAXConfiguration configuration) {

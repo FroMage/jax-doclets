@@ -19,9 +19,11 @@
 package com.lunatech.doclets.jax.jaxrs.model;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,10 +36,10 @@ import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.writers.ResourceWriter;
 import com.sun.javadoc.Doc;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 
 public class Resource {
 
+  @SuppressWarnings("unchecked")
   final static Class<? extends Annotation>[] PreferredHttpMethods = new Class[] { GET.class, HEAD.class, POST.class, PUT.class,
                                                                                  DELETE.class };
 

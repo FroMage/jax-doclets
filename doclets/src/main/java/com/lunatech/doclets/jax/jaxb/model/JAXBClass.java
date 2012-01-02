@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlValue;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.lunatech.doclets.jax.jaxb.JAXBDoclet;
 import com.lunatech.doclets.jax.jaxb.writers.JAXBClassWriter;
 import com.sun.javadoc.AnnotationDesc;
@@ -46,7 +45,6 @@ import com.sun.javadoc.Doc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ProgramElementDoc;
-import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 
 public class JAXBClass implements Comparable<JAXBClass> {
 

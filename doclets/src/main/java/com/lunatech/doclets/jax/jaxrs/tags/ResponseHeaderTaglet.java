@@ -61,6 +61,7 @@ public class ResponseHeaderTaglet implements Taglet {
     return false;
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void register(Map tagletMap) {
     ResponseHeaderTaglet tag = new ResponseHeaderTaglet();
     Taglet t = (Taglet) tagletMap.get(tag.getName());

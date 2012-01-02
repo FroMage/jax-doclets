@@ -10,7 +10,6 @@ import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jpa.JPADoclet;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.AnnotationValue;
-import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.Doc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.MethodDoc;

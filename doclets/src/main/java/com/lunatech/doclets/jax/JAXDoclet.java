@@ -1,6 +1,5 @@
 package com.lunatech.doclets.jax;
 
-import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.RootDoc;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;

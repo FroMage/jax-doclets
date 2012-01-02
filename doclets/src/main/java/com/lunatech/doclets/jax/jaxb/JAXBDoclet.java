@@ -25,7 +25,6 @@ import java.util.regex.Pattern;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.JAXDoclet;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
@@ -65,7 +64,8 @@ public class JAXBDoclet extends JAXDoclet<JAXBConfiguration> {
     }
     String value = Utils.getOption(options, "-matchingjaxbnamesonly");
     try {
-      Pattern p = value == null ? null : Pattern.compile(value);
+      if(value != null)
+        Pattern.compile(value);
     } catch (Throwable t) {
       return false;
     }
@@ -111,7 +111,6 @@ public class JAXBDoclet extends JAXDoclet<JAXBConfiguration> {
   }
 
   private void handleJAXBClass(final ClassDoc klass) {
-    ClassDoc superDoc = klass.superclass();
     if (!registry.isJAXBClass(klass.qualifiedTypeName()) && !klass.isPrimitive() && !klass.qualifiedTypeName().startsWith("java.")
         && !klass.isEnum()) {
       String fqName = klass.qualifiedTypeName();

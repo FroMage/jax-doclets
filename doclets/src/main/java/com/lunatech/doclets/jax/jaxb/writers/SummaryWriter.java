@@ -26,7 +26,6 @@ import java.util.List;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.lunatech.doclets.jax.jaxb.model.Registry;
 import com.sun.javadoc.Doc;

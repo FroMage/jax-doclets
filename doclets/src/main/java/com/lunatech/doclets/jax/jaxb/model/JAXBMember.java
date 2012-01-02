@@ -26,7 +26,6 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSchemaType;
 
 import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jaxb.writers.JAXBClassWriter;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.Doc;

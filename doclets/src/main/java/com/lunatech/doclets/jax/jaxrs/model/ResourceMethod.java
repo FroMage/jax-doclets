@@ -426,12 +426,10 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
     StringBuffer strbuf = new StringBuffer(resource.getAbsolutePath());
     Map<String, MethodParameter> matrixParameters = getMatrixParameters();
     if (!matrixParameters.isEmpty()) {
-      boolean first = true;
       for (String name : matrixParameters.keySet()) {
         strbuf.append(";");
         strbuf.append(name);
         strbuf.append("=…");
-        first = false;
       }
     }
     Map<String, MethodParameter> queryParameters = getQueryParameters();
