@@ -253,21 +253,21 @@ public class JAXBClassWriter extends DocletWriter {
     around("b", "JSON Example:");
     open("pre");
     if (((JAXBConfiguration) configuration).enableJSONTypeName)
-      print("{'" + jaxbClass.getName() + "':\n");
+      print("{\"" + jaxbClass.getName() + "\":\n");
     print(" {\n");
     Collection<Attribute> attributes = jaxbClass.getAttributes();
     for (Attribute attribute : attributes) {
-      print("  '@");
+      print("  \"@");
       around("a href='#m_" + attribute.getName() + "'", attribute.getName());
-      print("': ");
+      print("\": ");
       printJSONMemberType(attribute, false);
       print(",\n");
     }
     Collection<Element> elements = jaxbClass.getElements();
     for (Element element : elements) {
-      print("   '");
+      print("   \"");
       around("a href='#m_" + element.getName() + "'", element.isWrapped() ? element.getWrapperName() : element.getName());
-      print("': ");
+      print("\": ");
       printJSONMemberType(element, true);
       print(",\n");
     }
