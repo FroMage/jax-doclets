@@ -175,7 +175,7 @@ public class ResourceWriter extends DocletWriter {
   private void printResourceInfo() {
     open("h2");
     print("Path: ");
-    String jaxrscontext = ((JAXRSConfiguration)configuration).jaxrscontext;
+    String jaxrscontext = ((JAXRSConfiguration) configuration).jaxrscontext;
     String name = resource.getName();
     if (Utils.isEmptyOrNull(name))
       name = Utils.unStartSlashify(Utils.unEndSlashify(jaxrscontext));
@@ -233,8 +233,8 @@ public class ResourceWriter extends DocletWriter {
         open("dd");
         around("b", param.getName());
         String regex = rm.getPathParamRegex(param.getName());
-        if(regex != null){
-          around("tt", " ("+regex+")");
+        if (regex != null) {
+          around("tt", " (" + regex + ")");
         }
         print(" - " + param.getDoc());
         close("dd");

@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 public class JAXBConfiguration extends JAXConfiguration {
 
   public boolean enableJSONTypeName;
+
   public Pattern onlyOutputJAXBClassPackagesMatching;
+
   public boolean enableJaxBMethodOutput = true;
 
   public JAXBConfiguration(ConfigurationImpl conf) {
@@ -23,7 +25,7 @@ public class JAXBConfiguration extends JAXConfiguration {
     if (pattern != null) {
       onlyOutputJAXBClassPackagesMatching = Pattern.compile(pattern);
     }
-    enableJaxBMethodOutput  = !Utils.hasOption(options, "-disablejaxbmethodoutput");
-    enableJSONTypeName  = !Utils.hasOption(options, "-disablejsontypename");
+    enableJaxBMethodOutput = !Utils.hasOption(options, "-disablejaxbmethodoutput");
+    enableJSONTypeName = !Utils.hasOption(options, "-disablejsontypename");
   }
 }

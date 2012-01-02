@@ -7,10 +7,11 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Bill {
-	@Id
-	@GeneratedValue
-	public String id;
-	
-	@OneToOne
-	public Order order;
+
+  @Id
+  @GeneratedValue
+  public String id;
+
+  @OneToOne
+  public Order order;
 }

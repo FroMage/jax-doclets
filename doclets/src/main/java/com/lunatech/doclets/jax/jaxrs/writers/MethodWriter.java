@@ -91,14 +91,14 @@ public class MethodWriter extends DocletWriter {
   private void printIncludes() {
     MethodDoc javaDoc = method.getJavaDoc();
     Tag[] includes = Utils.getTags(javaDoc, "include");
-    if(includes == null)
+    if (includes == null)
       return;
     File relativeTo = javaDoc.containingClass().position().file().getParentFile();
-    for(Tag include : includes){
+    for (Tag include : includes) {
       String fileName = include.text();
       File file = new File(relativeTo, fileName);
-      if(!file.exists()){
-        doclet.printError(include.position(), "Missing included file: "+fileName);
+      if (!file.exists()) {
+        doclet.printError(include.position(), "Missing included file: " + fileName);
         continue;
       }
       String text = Utils.readResource(file);
@@ -120,8 +120,9 @@ public class MethodWriter extends DocletWriter {
     TagletOutputImpl output = new TagletOutputImpl("");
     Set<String> tagletsSet = new HashSet<String>();
     tagletsSet.add(tagletName);
-    Utils.genTagOuput(configuration.parentConfiguration.tagletManager, javaDoc, configuration.parentConfiguration.tagletManager.getCustomTags(javaDoc), writer
-        .getTagletWriterInstance(false), output, tagletsSet);
+    Utils.genTagOuput(configuration.parentConfiguration.tagletManager, javaDoc,
+                      configuration.parentConfiguration.tagletManager.getCustomTags(javaDoc), writer.getTagletWriterInstance(false),
+                      output, tagletsSet);
     writer.print(output.toString());
   }
 

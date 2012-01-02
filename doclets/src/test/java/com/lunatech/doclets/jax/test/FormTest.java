@@ -58,7 +58,8 @@ public class FormTest {
     String cookie;
 
     /**
-     * @param m2 The second foo matrix param.
+     * @param m2
+     *          The second foo matrix param.
      */
     void setFoo(@MatrixParam("m2") String m2) {}
   }

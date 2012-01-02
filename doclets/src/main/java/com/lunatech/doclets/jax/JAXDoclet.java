@@ -9,6 +9,7 @@ import com.sun.tools.doclets.formats.html.HtmlDoclet;
 public abstract class JAXDoclet<T extends JAXConfiguration> {
 
   private final HtmlDoclet htmlDoclet = new HtmlDoclet();
+
   public final T conf;
 
   public JAXDoclet(RootDoc rootDoc) {

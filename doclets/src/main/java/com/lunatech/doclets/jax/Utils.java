@@ -118,12 +118,11 @@ public class Utils {
   }
 
   /**
-   * JavaDoc's MethodDoc.overrides(MethodDoc) is just broken as it doesn't do interfaces properly
+   * JavaDoc's MethodDoc.overrides(MethodDoc) is just broken as it doesn't do
+   * interfaces properly
    */
-  private static boolean overrides(MethodDoc overridingMethod, MethodDoc overriddenMethod){
-    return
-            overridingMethod.name().equals(overriddenMethod.name())
-                    && overridingMethod.signature().equals(overriddenMethod.signature());
+  private static boolean overrides(MethodDoc overridingMethod, MethodDoc overriddenMethod) {
+    return overridingMethod.name().equals(overriddenMethod.name()) && overridingMethod.signature().equals(overriddenMethod.signature());
   }
 
   public static AnnotationDesc findMethodAnnotation(final ClassDoc declaringClass, final MethodDoc method,
@@ -153,7 +152,7 @@ public class Utils {
   }
 
   public static List<AnnotationDesc> findAnnotations(final ProgramElementDoc programElementDoc, final Class<?>... soughtAnnotations) {
-	  return findAnnotations(programElementDoc.annotations(), soughtAnnotations);
+    return findAnnotations(programElementDoc.annotations(), soughtAnnotations);
   }
 
   public static AnnotationDesc findAnnotation(final ProgramElementDoc programElementDoc, final Class<?>... soughtAnnotations) {
@@ -177,17 +176,17 @@ public class Utils {
   }
 
   public static List<AnnotationDesc> findAnnotations(final AnnotationDesc[] annotations, final Class<?>... soughtAnnotations) {
-	  List<AnnotationDesc> ret = new LinkedList<AnnotationDesc>();
-	    for (final AnnotationDesc annotation : annotations) {
-	      final AnnotationTypeDoc annotationType = annotation.annotationType();
-	      for (final Class<?> soughtAnnotation : soughtAnnotations) {
-	        if (annotationType.qualifiedTypeName().equals(soughtAnnotation.getName())) {
-	          ret.add(annotation);
-	        }
-	      }
-	    }
-	    return ret;
-	  }
+    List<AnnotationDesc> ret = new LinkedList<AnnotationDesc>();
+    for (final AnnotationDesc annotation : annotations) {
+      final AnnotationTypeDoc annotationType = annotation.annotationType();
+      for (final Class<?> soughtAnnotation : soughtAnnotations) {
+        if (annotationType.qualifiedTypeName().equals(soughtAnnotation.getName())) {
+          ret.add(annotation);
+        }
+      }
+    }
+    return ret;
+  }
 
   public static ClassDoc findAnnotatedInterface(final ClassDoc klass, final Class<?>... soughtAnnotations) {
     // find it in the interfaces
@@ -331,7 +330,7 @@ public class Utils {
   }
 
   public static String classToPath(JPAClass jpaClass) {
-	  return DirectoryManager.getPath(jpaClass.getPackageName());
+    return DirectoryManager.getPath(jpaClass.getPackageName());
   }
 
   public static String urlToPath(Resource resource) {
@@ -353,7 +352,7 @@ public class Utils {
   }
 
   public static String urlToClass(JPAClass from, JPAClass to) {
-	  return classToRoot(from) + classToPath(to) + "/" + to.getShortClassName() + ".html";
+    return classToRoot(from) + classToPath(to) + "/" + to.getShortClassName() + ".html";
   }
 
   public static String urlToType(ClassDoc klass) {
@@ -365,7 +364,7 @@ public class Utils {
   }
 
   public static String classToRoot(JPAClass klass) {
-	  return DirectoryManager.getRelativePath(klass.getPackageName());
+    return DirectoryManager.getRelativePath(klass.getPackageName());
   }
 
   public static String urlToRoot(Resource resource) {
@@ -465,9 +464,9 @@ public class Utils {
   }
 
   private static void copyResource(JAXConfiguration configuration, String name) {
-    InputStream graphHTML = Utils.class.getResourceAsStream("/"+name);
+    InputStream graphHTML = Utils.class.getResourceAsStream("/" + name);
     if (graphHTML == null)
-      throw new RuntimeException("Failed to find "+name+" (incorrect jax-doclets packaging?)");
+      throw new RuntimeException("Failed to find " + name + " (incorrect jax-doclets packaging?)");
     copyResource(graphHTML, new File(configuration.parentConfiguration.destDirName, name));
   }
 
@@ -743,42 +742,42 @@ public class Utils {
     return currentType;
   }
 
-    public static String removeFragmentRegexes(String fragment, Map<String, String> regexFragments) {
-        Pattern regexPattern = Pattern.compile("\\{(\\w[\\w\\.-]*):");
-        Matcher regexMatcher = regexPattern.matcher(fragment);
-        int start = 0;
-        char[] fragmentArray = fragment.toCharArray();
-        StringBuffer strbuf = new StringBuffer();
-        while(regexMatcher.find(start)){
-            strbuf.append(fragment.substring(start, regexMatcher.start()));
-            String name = regexMatcher.group(1);
-            strbuf.append("{").append(name);
-            // now move on until after the last "}"
-            int openBraces = 1;
-            start = regexMatcher.end();
-            while(start < fragmentArray.length){
-                char c = fragmentArray[start++];
-                if(c == '{')
-                    openBraces++;
-                else if(c == '}'){
-                    openBraces--;
-                    if(openBraces == 0)
-                        break;
-                }
-            }
-            if(openBraces > 0)
-                throw new RuntimeException("Invalid Path fragment: "+fragment);
-            String regex = fragment.substring(regexMatcher.end(), start-1);
-            if(regexFragments != null)
-                regexFragments.put(name, regex);
-            strbuf.append("}");
+  public static String removeFragmentRegexes(String fragment, Map<String, String> regexFragments) {
+    Pattern regexPattern = Pattern.compile("\\{(\\w[\\w\\.-]*):");
+    Matcher regexMatcher = regexPattern.matcher(fragment);
+    int start = 0;
+    char[] fragmentArray = fragment.toCharArray();
+    StringBuffer strbuf = new StringBuffer();
+    while (regexMatcher.find(start)) {
+      strbuf.append(fragment.substring(start, regexMatcher.start()));
+      String name = regexMatcher.group(1);
+      strbuf.append("{").append(name);
+      // now move on until after the last "}"
+      int openBraces = 1;
+      start = regexMatcher.end();
+      while (start < fragmentArray.length) {
+        char c = fragmentArray[start++];
+        if (c == '{')
+          openBraces++;
+        else if (c == '}') {
+          openBraces--;
+          if (openBraces == 0)
+            break;
         }
-        // add all that remains
-        strbuf.append(fragment.substring(start, fragmentArray.length));
-        return strbuf.toString();
+      }
+      if (openBraces > 0)
+        throw new RuntimeException("Invalid Path fragment: " + fragment);
+      String regex = fragment.substring(regexMatcher.end(), start - 1);
+      if (regexFragments != null)
+        regexFragments.put(name, regex);
+      strbuf.append("}");
     }
+    // add all that remains
+    strbuf.append(fragment.substring(start, fragmentArray.length));
+    return strbuf.toString();
+  }
 
-    public static class InvalidJaxTypeException extends Exception {}
+  public static class InvalidJaxTypeException extends Exception {}
 
   private static void setupType(JaxType currentType, StringBuffer currentTypeName, ClassDoc containingClass, JAXDoclet doclet)
       throws InvalidJaxTypeException {

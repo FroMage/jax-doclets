@@ -44,7 +44,7 @@ public class JAXBMember implements Comparable<JAXBMember> {
   protected String name;
 
   protected String namespace;
-  
+
   protected JAXBClass klass;
 
   private boolean isIDREF;
@@ -162,7 +162,7 @@ public class JAXBMember implements Comparable<JAXBMember> {
       return "xsd:short";
     if (typeName.equals("java.lang.Byte") || typeName.equals("byte")) {
       if (isArray()) {
-        //TODO how to decide between base64Binary and hexbinary ?
+        // TODO how to decide between base64Binary and hexbinary ?
         return "xsd:base64Binary";
       }
       return "xsd:byte";

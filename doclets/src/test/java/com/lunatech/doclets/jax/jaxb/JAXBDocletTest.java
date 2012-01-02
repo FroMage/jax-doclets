@@ -20,16 +20,14 @@ import com.sun.tools.javadoc.RootDocImpl;
 
 public class JAXBDocletTest {
 
-  private static final Logger logger = Logger.getLogger(JAXBDocletTest.class
-      .getName());
+  private static final Logger logger = Logger.getLogger(JAXBDocletTest.class.getName());
 
   @Test
   public void testStart() throws IOException {
     Context context = new Context();
     Options compOpts = Options.instance(context);
     compOpts.put("-sourcepath", "src/test/java");
-    new PublicMessager(context, "test", new PrintWriter(new LogWriter(
-        Level.SEVERE), true), new PrintWriter(new LogWriter(Level.WARNING),
+    new PublicMessager(context, "test", new PrintWriter(new LogWriter(Level.SEVERE), true), new PrintWriter(new LogWriter(Level.WARNING),
         true), new PrintWriter(new LogWriter(Level.FINE), true));
 
     JavadocTool javadocTool = JavadocTool.make0(context);
@@ -39,10 +37,9 @@ public class JAXBDocletTest {
     ListBuffer<String> packageNames = new ListBuffer<String>();
     ListBuffer<String> excludedPackages = new ListBuffer<String>();
 
-    RootDocImpl rootDocImpl = javadocTool.getRootDocImpl("en", "",
-        new ModifierFilter(ModifierFilter.ALL_ACCESS), javaNames.toList(),
-        options.toList(), false, packageNames.toList(),
-        excludedPackages.toList(), false, false, false);
+    RootDocImpl rootDocImpl = javadocTool.getRootDocImpl("en", "", new ModifierFilter(ModifierFilter.ALL_ACCESS), javaNames.toList(),
+                                                         options.toList(), false, packageNames.toList(), excludedPackages.toList(), false,
+                                                         false, false);
     logger.info(rootDocImpl.getRawCommentText());
     JAXBDoclet.start(rootDocImpl);
   }
@@ -61,11 +58,9 @@ public class JAXBDocletTest {
         logger.log(level, s);
     }
 
-    public void flush() throws IOException {
-    }
+    public void flush() throws IOException {}
 
-    public void close() throws IOException {
-    }
+    public void close() throws IOException {}
   }
 
   public class PublicMessager extends Messager {
@@ -74,8 +69,7 @@ public class JAXBDocletTest {
       super(context, s);
     }
 
-    public PublicMessager(Context context, String s, PrintWriter printWriter,
-        PrintWriter printWriter1, PrintWriter printWriter2) {
+    public PublicMessager(Context context, String s, PrintWriter printWriter, PrintWriter printWriter1, PrintWriter printWriter2) {
       super(context, s, printWriter, printWriter1, printWriter2);
     }
   }

@@ -5,10 +5,14 @@ import javax.ws.rs.Path;
 
 @Path("includes")
 public class IncludeTest {
+
   /**
-   *  This is an include test
-   *  @include foo.html
+   * This is an include test
+   * 
+   * @include foo.html
    */
   @GET
-  public String get(){return null;}
+  public String get() {
+    return null;
+  }
 }

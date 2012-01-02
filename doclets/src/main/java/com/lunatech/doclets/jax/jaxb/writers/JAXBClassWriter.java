@@ -209,9 +209,10 @@ public class JAXBClassWriter extends DocletWriter {
     for (Element element : elements) {
       String elementNamespace = element.getNamespace();
       if (element.isWrapped()) {
-        //TODO test wrapper namespace ?
+        // TODO test wrapper namespace ?
         print("  &lt;" + element.getWrapperName());
-        //equals with null will return false and display 'null' namespace which is a user error
+        // equals with null will return false and display 'null' namespace which
+        // is a user error
         if (namespace != null && !namespace.equals(elementNamespace)) {
           print(" xmlns='" + elementNamespace + "'");
         }
@@ -223,8 +224,9 @@ public class JAXBClassWriter extends DocletWriter {
 
       print("&lt;");
       around("a href='#m_" + element.getName() + "'", element.getName());
-      //if wrapper, namespace is already dumped
-      //equals with null will return false and display 'null' namespace which is a user error
+      // if wrapper, namespace is already dumped
+      // equals with null will return false and display 'null' namespace which
+      // is a user error
       if (!element.isWrapped() && namespace != null && !namespace.equals(elementNamespace)) {
         print(" xmlns='" + elementNamespace + "'");
       }
@@ -250,7 +252,7 @@ public class JAXBClassWriter extends DocletWriter {
   private void printJSONExample() {
     around("b", "JSON Example:");
     open("pre");
-    if(((JAXBConfiguration)configuration).enableJSONTypeName)
+    if (((JAXBConfiguration) configuration).enableJSONTypeName)
       print("{'" + jaxbClass.getName() + "':\n");
     print(" {\n");
     Collection<Attribute> attributes = jaxbClass.getAttributes();
@@ -275,7 +277,7 @@ public class JAXBClassWriter extends DocletWriter {
       print(",\n");
     }
     print(" }\n");
-    if(((JAXBConfiguration)configuration).enableJSONTypeName)
+    if (((JAXBConfiguration) configuration).enableJSONTypeName)
       print("}\n");
     close("pre");
   }
@@ -283,7 +285,7 @@ public class JAXBClassWriter extends DocletWriter {
   protected void printHeader() {
     printHeader("XML element " + jaxbClass.getName());
   }
-  
+
   @Override
   protected void printTopMenu(String selected) {
     open("table", "tbody", "tr");

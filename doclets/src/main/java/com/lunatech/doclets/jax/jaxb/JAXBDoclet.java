@@ -50,10 +50,10 @@ public class JAXBDoclet extends JAXDoclet<JAXBConfiguration> {
     if ("-matchingjaxbnamesonly".equals(option)) {
       return 2;
     }
-	  if("-disablejaxbmethodoutput".equals(option)) {
+    if ("-disablejaxbmethodoutput".equals(option)) {
       return 1;
-	  }
-    if("-disablejsontypename".equals(option)) {
+    }
+    if ("-disablejsontypename".equals(option)) {
       return 1;
     }
     return HtmlDoclet.optionLength(option);

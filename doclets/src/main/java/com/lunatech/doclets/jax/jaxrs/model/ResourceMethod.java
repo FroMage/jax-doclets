@@ -55,7 +55,8 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   private MethodDoc declaringMethod;
 
   private String path;
-  private Map<String,String> regexFragments = new HashMap<String,String>();
+
+  private Map<String, String> regexFragments = new HashMap<String, String>();
 
   private ResourceClass resource;
 
@@ -86,6 +87,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   private MethodOutput output;
 
   private ResourceClass resourceLocator;
+
   private Class<?> formClass;
 
   public ResourceMethod(MethodDoc method, MethodDoc declaringMethod, ResourceClass resource) {
@@ -94,7 +96,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
     this.declaringClass = resource.getDeclaringClass();
     this.declaringMethod = declaringMethod;
     this.output = new MethodOutput(declaringMethod);
-    try{
+    try {
       formClass = Class.forName("org.jboss.resteasy.annotations.Form");
     } catch (ClassNotFoundException e) {
       // we won't support @Form
@@ -175,7 +177,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
                              new RealMethodParameter(parameter, i, headerParamAnnotation, MethodParameterType.Header, declaringMethod));
         continue;
       }
-      if(formClass != null){
+      if (formClass != null) {
         final AnnotationDesc formAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, formClass);
         if (formAnnotation != null) {
           walkFormParameter(parameter.type().asClassDoc());
@@ -476,8 +478,8 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   }
 
   public String getPathParamRegex(String name) {
-    if(regexFragments.containsKey(name))
+    if (regexFragments.containsKey(name))
       return regexFragments.get(name);
-    return resource.getPathParamRegex(name);    
+    return resource.getPathParamRegex(name);
   }
 }

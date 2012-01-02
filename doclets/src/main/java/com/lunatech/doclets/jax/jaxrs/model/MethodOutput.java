@@ -21,17 +21,17 @@ public class MethodOutput {
   }
 
   public boolean isOutputWrapped() {
-	    Type returnType = declaringMethod.returnType();
-	    if (returnType.isPrimitive()) {
-	    	return false;
-	    }
-	    if(returnWrappedTags==null) {
-	    	return false;
-	    }
-	    if(returnWrappedTags.length==0) {
-	    	return false;
-	    }
-	    return true;
+    Type returnType = declaringMethod.returnType();
+    if (returnType.isPrimitive()) {
+      return false;
+    }
+    if (returnWrappedTags == null) {
+      return false;
+    }
+    if (returnWrappedTags.length == 0) {
+      return false;
+    }
+    return true;
   }
 
   public int getOutputWrappedCount() {

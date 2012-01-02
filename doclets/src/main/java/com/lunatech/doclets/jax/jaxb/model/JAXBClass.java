@@ -59,7 +59,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
   private ClassDoc klass;
 
   private String name;
-  
+
   private String namespace;
 
   private Registry registry;
@@ -76,7 +76,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
     AnnotationDesc rootAnnotation = Utils.findAnnotation(klass, XmlRootElement.class);
     if (rootAnnotation != null) {
       name = (String) Utils.getAnnotationValue(rootAnnotation, "name");
-      namespace = (String)  Utils.getAnnotationValue(rootAnnotation, "namespace");
+      namespace = (String) Utils.getAnnotationValue(rootAnnotation, "namespace");
     }
     if (name == null)
       name = klass.simpleTypeName();
@@ -236,7 +236,7 @@ public class JAXBClass implements Comparable<JAXBClass> {
   public String getName() {
     return name;
   }
-  
+
   public String getNamespace() {
     return namespace;
   }

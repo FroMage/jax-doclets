@@ -16,43 +16,43 @@ import javax.persistence.Transient;
 
 /**
  * This is the order type, bla bla
+ * 
  * @author stephane
  */
 @Entity
 public class Order {
-	/**
-	 * This is my ID and I love it
-	 */
-	@Id
-	@GeneratedValue
-	public Long id;
-	
-	@Column(name = "column_with_name")
-	public String columnWithName;
-	
-	@Column
-	public String columnWithAnnotation;
-	
-	public String columnWithoutAnnotation;
-	
-	public transient String transientColumn;
 
-	@Transient
-	public String transientAnnotatedColumn;
+  /**
+   * This is my ID and I love it
+   */
+  @Id
+  @GeneratedValue
+  public Long id;
 
-	@JoinColumn(name = "bill_id")
-	@OneToOne
-	public Bill bill;
+  @Column(name = "column_with_name")
+  public String columnWithName;
 
-	@OneToMany(mappedBy = "order")
-	public List<Orderline> orderlineList;
+  @Column
+  public String columnWithAnnotation;
 
-	@OneToMany(mappedBy = "order")
-	public Set<Orderline> orderlineSet;
+  public String columnWithoutAnnotation;
 
-	@JoinTable(name = "order2item", 
-			joinColumns = @JoinColumn(name = "item_id"), 
-			inverseJoinColumns = @JoinColumn(name = "order_id"))
-	@ManyToMany
-	public Set<Item> itemSet;
+  public transient String transientColumn;
+
+  @Transient
+  public String transientAnnotatedColumn;
+
+  @JoinColumn(name = "bill_id")
+  @OneToOne
+  public Bill bill;
+
+  @OneToMany(mappedBy = "order")
+  public List<Orderline> orderlineList;
+
+  @OneToMany(mappedBy = "order")
+  public Set<Orderline> orderlineSet;
+
+  @JoinTable(name = "order2item", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
+  @ManyToMany
+  public Set<Item> itemSet;
 }

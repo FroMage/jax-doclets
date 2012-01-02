@@ -46,22 +46,24 @@ public class Resource {
   List<ResourceMethod> methods = new LinkedList<ResourceMethod>();
 
   String fragment;
+
   String fragmentWithNoRegex;
-  Map<String,String> regexFragments = new HashMap<String,String>();
+
+  Map<String, String> regexFragments = new HashMap<String, String>();
 
   private Resource parent;
 
-    public Resource(String fragment, Resource parent) {
+  public Resource(String fragment, Resource parent) {
     this.fragment = fragment;
     this.parent = parent;
     parseFragment();
   }
 
-    private void parseFragment() {
-        fragmentWithNoRegex = Utils.removeFragmentRegexes(fragment, regexFragments);
-    }
+  private void parseFragment() {
+    fragmentWithNoRegex = Utils.removeFragmentRegexes(fragment, regexFragments);
+  }
 
-    private ResourceMethod getDocMethod() {
+  private ResourceMethod getDocMethod() {
     // find the first method in order of preference
     for (Class<? extends Annotation> httpMethod : PreferredHttpMethods) {
       ResourceMethod method = getMethodForHTTPMethod(httpMethod);

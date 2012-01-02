@@ -7,10 +7,11 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Orderline {
-	@Id
-	@GeneratedValue
-	public String id;
-	
-	@ManyToOne
-	public Order order;
+
+  @Id
+  @GeneratedValue
+  public String id;
+
+  @ManyToOne
+  public Order order;
 }

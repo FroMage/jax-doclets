@@ -48,28 +48,28 @@ public class GraphDataWriter extends com.lunatech.doclets.jax.writers.DocletWrit
     print("var json = [\n");
     boolean doComma = false;
     for (JPAClass klass : registry.getJPAClasses()) {
-      if(doComma)
+      if (doComma)
         print(" ,\n");
       doComma = true;
       String url = writer.relativePath + Utils.classToPath(klass) + "/" + klass.getShortClassName() + ".html";
-    	print(" {\n");
-    	print("  name: '"+klass.getName()+"',\n");
-      print("  id: '"+klass.getName()+"',\n");
+      print(" {\n");
+      print("  name: '" + klass.getName() + "',\n");
+      print("  id: '" + klass.getName() + "',\n");
       print("  data: {\n");
-      print("   $url: '"+url+"'\n");
+      print("   $url: '" + url + "'\n");
       print("  },\n");
       print("  adjacencies: [\n");
       boolean doComma2 = false;
-      for(Relation relation : klass.getRelations()){
-        if(doComma2)
+      for (Relation relation : klass.getRelations()) {
+        if (doComma2)
           print("   ,\n");
         doComma2 = true;
         String name = relation.getJavaTypeName();
         JPAClass typeClass = registry.getJPAClass(name);
         print("   {\n");
-        print("    nodeTo: '"+typeClass.getName()+"',\n");
+        print("    nodeTo: '" + typeClass.getName() + "',\n");
         print("    data: {\n");
-        print("     $labeltext: '"+relation.getRelationFrom()+".."+relation.getRelationTo()+"',\n");
+        print("     $labeltext: '" + relation.getRelationFrom() + ".." + relation.getRelationTo() + "',\n");
         print("     $type: 'fooType'\n");
         print("    }\n");
         print("   }\n");

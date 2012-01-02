@@ -42,15 +42,15 @@ import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
 
 public class JPADoclet extends JAXDoclet<JPAConfiguration> {
-	
+
   public static final boolean isHibernatePresent;
-  
-  static{
+
+  static {
     boolean test = false;
-    try{
+    try {
       Class.forName("org.hibernate.annotations.GenericGenerator");
       test = true;
-    }catch(Throwable t){
+    } catch (Throwable t) {
       // no Hibernate support
     }
     isHibernatePresent = test;

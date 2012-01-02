@@ -52,7 +52,7 @@ public class GraphWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
     print("<script type='text/javascript' src='jit.js'></script>\n");
     print("<script type='text/javascript' src='graph-data.js'></script>\n");
   }
-  
+
   public void write() {
     printHeader("Graph");
     printMenu("Graph");

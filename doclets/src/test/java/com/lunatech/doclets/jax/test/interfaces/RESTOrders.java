@@ -48,7 +48,7 @@ import com.lunatech.doclets.jax.test.RESTOrdersBean.ResourceLink;
  * @author stephane
  */
 @Path("/")
-@Produces( { "application/xml", "text/plain" })
+@Produces({ "application/xml", "text/plain" })
 public interface RESTOrders {
 
   //

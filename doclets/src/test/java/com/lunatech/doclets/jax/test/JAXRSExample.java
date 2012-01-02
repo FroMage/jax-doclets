@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlValue;
  * An example JAX-RS resource
  */
 @Path("/example")
-@Produces( { "application/xml", "application/*+xml" })
+@Produces({ "application/xml", "application/*+xml" })
 public class JAXRSExample {
 
   /**

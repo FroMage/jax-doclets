@@ -6,7 +6,6 @@ import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 
 public class JAXRSConfiguration extends JAXConfiguration {
 
-
   public String jaxrscontext;
 
   public JAXRSConfiguration(ConfigurationImpl conf) {

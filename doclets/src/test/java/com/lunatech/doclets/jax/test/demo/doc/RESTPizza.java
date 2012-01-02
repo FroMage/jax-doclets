@@ -14,8 +14,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.annotations.Form;
 
-@Consumes( { "application/ingredient" })
-@Produces( { "application/pizza" })
+@Consumes({ "application/ingredient" })
+@Produces({ "application/pizza" })
 @Path("/pizzas")
 public class RESTPizza {
 

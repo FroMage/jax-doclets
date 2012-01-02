@@ -49,7 +49,7 @@ public class ResourceClass {
 
   private String path;
 
-  private Map<String,String> regexFragments = new HashMap<String,String>();
+  private Map<String, String> regexFragments = new HashMap<String, String>();
 
   public ResourceClass(ClassDoc resourceClass, ResourceMethod methodLocator) {
     this.parentMethod = methodLocator;
@@ -64,24 +64,23 @@ public class ResourceClass {
     // this needs to be done before we create the methods
     setupPath();
     Map<String, List<MethodDoc>> handledMethods = new HashMap<String, List<MethodDoc>>();
-    do{
-      METHODS:
-      for (final MethodDoc method : resourceClass.methods(false)) {
+    do {
+      METHODS: for (final MethodDoc method : resourceClass.methods(false)) {
         // only consider methods we haven't already overridden
         List<MethodDoc> overridingMethods = handledMethods.get(method.name());
-        if(overridingMethods != null){
-          for(MethodDoc overridingMethod : overridingMethods){
-            if(overridingMethod.overrides(method))
+        if (overridingMethods != null) {
+          for (MethodDoc overridingMethod : overridingMethods) {
+            if (overridingMethod.overrides(method))
               // skip it we've already done it
               continue METHODS;
           }
         }
         MethodDoc declaringMethod = Utils.findAnnotatedMethod(declaringClass, method, Path.class, GET.class, PUT.class, DELETE.class,
-                HEAD.class, POST.class);
+                                                              HEAD.class, POST.class);
         if (declaringMethod != null) {
           methods.add(new ResourceMethod(method, declaringMethod, this));
           // ok we've handled it
-          if(overridingMethods == null){
+          if (overridingMethods == null) {
             overridingMethods = new LinkedList<MethodDoc>();
             handledMethods.put(method.name(), overridingMethods);
           }
@@ -89,22 +88,22 @@ public class ResourceClass {
         }
       }
       resourceClass = resourceClass.superclass();
-    }while(resourceClass != null);
+    } while (resourceClass != null);
   }
 
-    private void setupPath() {
-        if (rootPathAnnotation != null) {
-          path = (String) Utils.getAnnotationValue(rootPathAnnotation);
-          path = Utils.removeFragmentRegexes(path, regexFragments);
-          if (!path.startsWith("/"))
-            path = "/" + path;
-        } else
-          path = null;
-        if (parentMethod != null)
-          path = Utils.appendURLFragments(parentMethod.getPath(), path);
-    }
+  private void setupPath() {
+    if (rootPathAnnotation != null) {
+      path = (String) Utils.getAnnotationValue(rootPathAnnotation);
+      path = Utils.removeFragmentRegexes(path, regexFragments);
+      if (!path.startsWith("/"))
+        path = "/" + path;
+    } else
+      path = null;
+    if (parentMethod != null)
+      path = Utils.appendURLFragments(parentMethod.getPath(), path);
+  }
 
-    public ClassDoc getDeclaringClass() {
+  public ClassDoc getDeclaringClass() {
     return declaringClass;
   }
 
@@ -146,9 +145,9 @@ public class ResourceClass {
   }
 
   public String getPathParamRegex(String name) {
-    if(regexFragments.containsKey(name))
+    if (regexFragments.containsKey(name))
       return regexFragments.get(name);
-    if(isSubResource())
+    if (isSubResource())
       return parentMethod.getPathParamRegex(name);
     return null;
   }

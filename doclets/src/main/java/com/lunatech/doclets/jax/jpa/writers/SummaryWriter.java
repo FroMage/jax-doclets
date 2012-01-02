@@ -90,7 +90,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
   protected void printHeader() {
     printHeader("Overview of XML elements");
   }
-  
+
   @Override
   protected void printTopMenu(String selected) {
     open("table", "tbody", "tr");
@@ -98,7 +98,7 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
     printOtherMenuItems(selected);
     close("tr", "tbody", "table");
   }
-  
+
   protected void printOtherMenuItems(String selected) {
     printMenuItem("Graph", writer.relativePath + "graph.html", selected);
   }

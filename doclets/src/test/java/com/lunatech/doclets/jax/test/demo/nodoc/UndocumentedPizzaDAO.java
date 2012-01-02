@@ -2,7 +2,6 @@ package com.lunatech.doclets.jax.test.demo.nodoc;
 
 import java.util.List;
 
-
 public class UndocumentedPizzaDAO {
 
   public List<UndocumentedPizza> getPizzas(String style, int size, String query) {
