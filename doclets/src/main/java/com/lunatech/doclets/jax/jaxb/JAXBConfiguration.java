@@ -33,6 +33,5 @@ public class JAXBConfiguration extends JAXConfiguration {
     enableJSONTypeName = !Utils.hasOption(options, "-disablejsontypename");
     enableJSONExample = !Utils.hasOption(options, "-disablejsonexample");
     enableXMLExample = !Utils.hasOption(options, "-disablexmlexample");
-    System.err.println("XML: "+enableXMLExample);
   }
 }
