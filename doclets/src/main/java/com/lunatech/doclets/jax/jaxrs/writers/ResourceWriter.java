@@ -24,7 +24,6 @@ import java.util.Map;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jaxrs.JAXRSConfiguration;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
@@ -175,7 +174,7 @@ public class ResourceWriter extends DocletWriter {
   private void printResourceInfo() {
     open("h2");
     print("Path: ");
-    String jaxrscontext = ((JAXRSConfiguration) configuration).jaxrscontext;
+    String jaxrscontext = getJAXRSConfiguration().jaxrscontext;
     String name = resource.getName();
     if (Utils.isEmptyOrNull(name))
       name = Utils.unStartSlashify(Utils.unEndSlashify(jaxrscontext));

@@ -13,6 +13,10 @@ public class JAXBConfiguration extends JAXConfiguration {
   public Pattern onlyOutputJAXBClassPackagesMatching;
 
   public boolean enableJaxBMethodOutput = true;
+  
+  public boolean enableJSONExample = true;
+  
+  public boolean enableXMLExample = true;
 
   public JAXBConfiguration(ConfigurationImpl conf) {
     super(conf);
@@ -27,5 +31,8 @@ public class JAXBConfiguration extends JAXConfiguration {
     }
     enableJaxBMethodOutput = !Utils.hasOption(options, "-disablejaxbmethodoutput");
     enableJSONTypeName = !Utils.hasOption(options, "-disablejsontypename");
+    enableJSONExample = !Utils.hasOption(options, "-disablejsonexample");
+    enableXMLExample = !Utils.hasOption(options, "-disablexmlexample");
+    System.err.println("XML: "+enableXMLExample);
   }
 }

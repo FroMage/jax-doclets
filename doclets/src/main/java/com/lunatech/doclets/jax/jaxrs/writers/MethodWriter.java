@@ -57,12 +57,21 @@ public class MethodWriter extends DocletWriter {
 
   private void printMethod(String httpMethod) {
     around("a name='" + httpMethod + "'", "");
-    open("table class='examples'", "tr", "td");
-    printHTTPExample(httpMethod);
-    close("td");
-    open("td");
-    printAPIExample();
-    close("td", "tr", "table");
+    if(getJAXRSConfiguration().enableHTTPExample
+        || getJAXRSConfiguration().enableJavaScriptExample){
+      open("table class='examples'", "tr");
+      if(getJAXRSConfiguration().enableHTTPExample){
+        open("td");
+        printHTTPExample(httpMethod);
+        close("td");
+      }
+      if(getJAXRSConfiguration().enableJavaScriptExample){
+        open("td");
+        printAPIExample();
+        close("td");
+      }
+      close("tr", "table");
+    }
     if (!Utils.isEmptyOrNull(method.getDoc())) {
       open("p");
       print(method.getDoc());

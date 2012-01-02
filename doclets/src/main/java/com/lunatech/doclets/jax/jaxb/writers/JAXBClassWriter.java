@@ -169,12 +169,21 @@ public class JAXBClassWriter extends DocletWriter {
     if (javaDoc != null && javaDoc.tags() != null) {
       writer.printInlineComment(javaDoc);
     }
-    open("table class='examples'", "tr", "td");
-    printXMLExample();
-    close("td");
-    open("td");
-    printJSONExample();
-    close("td", "tr", "table");
+    if(getJAXBConfiguration().enableXMLExample
+        || getJAXBConfiguration().enableJSONExample){
+      open("table class='examples'", "tr");
+      if(getJAXBConfiguration().enableXMLExample){
+        open("td");
+        printXMLExample();
+        close("td");
+      }
+      if(getJAXBConfiguration().enableJSONExample){
+        open("td");
+        printJSONExample();
+        close("td");
+      }
+      close("tr", "table");
+    }
     open("dl");
     JAXBMember idMember = jaxbClass.getID();
     if (idMember != null) {

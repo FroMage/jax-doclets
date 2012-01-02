@@ -19,6 +19,7 @@
 package com.lunatech.doclets.jax.jaxb.writers;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
+import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
@@ -35,4 +36,7 @@ public class DocletWriter extends com.lunatech.doclets.jax.writers.DocletWriter 
     return jaxbClass;
   }
 
+  public JAXBConfiguration getJAXBConfiguration(){
+    return (JAXBConfiguration) configuration;
+  }
 }

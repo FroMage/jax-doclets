@@ -19,6 +19,7 @@
 package com.lunatech.doclets.jax.jaxrs.writers;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
+import com.lunatech.doclets.jax.jaxrs.JAXRSConfiguration;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
@@ -42,5 +43,9 @@ public class DocletWriter extends com.lunatech.doclets.jax.writers.DocletWriter 
   protected void printOtherMenuItems(String selected) {
     printMenuItem("Index", writer.relativePath + "overview-index.html", selected);
     printMenuItem("Root resource", writer.relativePath + "index.html", selected);
+  }
+  
+  public JAXRSConfiguration getJAXRSConfiguration(){
+    return (JAXRSConfiguration) configuration;
   }
 }

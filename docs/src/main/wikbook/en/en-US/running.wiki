@@ -217,7 +217,9 @@ h3. JAX-RS doclet parameters
 These parameters are only valid for the JAX-RS doclet
 
 ||Parameter||Function||
-|{{-jaxrscontext}}|The URL path to your RESTful API, if there is a prefix prepended to it on your deploy site.|
+|{{-jaxrscontext url}}|The URL path to your RESTful API, if there is a prefix prepended to it on your deploy site.|
+|{{-disablehttpexample}}|Disables the generated HTTP examples.|
+|{{-disablejavascriptexample}}|Disables the generated JavaScript examples.|
 
 h3. JAXB doclet parameters
 
@@ -225,6 +227,8 @@ These parameters are only valid for the JAXB doclet
 
 ||Parameter||Function||
 |{{-disablejsontypename}}|If you want to hide the serialised type name from the JSON examples.|
+|{{-disablexmlexample}}|Disables the generated XML examples.|
+|{{-disablejsonexample}}|Disables the generated JSON examples.|
 
 h3. JPA doclet parameters
 

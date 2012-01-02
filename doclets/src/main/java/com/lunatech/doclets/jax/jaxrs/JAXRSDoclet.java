@@ -57,6 +57,10 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     if ("-jaxrscontext".equals(option)) {
       return 2;
     }
+    if ("-disablehttpexample".equals(option)
+        || "-disablejavascriptexample".equals(option)) {
+      return 1;
+    }
     return HtmlDoclet.optionLength(option);
   }
 
