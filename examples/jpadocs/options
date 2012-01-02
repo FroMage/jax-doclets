@@ -1,0 +1,36 @@
+-classpath
+'/home/stephane/src/java-eclipse/jax-doclets/doclets/target/classes:/home/stephane/src/java-eclipse/jax-doclets/doclets/target/test-classes:/home/stephane/.m2/repository/org/hibernate/hibernate-commons-annotations/3.2.0.Final/hibernate-commons-annotations-3.2.0.Final.jar:/home/stephane/.m2/repository/javax/ws/rs/jsr311-api/1.1/jsr311-api-1.1.jar:/home/stephane/.m2/repository/commons-collections/commons-collections/3.1/commons-collections-3.1.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/tools.jar:/home/stephane/.m2/repository/org/jboss/resteasy/resteasy-jaxrs/2.0.0.GA/resteasy-jaxrs-2.0.0.GA.jar:/home/stephane/.m2/repository/javax/security/jaas/1.0.01/jaas-1.0.01.jar:/home/stephane/.m2/repository/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar:/home/stephane/.m2/repository/javax/security/jacc/1.0/jacc-1.0.jar:/home/stephane/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar:/home/stephane/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:/home/stephane/.m2/repository/org/hibernate/hibernate-core/3.6.0.Final/hibernate-core-3.6.0.Final.jar:/home/stephane/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.1.Final/hibernate-jpa-2.0-api-1.0.1.Final.jar:/home/stephane/.m2/repository/antlr/antlr/2.7.6/antlr-2.7.6.jar:/home/stephane/.m2/repository/javax/transaction/jta/1.1/jta-1.1.jar'
+-doclet
+'com.lunatech.doclets.jax.jpa.JPADoclet'
+-docletpath
+'/home/stephane/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.1.Final/hibernate-jpa-2.0-api-1.0.1.Final.jar:/home/stephane/.m2/repository/org/hibernate/hibernate-core/3.3.0.GA/hibernate-core-3.3.0.GA.jar:/home/stephane/.m2/repository/javassist/javassist/3.4.GA/javassist-3.4.GA.jar:/home/stephane/.m2/repository/ant/ant/1.6.5/ant-1.6.5.jar:/home/stephane/.m2/repository/org/hibernate/hibernate-cglib-repack/2.1_3/hibernate-cglib-repack-2.1_3.jar:/home/stephane/.m2/repository/commons-collections/commons-collections/3.1/commons-collections-3.1.jar:/home/stephane/.m2/repository/antlr/antlr/2.7.6/antlr-2.7.6.jar:/home/stephane/.m2/repository/javax/security/jaas/1.0.01/jaas-1.0.01.jar:/home/stephane/.m2/repository/org/slf4j/slf4j-api/1.4.2/slf4j-api-1.4.2.jar:/home/stephane/.m2/repository/javax/security/jacc/1.0/jacc-1.0.jar:/home/stephane/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:/home/stephane/.m2/repository/javax/transaction/jta/1.1/jta-1.1.jar:/home/stephane/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar:/home/stephane/.m2/repository/javax/ws/rs/jsr311-api/1.1/jsr311-api-1.1.jar:/home/stephane/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jara:/home/stephane/src/java-eclipse/jax-doclets/doclets/target/doclets-0.10.0.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/home/stephane/src/java-eclipse/jax-doclets/doclets/src/test/java'
+-author
+-bottom
+'Copyright &#169; 2012. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/home/stephane/src/java-eclipse/jax-doclets/doclets/target/jpadocs'
+-docencoding
+'UTF-8'
+-doctitle
+'jax-doclets doclets 0.10.0 Test API'
+-header
+'<a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png" /></a>'
+-link
+'http://java.sun.com/javase/7/docs/api'
+-link
+'../apidocs'
+-linkoffline
+'http://download.oracle.com/javase/1.5.0/docs/api' '/home/stephane/src/java-eclipse/jax-doclets/doclets/target/javadoc-bundle-options'
+-stylesheetfile
+'/home/stephane/src/java-eclipse/jax-doclets/doclets/src/test/resources/test.css'
+-use
+-version
+-windowtitle
+'jax-doclets doclets 0.10.0 Test API'

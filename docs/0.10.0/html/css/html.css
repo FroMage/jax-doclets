@@ -1,0 +1,211 @@
+@import url(highlight.css);
+@import url(wikibook.css);
+
+body {
+ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+ color: black;
+ margin:0 4em;
+}
+
+hr {
+ border-color:#8ABD3F;
+ border-style: dotted;
+ border-width:1px 0 0 0;
+}
+
+.book > .titlepage {
+	position: relative;
+	padding-top:100px;
+}
+
+h1.title, h2.subtitle, div.author, div.copyright, .releaseinfo, .copyright {
+ color:#8ABD3F;
+}
+h1.title {
+ border: 2px solid #8ABD3F;
+ border-radius:0.5em;
+ -webkit-border-radius:0.5em;
+ -moz-border-radius:0.5em;
+ padding:0.5em;
+ font-size:400%;
+ margin-top: 0.5em;
+}
+h2.subtitle {
+ position: absolute;
+ top: 3em;
+ margin-left:1em;
+}
+
+.corpauthor {
+ position:absolute;
+ top: 0px;
+ right: 1em;
+}
+
+div.author, div.copyright, .releaseinfo, .copyright {
+ font-size:80%;
+ margin:0 2em;
+ text-align:left;
+ font-weight:normal;
+}
+div.author {
+ float:right;
+}
+h3.author {
+ margin:0;
+ font-weight:normal;
+}
+.author .affiliation {
+ display:none;
+}
+
+p.releaseinfo {
+ font-size:150%;
+ font-weight:bold;
+ margin:0 1em;
+}
+
+p.releaseinfo:before {
+ content:'Version ';
+}
+code.email {
+ font-family:inherit;
+}
+code.email a {
+ color:inherit;
+ text-decoration:none;
+}
+.abstract {
+ margin-top:3em;
+}
+
+
+img#header-logo {
+ position: absolute;
+}
+
+.navheader table tbody tr:first-child {
+ height: 60px;
+}
+
+.example .title,
+.figure .title {
+ color:#8ABD3F;
+ font-size:90%;
+ margin-top:2em;
+}
+
+.example .title b,
+.figure .title b {
+ font-weight:normal;
+}
+
+.example,
+.figure {
+ text-align: center;
+ padding-bottom:0.5em;
+}
+
+.figure .figure-contents, 
+.example .example-contents, 
+.note,
+.screen,
+p.remark {
+ border: 1px solid #8ABD3F;
+ border-radius:1em;
+ -webkit-border-radius:1em;
+ -moz-border-radius:1em;
+ padding:1em;
+ text-align: left;
+}
+
+.screen {
+ background-color: #EEE;
+}
+
+.section table {
+ border-collapse: collapse;
+ margin-top: 1em;
+ border: 1px solid white;
+ border-top: 1px solid #8ABD3F;
+ border-bottom: 1px solid #8ABD3F;
+}
+
+.note {
+ margin-left: 0px !important;
+ margin-right: 0px !important;
+}
+
+.note table {
+ margin-top: 0px;
+ background-color: transparent;
+ border: none !important;
+}
+
+.note table th {
+ background-color: transparent !important;
+ border: none !important;
+}
+
+.section table tr.odd {
+ background-color: white;
+}
+
+.section table th {
+ text-align: left;
+ background-color: #F8F8F8;
+ border-bottom: 1px solid #8ABD3F;
+}
+
+.section table th, .section table td {
+ padding: 0.2em 0.5em;
+}
+
+.section table caption {
+ text-align: left;
+ color:#8ABD3F;
+ margin-top:0.5em;
+ font-size:90%;
+}
+
+.title {
+	text-align:left;
+	margin-top:1.5em;
+}
+
+div.titlepage {
+ text-align: center;
+}
+
+div.abstract {
+ text-align: left;
+}
+
+h2.title {
+ font-size: 120%;
+ margin-top: 1.1em;
+}
+h3 {
+ font-size:110%;
+}
+
+p.remark:before {
+ content: 'Remark: ';
+ color:#8ABD3F;
+}
+
+a {
+ color: #1487B4;
+}
+
+a:visited {
+ color: #004D6B;
+}
+
+a img {
+ border: none;
+}
+
+.toc dl {
+ margin: 0.1em 0px;
+}

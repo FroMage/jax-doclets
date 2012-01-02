@@ -1,0 +1,479 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>jax-doclets</title><link rel="stylesheet" href="css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.72.0"><meta name="description" content="jax-doclets is a set of JavaDoc doclets for the Java Extension APIs."></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book" lang="en"><div class="titlepage"><div><div><h1 class="title"><a name="d0e1"></a>jax-doclets</h1></div><div><h2 class="subtitle">JavaDoc doclets for Java Extension APIs</h2></div><div><h3 class="corpauthor">
+		<a xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.lunatech-labs.com" target="_top">
+			<span class="inlinemediaobject"><img src="images/labs-logo-274x100.png"></span>
+		</a>
+	</h3></div><div><div class="author"><h3 class="author"><span class="firstname">St&eacute;phane</span> <span class="surname">&Eacute;pardaud</span></h3><code class="email">&lt;<a href="mailto:stephane@lunatech.com">stephane@lunatech.com</a>&gt;</code></div></div><div><p class="releaseinfo">0.10.0</p></div><div><p class="copyright">Copyright &copy; 2009, 2010, 2011, 2012 Lunatech Labs, St&eacute;phane &Eacute;pardaud</p></div><div><div class="abstract"><p class="title"><b>Abstract</b></p><p>
+			jax-doclets is a set of JavaDoc doclets for the Java Extension APIs.
+		</p></div></div></div><hr></div><div class="toc"><dl><dt><span class="preface"><a href="#d0e48">Preface</a></span></dt><dt><span class="chapter"><a href="#d0e59">1. Overview</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e88">1.1. Information</a></span></dt><dt><span class="section"><a href="#d0e131">1.2. Example</a></span></dt></dl></dd><dt><span class="chapter"><a href="#d0e189">2. Running the jax-doclets</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e203">2.1. Running jax-doclets in standalone</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e206">2.1.1. JAXB doclet</a></span></dt><dt><span class="section"><a href="#d0e213">2.1.2. JAX-RS doclet</a></span></dt><dt><span class="section"><a href="#d0e220">2.1.3. JPA doclet</a></span></dt></dl></dd><dt><span class="section"><a href="#d0e227">2.2. Running jax-doclets in ant</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e232">2.2.1. JAXB doclet</a></span></dt><dt><span class="section"><a href="#d0e241">2.2.2. JAX-RS doclet</a></span></dt><dt><span class="section"><a href="#d0e250">2.2.3. JPA doclet</a></span></dt></dl></dd><dt><span class="section"><a href="#d0e259">2.3. Running jax-doclets in Maven</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e264">2.3.1. JAXB doclet</a></span></dt><dt><span class="section"><a href="#d0e277">2.3.2. JAX-RS doclet</a></span></dt><dt><span class="section"><a href="#d0e290">2.3.3. JPA doclet</a></span></dt></dl></dd><dt><span class="section"><a href="#d0e303">2.4. Doclet parameters</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e306">2.4.1. Generic parameters</a></span></dt><dt><span class="section"><a href="#d0e362">2.4.2. JAX-RS doclet parameters</a></span></dt><dt><span class="section"><a href="#d0e400">2.4.3. JAXB doclet parameters</a></span></dt><dt><span class="section"><a href="#d0e438">2.4.4. JPA doclet parameters</a></span></dt></dl></dd><dt><span class="section"><a href="#d0e443">2.5. About stylesheets</a></span></dt></dl></dd><dt><span class="chapter"><a href="#d0e463">3. JAX-RS doclet documentation</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e468">3.1. Where should you write JavaDoc</a></span></dt><dt><span class="section"><a href="#d0e499">3.2. Supported standard JavaDoc tags</a></span></dt><dt><span class="section"><a href="#d0e538">3.3. Supported specific JavaDoc tags</a></span></dt><dt><span class="section"><a href="#d0e615">3.4. Supported JAX-RS annotations</a></span></dt><dt><span class="section"><a href="#d0e683">3.5. Supported RESTEasy JAX-RS extension annotations</a></span></dt></dl></dd><dt><span class="chapter"><a href="#d0e695">4. JAXB doclet documentation</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e700">4.1. Where should we write JavaDoc</a></span></dt><dt><span class="section"><a href="#d0e714">4.2. Supported standard JavaDoc tags</a></span></dt><dt><span class="section"><a href="#d0e719">4.3. Supported specific JavaDoc tags</a></span></dt><dt><span class="section"><a href="#d0e724">4.4. Supported JAXB annotations</a></span></dt><dt><span class="section"><a href="#d0e786">4.5. Mapping Java types to XML tpes</a></span></dt></dl></dd><dt><span class="chapter"><a href="#d0e966">5. JPA doclet documentation</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e971">5.1. Supported standard JavaDoc tags</a></span></dt><dt><span class="section"><a href="#d0e976">5.2. Supported specific JavaDoc tags</a></span></dt><dt><span class="section"><a href="#d0e981">5.3. Supported JPA annotations</a></span></dt><dt><span class="section"><a href="#d0e1055">5.4. Supported Hibernate JPA extension annotations</a></span></dt></dl></dd><dt><span class="chapter"><a href="#d0e1067">6. License</a></span></dt></dl></div><div class="preface" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="d0e48"></a>Preface</h2></div></div></div><p>
+     This is pre-release software, please bear with it.
+  </p><p>This book is produced by the <a xmlns:xlink="http://www.w3.org/1999/xlink" href="http://wikbook.googlecode.com" target="_top">Wikbook</a> tool. Wikbook is an
+    open source project for converting wiki files into a set of docbook files.</p></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="d0e59"></a>1.&nbsp;Overview</h2></div></div></div><p>jax-doclets allows you to generate <a xmlns:xlink="http://www.w3.org/1999/xlink" href="http://java.sun.com/j2se/javadoc" target="_top">JavaDoc</a>  documentation for specific Java annotation-based extensions such as:</p><div class="itemizedlist"><ul type="disc"><li><p>
+          <a xmlns:xlink="http://www.w3.org/1999/xlink" href="https://jsr311.dev.java.net" target="_top">JAX-RS</a>: the RESTful API for Java</p></li><li><p>
+          <a xmlns:xlink="http://www.w3.org/1999/xlink" href="https://jaxb.dev.java.net" target="_top">JAXB</a>: the XML binding API for Java</p></li><li><p>
+          <a xmlns:xlink="http://www.w3.org/1999/xlink" href="http://en.wikipedia.org/wiki/Java_Persistence_API" target="_top">JPA</a>: the Java Persistence API</p></li></ul></div><p>The goal of jax-doclets is to let you write documentation for your JAX-RS API, JAXB structures and JPA model in JavaDoc, where it belongs, where it is maintainable, and produce a quality JavaDoc-style documentation.</p><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e88"></a>1.1&nbsp;Information</h2></div></div></div><p>  jax-doclets is an open-source project maintained by <a xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.lunatech-labs.com" target="_top">Lunatech Labs</a>.</p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><tbody><tr><td>Home page</td><td>
+                <a xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.lunatech-labs.com/content/jax-doclets" target="_top">http://www.lunatech-labs.com/content/jax-doclets</a>
+              </td></tr><tr><td>Download</td><td>
+                <a xmlns:xlink="http://www.w3.org/1999/xlink" href="https://github.com/FroMage/jax-doclets/downloads" target="_top">https://github.com/FroMage/jax-doclets/downloads</a>
+              </td></tr><tr><td>Issue Tracker</td><td>
+                <a xmlns:xlink="http://www.w3.org/1999/xlink" href="https://github.com/FroMage/jax-doclets/issues" target="_top">https://github.com/FroMage/jax-doclets/issues</a>
+              </td></tr><tr><td>Source Control Management</td><td>
+                <a xmlns:xlink="http://www.w3.org/1999/xlink" href="https://github.com/FroMage/jax-doclets" target="_top">https://github.com/FroMage/jax-doclets</a>
+              </td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e131"></a>1.2&nbsp;Example</h2></div></div></div><p>Here is an example of documented JAX-RS and JAXB code:</p><p>
+        </p><div class="example"><a name="d0e138"></a><p class="title"><b>Example&nbsp;1.1.&nbsp;Example of documented JAX-RS and JAXB code</b></p><div class="example-contents"><div class="programlistingco"><pre class="programlisting">
+<span class="hl-keyword">package</span> com.lunatech.doclets.jax.test;
+
+<span class="hl-keyword">import</span> javax.ws.rs.*;
+<span class="hl-keyword">import</span> javax.xml.bind.annotation.*;
+
+<span class="hl-comment">/**
+ * An example JAX-RS resource
+ */</span>
+@Path(<span class="hl-string">"/example"</span>)
+@Produces( { <span class="hl-string">"application/xml"</span>, <span class="hl-string">"application/*+xml"</span> })
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> JAXRSExample {
+
+  <span class="hl-comment">/**
+   * An example resource
+   */</span>
+  @XmlRootElement
+  <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">class</span> JAXBExample {
+
+    <span class="hl-comment">/**
+     * The resource ID
+     */</span>
+    @XmlID
+    @XmlElement
+    String id;
+
+    <span class="hl-comment">/**
+     * The example contents
+     */</span>
+    @XmlValue
+    String contents;
+
+    <span class="hl-comment">/**
+     * An optional attribute
+     */</span>
+    @XmlAttribute
+    String type;
+  }
+
+  <span class="hl-comment">/**
+   * Gets an example resource
+   * 
+   * @param id
+   *          the example id
+   * @param type
+   *          the type of resource we prefer
+   * @param startIndex
+   *          the start index
+   * @return an example resource suitable for the given parameters
+   * @HTTP 404 if there is no such example resource
+   * @RequestHeader X-Example-Auth the authentication header
+   * @ResponseHeader Location a pointer to the example details
+   */</span>
+  @Path(<span class="hl-string">"{id}"</span>)
+  @GET
+  <span class="hl-keyword">public</span> JAXBExample getExample(@PathParam(<span class="hl-string">"id"</span>) String id, 
+                                @MatrixParam(<span class="hl-string">"type"</span>) String type, 
+                                @QueryParam(<span class="hl-string">"start"</span>) <span class="hl-keyword">int</span> startIndex) {
+    <span class="hl-keyword">return</span> <span class="hl-keyword">new</span> JAXBExample();
+  }
+}
+</pre></div></div></div><p><br class="example-break">
+      </p><p>
+        </p><div class="figure"><a name="d0e148"></a><p class="title"><b>Figure&nbsp;1.1.&nbsp;Result of documented JAX-RS code</b></p><div class="figure-contents"><div class="mediaobject"><img src="images/jaxrs-example.png" alt="Result of documented JAX-RS code"></div></div></div><p><br class="figure-break"> </p><div class="figure"><a name="d0e157"></a><p class="title"><b>Figure&nbsp;1.2.&nbsp;Result of documented JAXB code</b></p><div class="figure-contents"><div class="mediaobject"><img src="images/jaxb-example.png" alt="Result of documented JAXB code"></div></div></div><p><br class="figure-break">
+      </p><p>Here is an example of documented JPA code:</p><p>
+        </p><div class="example"><a name="d0e170"></a><p class="title"><b>Example&nbsp;1.2.&nbsp;Example of documented JPA code</b></p><div class="example-contents"><div class="programlistingco"><pre class="programlisting">
+<span class="hl-keyword">package</span> com.lunatech.doclets.jax.test.jpa;
+
+<span class="hl-keyword">import</span> java.util.List;
+<span class="hl-keyword">import</span> java.util.Set;
+
+<span class="hl-keyword">import</span> javax.persistence.Column;
+<span class="hl-keyword">import</span> javax.persistence.Entity;
+<span class="hl-keyword">import</span> javax.persistence.GeneratedValue;
+<span class="hl-keyword">import</span> javax.persistence.Id;
+<span class="hl-keyword">import</span> javax.persistence.JoinColumn;
+<span class="hl-keyword">import</span> javax.persistence.JoinTable;
+<span class="hl-keyword">import</span> javax.persistence.ManyToMany;
+<span class="hl-keyword">import</span> javax.persistence.OneToMany;
+<span class="hl-keyword">import</span> javax.persistence.OneToOne;
+<span class="hl-keyword">import</span> javax.persistence.Transient;
+
+<span class="hl-comment">/**
+ * This is the order type.
+ * 
+ * @author stephane
+ */</span>
+@Entity
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> Order {
+
+  <span class="hl-comment">/**
+   * This is my ID and I love it
+   */</span>
+  @Id
+  @GeneratedValue
+  <span class="hl-keyword">public</span> Long id;
+
+  <span class="hl-comment">/**
+   * Column with an explicit name
+   */</span>
+  @Column(name = <span class="hl-string">"column_with_name"</span>)
+  <span class="hl-keyword">public</span> String columnWithName;
+
+  <span class="hl-comment">/**
+   * Column with an annotation
+   */</span>
+  @Column
+  <span class="hl-keyword">public</span> String columnWithAnnotation;
+
+  <span class="hl-comment">/**
+   * Column with no annotation
+   */</span>
+  <span class="hl-keyword">public</span> String columnWithoutAnnotation;
+
+  <span class="hl-comment">/**
+   * Transient property
+   */</span>
+  <span class="hl-keyword">public</span> <span class="hl-keyword">transient</span> String transientColumn;
+
+  <span class="hl-comment">/**
+   * Transient property
+   */</span>
+  @Transient
+  <span class="hl-keyword">public</span> String transientAnnotatedColumn;
+
+  <span class="hl-comment">/**
+   * A Bill
+   */</span>
+  @JoinColumn(name = <span class="hl-string">"bill_id"</span>)
+  @OneToOne
+  <span class="hl-keyword">public</span> Bill bill;
+
+  <span class="hl-comment">/**
+   * A list of Orderlines
+   */</span>
+  @OneToMany(mappedBy = <span class="hl-string">"order"</span>)
+  <span class="hl-keyword">public</span> List&lt;Orderline&gt; orderlineList;
+
+  <span class="hl-comment">/**
+   * A set of Orderlines
+   */</span>
+  @OneToMany(mappedBy = <span class="hl-string">"order"</span>)
+  <span class="hl-keyword">public</span> Set&lt;Orderline&gt; orderlineSet;
+
+  <span class="hl-comment">/**
+   * A set of Items, via a link table
+   */</span>
+  @JoinTable(name = <span class="hl-string">"order2item"</span>, 
+             joinColumns = @JoinColumn(name = <span class="hl-string">"item_id"</span>),
+             inverseJoinColumns = @JoinColumn(name = <span class="hl-string">"order_id"</span>))
+  @ManyToMany
+  <span class="hl-keyword">public</span> Set&lt;Item&gt; itemSet;
+}
+</pre></div></div></div><p><br class="example-break">
+      </p><p>
+        </p><div class="figure"><a name="d0e180"></a><p class="title"><b>Figure&nbsp;1.3.&nbsp;Result of documented JPA code</b></p><div class="figure-contents"><div class="mediaobject"><img src="images/jpa-example.png" alt="Result of documented JPA code"></div></div></div><p><br class="figure-break">
+      </p></div></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="d0e189"></a>2.&nbsp;Running the jax-doclets</h2></div></div></div><p>The jax-doclets are run by JavaDoc either as standalone, via ant or using Maven.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/admons/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then the JAX-RS doclet using the <a href="#-link">
+          <code class="code">-link</code>
+        </a> parameter.</p></td></tr></table></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e203"></a>2.1&nbsp;Running jax-doclets in standalone</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e206"></a>2.1.1&nbsp;JAXB doclet</h3></div></div></div><p>You can use the following command to run the JAXB doclet on your code:</p><pre class="screen">
+javadoc -doclet com.lunatech.doclets.jax.jaxb.JAXBDoclet \
+-docletpath lib/jax-doclets-0.10.0.jar \
+com.lunatech.doclets.jax.test
+</pre></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e213"></a>2.1.2&nbsp;JAX-RS doclet</h3></div></div></div><p>You can use the following command to run the JAX-RS doclet on your code:</p><pre class="screen">
+javadoc -doclet com.lunatech.doclets.jax.jaxrs.JAXRSDoclet \
+-docletpath lib/jax-doclets-0.10.0.jar \
+com.lunatech.doclets.jax.test
+</pre></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e220"></a>2.1.3&nbsp;JPA doclet</h3></div></div></div><p>You can use the following command to run the JPA doclet on your code:</p><pre class="screen">
+javadoc -doclet com.lunatech.doclets.jax.jpa.JPADoclet \
+-docletpath lib/jax-doclets-0.10.0.jar \
+com.lunatech.doclets.jax.test
+</pre></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e227"></a>2.2&nbsp;Running jax-doclets in ant</h2></div></div></div><p> </p><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e232"></a>2.2.1&nbsp;JAXB doclet</h3></div></div></div><p>You can use the following ant XML to run the JAXB doclet on your code:</p><div class="programlistingco"><pre class="programlisting">
+&lt;<span class="hl-tag">target</span> <span class="hl-attribute">depends</span>=<span class="hl-value">"jars"</span> <span class="hl-attribute">description</span>=<span class="hl-value">"Run the JAXB doclet"</span> <span class="hl-attribute">name</span>=<span class="hl-value">"doc-jaxb"</span>&gt;
+ &lt;<span class="hl-tag">javadoc</span> <span class="hl-attribute">doclet</span>=<span class="hl-value">"com.lunatech.doclets.jax.jaxb.JAXBDoclet"</span> <span class="hl-attribute">docletpath</span>=<span class="hl-value">"lib/jax-doclets-0.10.0.jar"</span>&gt;
+  &lt;<span class="hl-tag">package</span> <span class="hl-attribute">name</span>=<span class="hl-value">"com.lunatech.doclets.jax.test.*"</span>/&gt;
+ &lt;<span class="hl-tag">/javadoc</span>&gt;
+&lt;<span class="hl-tag">/target</span>&gt;
+</pre></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e241"></a>2.2.2&nbsp;JAX-RS doclet</h3></div></div></div><p>You can use the following ant XML to run the JAX-RS doclet on your code:</p><div class="programlistingco"><pre class="programlisting">
+&lt;<span class="hl-tag">target</span> <span class="hl-attribute">depends</span>=<span class="hl-value">"jars"</span> <span class="hl-attribute">description</span>=<span class="hl-value">"Run the JAXRS doclet"</span> <span class="hl-attribute">name</span>=<span class="hl-value">"doc-jaxrs"</span>&gt;
+ &lt;<span class="hl-tag">javadoc</span> <span class="hl-attribute">doclet</span>=<span class="hl-value">"com.lunatech.doclets.jax.jaxrs.JAXRSDoclet"</span> <span class="hl-attribute">docletpath</span>=<span class="hl-value">"lib/jax-doclets-0.10.0.jar"</span>&gt;
+  &lt;<span class="hl-tag">package</span> <span class="hl-attribute">name</span>=<span class="hl-value">"com.lunatech.doclets.jax.test.*"</span>/&gt;
+ &lt;<span class="hl-tag">/javadoc</span>&gt;
+&lt;<span class="hl-tag">/target</span>&gt;
+</pre></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e250"></a>2.2.3&nbsp;JPA doclet</h3></div></div></div><p>You can use the following ant XML to run the JPA doclet on your code:</p><div class="programlistingco"><pre class="programlisting">
+&lt;<span class="hl-tag">target</span> <span class="hl-attribute">depends</span>=<span class="hl-value">"jars"</span> <span class="hl-attribute">description</span>=<span class="hl-value">"Run the JPA doclet"</span> <span class="hl-attribute">name</span>=<span class="hl-value">"doc-jpa"</span>&gt;
+ &lt;<span class="hl-tag">javadoc</span> <span class="hl-attribute">doclet</span>=<span class="hl-value">"com.lunatech.doclets.jax.jpa.JPADoclet"</span> <span class="hl-attribute">docletpath</span>=<span class="hl-value">"lib/jax-doclets-0.10.0.jar"</span>&gt;
+  &lt;<span class="hl-tag">package</span> <span class="hl-attribute">name</span>=<span class="hl-value">"com.lunatech.doclets.jax.test.*"</span>/&gt;
+ &lt;<span class="hl-tag">/javadoc</span>&gt;
+&lt;<span class="hl-tag">/target</span>&gt;
+</pre></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e259"></a>2.3&nbsp;Running jax-doclets in Maven</h2></div></div></div><p> </p><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e264"></a>2.3.1&nbsp;JAXB doclet</h3></div></div></div><p>You can use the following Maven POM extract to run the JAXB doclet on your code:</p><div class="programlistingco"><pre class="programlisting">
+&lt;<span class="hl-tag">reporting</span>&gt;
+ &lt;<span class="hl-tag">plugins</span>&gt;
+  &lt;<span class="hl-tag">plugin</span>&gt;
+   &lt;<span class="hl-tag">groupId</span>&gt;org.apache.maven.plugins&lt;<span class="hl-tag">/groupId</span>&gt;
+   &lt;<span class="hl-tag">artifactId</span>&gt;maven-javadoc-plugin&lt;<span class="hl-tag">/artifactId</span>&gt;
+   &lt;<span class="hl-tag">version</span>&gt;2.7&lt;<span class="hl-tag">/version</span>&gt;
+   &lt;<span class="hl-tag">reportSets</span>&gt;
+    &lt;<span class="hl-tag">reportSet</span>&gt;
+     &lt;<span class="hl-tag">id</span>&gt;jaxb&lt;<span class="hl-tag">/id</span>&gt;
+     &lt;<span class="hl-tag">configuration</span>&gt;
+      &lt;<span class="hl-tag">doclet</span>&gt;com.lunatech.doclets.jax.jaxb.JAXBDoclet&lt;<span class="hl-tag">/doclet</span>&gt;
+      &lt;<span class="hl-tag">docletArtifacts</span>&gt;
+       &lt;<span class="hl-tag">docletArtifact</span>&gt;
+        &lt;<span class="hl-tag">groupId</span>&gt;com.lunatech.jax-doclets&lt;<span class="hl-tag">/groupId</span>&gt;
+        &lt;<span class="hl-tag">artifactId</span>&gt;doclets&lt;<span class="hl-tag">/artifactId</span>&gt;
+        &lt;<span class="hl-tag">version</span>&gt;0.10.0&lt;<span class="hl-tag">/version</span>&gt;
+       &lt;<span class="hl-tag">/docletArtifact</span>&gt;
+      &lt;<span class="hl-tag">/docletArtifacts</span>&gt;
+     &lt;<span class="hl-tag">/configuration</span>&gt;
+     &lt;<span class="hl-tag">reports</span>&gt;
+      &lt;<span class="hl-tag">report</span>&gt;javadoc&lt;<span class="hl-tag">/report</span>&gt;
+     &lt;<span class="hl-tag">/reports</span>&gt;
+    &lt;<span class="hl-tag">/reportSet</span>&gt;
+   &lt;<span class="hl-tag">/reportSets</span>&gt;
+  &lt;<span class="hl-tag">/plugin</span>&gt;
+ &lt;<span class="hl-tag">/plugins</span>&gt;
+&lt;<span class="hl-tag">/reporting</span>&gt;
+</pre></div><p>Which you run with:</p><pre class="screen">
+$ mvn site
+</pre></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e277"></a>2.3.2&nbsp;JAX-RS doclet</h3></div></div></div><p>You can use the following Maven POM extract to run the JAX-RS doclet on your code:</p><div class="programlistingco"><pre class="programlisting">
+&lt;<span class="hl-tag">reporting</span>&gt;
+ &lt;<span class="hl-tag">plugins</span>&gt;
+  &lt;<span class="hl-tag">plugin</span>&gt;
+   &lt;<span class="hl-tag">groupId</span>&gt;org.apache.maven.plugins&lt;<span class="hl-tag">/groupId</span>&gt;
+   &lt;<span class="hl-tag">artifactId</span>&gt;maven-javadoc-plugin&lt;<span class="hl-tag">/artifactId</span>&gt;
+   &lt;<span class="hl-tag">version</span>&gt;2.7&lt;<span class="hl-tag">/version</span>&gt;
+   &lt;<span class="hl-tag">reportSets</span>&gt;
+    &lt;<span class="hl-tag">reportSet</span>&gt;
+     &lt;<span class="hl-tag">configuration</span>&gt;
+      &lt;<span class="hl-tag">doclet</span>&gt;com.lunatech.doclets.jax.jaxrs.JAXRSDoclet&lt;<span class="hl-tag">/doclet</span>&gt;
+      &lt;<span class="hl-tag">docletArtifacts</span>&gt;
+       &lt;<span class="hl-tag">docletArtifact</span>&gt;
+        &lt;<span class="hl-tag">groupId</span>&gt;com.lunatech.jax-doclets&lt;<span class="hl-tag">/groupId</span>&gt;
+        &lt;<span class="hl-tag">artifactId</span>&gt;doclets&lt;<span class="hl-tag">/artifactId</span>&gt;
+        &lt;<span class="hl-tag">version</span>&gt;0.10.0&lt;<span class="hl-tag">/version</span>&gt;
+       &lt;<span class="hl-tag">/docletArtifact</span>&gt;
+      &lt;<span class="hl-tag">/docletArtifacts</span>&gt;
+     &lt;<span class="hl-tag">/configuration</span>&gt;
+     &lt;<span class="hl-tag">reports</span>&gt;
+      &lt;<span class="hl-tag">report</span>&gt;javadoc&lt;<span class="hl-tag">/report</span>&gt;
+     &lt;<span class="hl-tag">/reports</span>&gt;
+    &lt;<span class="hl-tag">/reportSet</span>&gt;
+   &lt;<span class="hl-tag">/reportSets</span>&gt;
+  &lt;<span class="hl-tag">/plugin</span>&gt;
+ &lt;<span class="hl-tag">/plugins</span>&gt;
+&lt;<span class="hl-tag">/reporting</span>&gt;
+</pre></div><p>Which you run with:</p><pre class="screen">
+$ mvn site
+</pre></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e290"></a>2.3.3&nbsp;JPA doclet</h3></div></div></div><p>You can use the following Maven POM extract to run the JPA doclet on your code:</p><div class="programlistingco"><pre class="programlisting">
+&lt;<span class="hl-tag">reporting</span>&gt;
+ &lt;<span class="hl-tag">plugins</span>&gt;
+  &lt;<span class="hl-tag">plugin</span>&gt;
+   &lt;<span class="hl-tag">groupId</span>&gt;org.apache.maven.plugins&lt;<span class="hl-tag">/groupId</span>&gt;
+   &lt;<span class="hl-tag">artifactId</span>&gt;maven-javadoc-plugin&lt;<span class="hl-tag">/artifactId</span>&gt;
+   &lt;<span class="hl-tag">version</span>&gt;2.7&lt;<span class="hl-tag">/version</span>&gt;
+   &lt;<span class="hl-tag">reportSets</span>&gt;
+    &lt;<span class="hl-tag">reportSet</span>&gt;
+     &lt;<span class="hl-tag">id</span>&gt;jpa&lt;<span class="hl-tag">/id</span>&gt;
+     &lt;<span class="hl-tag">configuration</span>&gt;
+      &lt;<span class="hl-tag">doclet</span>&gt;com.lunatech.doclets.jax.jpa.JPADoclet&lt;<span class="hl-tag">/doclet</span>&gt;
+      &lt;<span class="hl-tag">docletArtifacts</span>&gt;
+       &lt;<span class="hl-tag">docletArtifact</span>&gt;
+        &lt;<span class="hl-tag">groupId</span>&gt;com.lunatech.jax-doclets&lt;<span class="hl-tag">/groupId</span>&gt;
+        &lt;<span class="hl-tag">artifactId</span>&gt;doclets&lt;<span class="hl-tag">/artifactId</span>&gt;
+        &lt;<span class="hl-tag">version</span>&gt;0.10.0&lt;<span class="hl-tag">/version</span>&gt;
+       &lt;<span class="hl-tag">/docletArtifact</span>&gt;
+      &lt;<span class="hl-tag">/docletArtifacts</span>&gt;
+     &lt;<span class="hl-tag">/configuration</span>&gt;
+     &lt;<span class="hl-tag">reports</span>&gt;
+      &lt;<span class="hl-tag">report</span>&gt;javadoc&lt;<span class="hl-tag">/report</span>&gt;
+     &lt;<span class="hl-tag">/reports</span>&gt;
+    &lt;<span class="hl-tag">/reportSet</span>&gt;
+   &lt;<span class="hl-tag">/reportSets</span>&gt;
+  &lt;<span class="hl-tag">/plugin</span>&gt;
+ &lt;<span class="hl-tag">/plugins</span>&gt;
+&lt;<span class="hl-tag">/reporting</span>&gt;
+</pre></div><p>Which you run with:</p><pre class="screen">
+$ mvn site
+</pre></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e303"></a>2.4&nbsp;Doclet parameters</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e306"></a>2.4.1&nbsp;Generic parameters</h3></div></div></div><p>These parameters are valid for all jax-doclets</p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><thead><tr><th>Parameter</th><th>Function</th></tr></thead><tbody><tr><td>
+                  <code class="code">-stylesheet</code>
+                </td><td>The CSS stylesheet to copy and use.</td></tr><tr><td>
+                  <code class="code">-header</code>
+                </td><td>The header which is inserted on every page header.</td></tr><tr><td>
+                  <code class="code">-footer</code>
+                </td><td>The footer which is inserted on every page footer.</td></tr><tr><td>
+                  <code class="code">-charset</code>
+                </td><td>The charset to use for source files and produced HTML documentation.</td></tr><tr><td>
+                  <code class="code">-link</code>
+                  <a name="-link"></a>
+                </td><td>Path to another JavaDoc documentation. This is used to produce links to other package's documentation, either regular JavaDoc or to JAXB documentation in the case of the JAX-RS doclet.</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e362"></a>2.4.2&nbsp;JAX-RS doclet parameters</h3></div></div></div><p>These parameters are only valid for the JAX-RS doclet</p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><thead><tr><th>Parameter</th><th>Function</th></tr></thead><tbody><tr><td>
+                  <code class="code">-jaxrscontext url</code>
+                </td><td>The URL path to your RESTful API, if there is a prefix prepended to it on your deploy site.</td></tr><tr><td>
+                  <code class="code">-disablehttpexample</code>
+                </td><td>Disables the generated HTTP examples.</td></tr><tr><td>
+                  <code class="code">-disablejavascriptexample</code>
+                </td><td>Disables the generated JavaScript examples.</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e400"></a>2.4.3&nbsp;JAXB doclet parameters</h3></div></div></div><p>These parameters are only valid for the JAXB doclet</p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><thead><tr><th>Parameter</th><th>Function</th></tr></thead><tbody><tr><td>
+                  <code class="code">-disablejsontypename</code>
+                </td><td>If you want to hide the serialised type name from the JSON examples.</td></tr><tr><td>
+                  <code class="code">-disablexmlexample</code>
+                </td><td>Disables the generated XML examples.</td></tr><tr><td>
+                  <code class="code">-disablejsonexample</code>
+                </td><td>Disables the generated JSON examples.</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e438"></a>2.4.4&nbsp;JPA doclet parameters</h3></div></div></div><p>There are currently no special parameters for the JPA doclet.</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e443"></a>2.5&nbsp;About stylesheets</h2></div></div></div><p>If you do not specify a stylesheet, one will be provided for you that closely matches the default JavaDoc style. If you do specify a stylesheet with the <code class="code">-stylesheet</code> parameter, it will be copied to the stylesheet named <code class="code">doclet.css</code> and the default JavaDoc stylesheet will be available as <code class="code">default-doclets.css</code> which means you can write your stylesheet like this to extend the default stylesheet without having to restyle everything:</p><div class="programlistingco"><pre class="programlisting">
+@IMPORT url("default-doclet.css");
+
+table.info .TableCaption, td.NavBarCell1 {
+ background: #EEEEEE;
+}
+
+td.NavBarCell1 table th.selected {
+ background-color: #61911B;
+}
+
+img.logo {
+ margin: 1em;
+ border: none;
+}
+
+a {
+ color: #61911B;
+}
+
+a:visited {
+ color: #3F5E12;
+}
+</pre></div><p>Note that wherever possible we&acute;ve stuck with the JavaDoc CSS class names so you can reuse your  existing JavaDoc stylesheets.</p></div></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="d0e463"></a>3.&nbsp;JAX-RS doclet documentation</h2></div></div></div><p>The JAX-RS doclet generates documentation for your RESTful service based on JAX-RS annotations and JavaDoc comments on your JAX-RS resource methods.</p><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e468"></a>3.1&nbsp;Where should you write JavaDoc</h2></div></div></div><p>JavaDoc is read either on the JAX-RS resource methods, or their interface. Only method-level JavaDoc is used. Documentation for a given RESTful URL is taken from the method annotated with <code class="code">@GET</code>, <code class="code">@HEAD</code>, <code class="code">@POST</code>, <code class="code">@PUT</code> or <code class="code">@DELETE</code> for that URL (in order of preference).</p><p>JAX-RS resource locators are supported.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/admons/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then the JAX-RS doclet using the <a href="#-link">
+            <code class="code">-link</code>
+          </a> parameter.</p></td></tr></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e499"></a>3.2&nbsp;Supported standard JavaDoc tags</h2></div></div></div><p>The following standard JavaDoc tags are supported on resource methods:</p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><thead><tr><th>Tag</th><th>Function</th></tr></thead><tbody><tr><td>
+                <code class="code">@param name doc </code>
+              </td><td>This is used to document the corresponding resource method parameters annotated with <code class="code">@PathParam</code>, <code class="code">@QueryParam</code> or <code class="code">@MatrixParam</code>. Can be used at most once per parameter name.</td></tr><tr><td>
+                <code class="code">@return doc </code>
+              </td><td>Documents the entity returned from this resource method. Can only be used once.</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e538"></a>3.3&nbsp;Supported specific JavaDoc tags</h2></div></div></div><p>The following specific JavaDoc tags are supported on resource methods:</p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><thead><tr><th>Tag</th><th>Function</th></tr></thead><tbody><tr><td>
+                <code class="code">@HTTP code doc</code>
+              </td><td>This is used to document the codes that the method can return. Can be used multiple times.</td></tr><tr><td>
+                <code class="code">@inputWrapped fq-classname </code>
+              </td><td>Specifies the real type of input when declared as a <code class="code">String</code> parameter. Can only be used once.</td></tr><tr><td>
+                <code class="code">@returnWrapped fq-classname doc </code>
+              </td><td>Used in place of <code class="code">@return</code> when output type is <code class="code">String</code>, <code class="code">void</code> or <code class="code">Response</code> to specify the real type of output and documentation for each possible type. Can be used multiple times.</td></tr><tr><td>
+                <code class="code">@RequestHeader header doc </code>
+              </td><td>This is used to document HTTP request headers. Can be used multiple times.</td></tr><tr><td>
+                <code class="code">@ResponseHeader header doc </code>
+              </td><td>This is used to document HTTP response headers. Can be used multiple times.</td></tr><tr><td>
+                <code class="code">@include file </code>
+              </td><td>Includes the specified relative file in the resource documentation. Can be used multiple times.</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e615"></a>3.4&nbsp;Supported JAX-RS annotations</h2></div></div></div><p>The following standard JAX-RS annotations are supported on resource methods or classes:     </p><div class="itemizedlist"><ul type="disc"><li><p>
+            <code class="code">@Path</code>
+          </p></li><li><p>
+            <code class="code">@PathParam</code>
+          </p></li><li><p>
+            <code class="code">@FormParam</code>
+          </p></li><li><p>
+            <code class="code">@CookieParam</code>
+          </p></li><li><p>
+            <code class="code">@HeaderParam</code>
+          </p></li><li><p>
+            <code class="code">@QueryParam</code>
+          </p></li><li><p>
+            <code class="code">@MatrixParam</code>
+          </p></li><li><p>
+            <code class="code">@Produces</code>
+          </p></li><li><p>
+            <code class="code">@Consumes</code>
+          </p></li><li><p>
+            <code class="code">@Context</code> (ignored)</p></li></ul></div><p>    </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e683"></a>3.5&nbsp;Supported RESTEasy JAX-RS extension annotations</h2></div></div></div><p>If the optional RESTEasy dependency is present, the following RESTEasy annotations are supported on resource methods or classes:</p><div class="itemizedlist"><ul type="disc"><li><p>
+            <code class="code">@Form</code>
+          </p></li></ul></div></div></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="d0e695"></a>4.&nbsp;JAXB doclet documentation</h2></div></div></div><p>The JAXB doclet generates documentation for your XML schema based on JAXB annotations and JavaDoc comments on your JAXB classes.</p><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e700"></a>4.1&nbsp;Where should we write JavaDoc</h2></div></div></div><p>JavaDoc is read either on the JAXB properties (getter methods or fields), or their interface (only for the getters) as well as on the JAXB classes.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/admons/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then the JAX-RS doclet using the <a href="#-link">
+            <code class="code">-link</code>
+          </a> parameter.</p></td></tr></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e714"></a>4.2&nbsp;Supported standard JavaDoc tags</h2></div></div></div><p>There are no standard JavaDoc tags supported. Everything comes from JavaDoc comments.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e719"></a>4.3&nbsp;Supported specific JavaDoc tags</h2></div></div></div><p>There are no specific JavaDoc tags supported.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e724"></a>4.4&nbsp;Supported JAXB annotations</h2></div></div></div><p>The following standard JAXB annotations are supported on properties or classes:     </p><div class="itemizedlist"><ul type="disc"><li><p>
+            <code class="code">@XmlAccessorType</code>
+          </p></li><li><p>
+            <code class="code">@XmlRootElement</code>
+          </p></li><li><p>
+            <code class="code">@XmlElement</code>
+          </p></li><li><p>
+            <code class="code">@XmlElementWrapper</code>
+          </p></li><li><p>
+            <code class="code">@XmlAttribute</code>
+          </p></li><li><p>
+            <code class="code">@XmlValue</code>
+          </p></li><li><p>
+            <code class="code">@XmlID</code>
+          </p></li><li><p>
+            <code class="code">@XmlIDREF</code>
+          </p></li><li><p>
+            <code class="code">@XmlTransient</code> (ignored)</p></li></ul></div><p>    </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e786"></a>4.5&nbsp;Mapping Java types to XML tpes</h2></div></div></div><p>The following Java types have a special mapping in XML:</p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><thead><tr><th>Type</th><th>XML mapping</th></tr></thead><tbody><tr><td>
+                <code class="code">java.lang.String</code>
+              </td><td>
+                <code class="code">xsd:string</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Character</code>, <code class="code">char</code>
+              </td><td>
+                <code class="code">xsd:string</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Date</code>
+              </td><td>
+                <code class="code">xsd:datetime</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Integer</code>, <code class="code">int</code>
+              </td><td>
+                <code class="code">xsd:int</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Long</code>, <code class="code">long</code>
+              </td><td>
+                <code class="code">xsd:long</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Short</code>, <code class="code">short</code>
+              </td><td>
+                <code class="code">xsd:short</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Byte</code>, <code class="code">byte</code>
+              </td><td>
+                <code class="code">xsd:byte</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Float</code>, <code class="code">float</code>
+              </td><td>
+                <code class="code">xsd:float</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Double</code>, <code class="code">double</code>
+              </td><td>
+                <code class="code">xsd:double</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Boolean</code>, <code class="code">boolean</code>
+              </td><td>
+                <code class="code">xsd:boolean</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Object</code>
+              </td><td>
+                <code class="code">xsd:any</code>
+              </td></tr><tr><td>
+                <code class="code">java.lang.Enum</code>
+              </td><td>List of enum values</td></tr><tr><td>
+                <code class="code">java.util.Collection</code>
+              </td><td>
+                <code class="code">xsd:list</code>
+              </td></tr></tbody></table></div><p>Any other type is taken to be either a Java type or a JAXB type, for whom proper links will be generated.</p></div></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="d0e966"></a>5.&nbsp;JPA doclet documentation</h2></div></div></div><p>The JPA doclet generates documentation for your data model based on JPA annotations and JavaDoc comments on your JPA classes.</p><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e971"></a>5.1&nbsp;Supported standard JavaDoc tags</h2></div></div></div><p>There are no standard JavaDoc tags supported. Everything comes from JavaDoc comments.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e976"></a>5.2&nbsp;Supported specific JavaDoc tags</h2></div></div></div><p>There are no specific JavaDoc tags supported.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e981"></a>5.3&nbsp;Supported JPA annotations</h2></div></div></div><p>The following standard JPA annotations are supported on classes or properties:     </p><div class="itemizedlist"><ul type="disc"><li><p>
+            <code class="code">@Entity</code>
+          </p></li><li><p>
+            <code class="code">@Id</code>
+          </p></li><li><p>
+            <code class="code">@ManyToMany</code>
+          </p></li><li><p>
+            <code class="code">@OneToMany</code>
+          </p></li><li><p>
+            <code class="code">@ManyToOne</code>
+          </p></li><li><p>
+            <code class="code">@OneToOne</code>
+          </p></li><li><p>
+            <code class="code">@Table</code>
+          </p></li><li><p>
+            <code class="code">@Transient</code>
+          </p></li><li><p>
+            <code class="code">@GeneratedValue</code>
+          </p></li><li><p>
+            <code class="code">@Id</code>
+          </p></li><li><p>
+            <code class="code">@Lob</code>
+          </p></li></ul></div><p>    </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e1055"></a>5.4&nbsp;Supported Hibernate JPA extension annotations</h2></div></div></div><p>If the optional Hibernate dependency is present, the following Hibernate annotations are supported on classes or properties:</p><div class="itemizedlist"><ul type="disc"><li><p>
+            <code class="code">@GenericGenerator</code>
+          </p></li></ul></div></div></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="d0e1067"></a>6.&nbsp;License</h2></div></div></div><p>jax-doclets is distributed under the LGPL license.  It does not distribute any thirdparty  libraries that are GPL. It does ship thirdparty libraries licensed under Apache ASL 2.0 and LGPL.</p></div></div></body></html>

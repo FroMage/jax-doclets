@@ -1,0 +1,34 @@
+<HTML><HEAD><TITLE>XML element Order</TITLE></TITLE><LINK REL='stylesheet' TYPE='text/css' HREF='../../../../../doclet.css' TITLE='Style'/><META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</HEAD><BODY><a href="http://www.lunatech-labs.com"><img class="logo" src="http://www.lunatech-labs.com/sites/default/themes/labs/images/web/logo.png" /></a><table class='menu'><colgroup><col/><col/></colgroup><tbody><tr><td class='NavBarCell1' colspan='2'><table><tbody><tr><th><a href='../../../../../index.html'>Overview</a></th></tr></tbody></table></td></tr><tr><td class='NavBarCell3' colspan='2'>detail: <a href='#Elements'>element</a> | <a href='#Attributes'>attribute</a> | <a href='#Value'>value</a></td></tr></table><h2 class='classname'><span class='name'>Name: Order</span></h2>The order type, cool as hell
+<P>
+<table class='examples'><tr><td><b>XML Example:</b><pre>&lt;Order
+ <a href='#m_attribute'>attribute</a>="xsd:datetime"
+ <a href='#m_attribute-2'>attribute-2</a>="xsd:long">
+  &lt;<a href='#m_attachment'>attachment</a>>xsd:IDREF[<a href='../../../../../com/lunatech/doclets/jax/test/RESTOrdersBean.Attachment.html'>Attachment</a>]&lt;/attachment>
+  &lt;<a href='#m_key'>key</a>>xsd:string&lt;/key>
+  &lt;<a href='#m_name'>name</a>>xsd:string&lt;/name>
+  &lt;object-list>
+   zero or N[&lt;<a href='#m_object'>object</a>>?&lt;/object>]
+  &lt;/object-list>
+  &lt;<a href='#m_overridden-name'>overridden-name</a>>xsd:int&lt;/overridden-name>
+  &lt;<a href='#m_status'>status</a>>Open | Closed&lt;/status>
+  zero or N[&lt;<a href='#m_strings'>strings</a>>xsd:string&lt;/strings>]
+  &lt;tag-list>
+   zero or N[&lt;<a href='#m_tag'>tag</a>><a href='../../../../../com/lunatech/doclets/jax/test/RESTOrdersBean.Tag.html'>Tag</a>&lt;/tag>]
+  &lt;/tag-list>
+ <a href='../../../../../com/lunatech/doclets/jax/test/RESTOrdersBean.Comment.html'>Comment</a>
+&lt;/Order>
+</pre></td><td><b>JSON Example:</b><pre> {
+  "@<a href='#m_attribute'>attribute</a>": Date,
+  "@<a href='#m_attribute-2'>attribute-2</a>": Number,
+   "<a href='#m_attachment'>attachment</a>": <a href='../../../../../com/lunatech/doclets/jax/test/RESTOrdersBean.Attachment.html'>Attachment</a> /* IDREF */,
+   "<a href='#m_key'>key</a>": String,
+   "<a href='#m_name'>name</a>": String,
+   "<a href='#m_object'>object-list</a>": [?],
+   "<a href='#m_overridden-name'>overridden-name</a>": Number,
+   "<a href='#m_status'>status</a>": 'Open' | 'Closed',
+   "<a href='#m_strings'>strings</a>": [String],
+   "<a href='#m_tag'>tag-list</a>": [<a href='../../../../../com/lunatech/doclets/jax/test/RESTOrdersBean.Tag.html'>Tag</a>],
+   <a href='../../../../../com/lunatech/doclets/jax/test/RESTOrdersBean.Comment.html'>Comment</a>,
+ }
+</pre></td></tr></table><dl></dl><hr/><table class='info' id='Elements'><caption class='TableCaption'>Elements</caption><tbody><tr><th class='TableHeader'>Name</th><th class='TableHeader'>Type</th><th class='TableHeader'>Required</th><th class='TableHeader'>Nillable</th><th class='TableHeader'>Default Value</th><th class='TableHeader'>Description</th></tr><tr><td id='m_attachment'>attachment</td><td>xsd:IDREF[<a href='../../../../../com/lunatech/doclets/jax/test/RESTOrdersBean.Attachment.html'>Attachment</a>]</td><td>false</td><td>false</td><td></td><td>&nbsp;</td></tr><tr><td id='m_key'>key</td><td>xsd:string</td><td>false</td><td>false</td><td></td><td>The order key</td></tr><tr><td id='m_name'>name</td><td>xsd:string</td><td>false</td><td>false</td><td></td><td>The name of the order</td></tr><tr><td id='m_object'>object (wrapped by object-list)</td><td>zero or N[?]</td><td>false</td><td>false</td><td></td><td>&nbsp;</td></tr><tr><td id='m_overridden-name'>overridden-name</td><td>xsd:int</td><td>false</td><td>false</td><td></td><td>This has an overridden name</td></tr><tr><td id='m_status'>status</td><td>Open | Closed</td><td>false</td><td>false</td><td></td><td>&nbsp;</td></tr><tr><td id='m_strings'>strings</td><td>zero or N[xsd:string]</td><td>false</td><td>false</td><td></td><td>&nbsp;</td></tr><tr><td id='m_tag'>tag (wrapped by tag-list)</td><td>zero or N[<a href='../../../../../com/lunatech/doclets/jax/test/RESTOrdersBean.Tag.html'>Tag</a>]</td><td>false</td><td>false</td><td></td><td>&nbsp;</td></tr></tbody></table><hr/><table class='info' id='Attributes'><caption class='TableCaption'>Attributes</caption><tbody><tr><th class='TableHeader'>Name</th><th class='TableHeader'>Type</th><th class='TableHeader'>Description</th></tr><tr><td id='m_attribute'>attribute</td><td>xsd:datetime</td><td>Our cool attribute</td></tr><tr><td id='m_attribute-2'>attribute-2</td><td>xsd:long</td><td>Overridden name attribute</td></tr></tbody></table><hr/><table class='info' id='Value'><caption class='TableCaption'>Value</caption><tbody><tr><th class='TableHeader'>Type</th><th class='TableHeader'>Description</th></tr><tr><td><a href='../../../../../com/lunatech/doclets/jax/test/RESTOrdersBean.Comment.html'>Comment</a></td><td>Our value</td></tr></tbody></table><hr/><table class='menu'><colgroup><col/><col/></colgroup><tbody><tr><td class='NavBarCell1' colspan='2'><table><tbody><tr><th><a href='../../../../../index.html'>Overview</a></th></tr></tbody></table></td></tr><tr><td class='NavBarCell3' colspan='2'>detail: <a href='#Elements'>element</a> | <a href='#Attributes'>attribute</a> | <a href='#Value'>value</a></td></tr></table><hr/><div class='footer'>Generated by <a href='http://www.lunatech-labs.com/open-source/jax-doclets'>Lunatech Labs jax-doclets</a> v0.10.0</div></BODY></HTML>
