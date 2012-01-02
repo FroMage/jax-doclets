@@ -42,6 +42,19 @@ import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
 
 public class JPADoclet extends JAXDoclet<JPAConfiguration> {
+	
+  public static final boolean isHibernatePresent;
+  
+  static{
+    boolean test = false;
+    try{
+      Class.forName("org.hibernate.annotations.GenericGenerator");
+      test = true;
+    }catch(Throwable t){
+      // no Hibernate support
+    }
+    isHibernatePresent = test;
+  }
 
   private static final Class<?>[] jpaAnnotations = new Class<?>[] { Entity.class };
 

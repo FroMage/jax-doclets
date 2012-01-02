@@ -6,9 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jpa.JPADoclet;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.AnnotationValue;
 import com.sun.javadoc.ClassDoc;
@@ -38,7 +37,8 @@ public class JPAMember implements Comparable<JPAMember> {
 		this.name = name;
 		this.klass = klass;
 		this.isID = Utils.findAnnotation(property, Id.class) != null;
-		lookupSequence();
+		if(JPADoclet.isHibernatePresent)
+		  lookupSequence();
 	}
 
 	private void lookupSequence() {
@@ -48,7 +48,13 @@ public class JPAMember implements Comparable<JPAMember> {
 		String generator = (String) Utils.getAnnotationValue(generatedValue, "generator");
 		if(generator == null)
 			return;
-		List<AnnotationDesc> genericGenerators = Utils.findAnnotations(property.containingClass(), GenericGenerator.class);
+		Class<?> genericGeneratorClass;
+    try {
+      genericGeneratorClass = Class.forName("org.hibernate.annotations.GenericGenerator");
+    } catch (ClassNotFoundException e) {
+      return;
+    }
+		List<AnnotationDesc> genericGenerators = Utils.findAnnotations(property.containingClass(), genericGeneratorClass);
 		AnnotationDesc genericGenerator = null;
 		for(AnnotationDesc gen : genericGenerators){
 			String name = (String) Utils.getAnnotationValue(gen, "name");
