@@ -6,9 +6,11 @@
 	<productnumber>0.9.0</productnumber>
 	<copyright>
 		<year>2009</year>
-    <year>2010</year>
+		<year>2010</year>
 		<year>2011</year>
+        <year>2012</year>
 		<holder>Lunatech Labs</holder>
+		<holder>Stéphane Épardaud</holder>
 	</copyright>
 	<corpauthor>
 		<ulink url="http://www.lunatech-labs.com">
@@ -30,6 +32,6 @@
 	<abstract>
 		<para>
 			jax-doclets is a set of JavaDoc doclets for the Java Extension APIs.
-       </para>
+		</para>
 	</abstract>
 </bookinfo>
