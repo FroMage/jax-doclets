@@ -41,14 +41,14 @@
 	<developers>
 		<developer>
 			<name>Stéphane Épardaud</name>
-			<email>stef@lunatech.com</email>
-			<url>http://www.lunatech-research.com/users/st%C3%A9phane-%C3%A9pardaud</url>
+			<email>stef@epardaud.fr</email>
+			<url>http://stephane.epardaud.fr</url>
 			<roles>
 				<role>project-owner</role>
 			</roles>
 			<timezone>+1</timezone>
-			<organization>Lunatech Research</organization>
-			<organizationUrl>http://www.lunatech-research.com</organizationUrl>
+			<organization>Red Hat</organization>
+			<organizationUrl>http://www.redhat.com</organizationUrl>
 		</developer>
 	</developers>
 
