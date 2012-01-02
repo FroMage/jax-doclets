@@ -1,6 +1,7 @@
 /*
-    Copyright 2009 Lunatech Research
-
+    Copyright 2009-2011 Lunatech Research
+    Copyright 2009-2011 Stéphane Épardaud
+    
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
