@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -19,13 +19,18 @@
 package com.lunatech.doclets.jax.jaxrs;
 
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.ws.rs.Path;
 
 import com.lunatech.doclets.jax.JAXDoclet;
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
@@ -36,12 +41,15 @@ import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ReturnWrappedTaglet;
 import com.lunatech.doclets.jax.jaxrs.writers.IndexWriter;
+import com.lunatech.doclets.jax.jaxrs.writers.DataObjectIndexWriter;
+import com.lunatech.doclets.jax.jaxrs.writers.PojoClassWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.SourcePosition;
+import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
@@ -105,9 +113,19 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     }
     Collections.sort(jaxrsMethods);
     Resource rootResource = Resource.getRootResource(jaxrsMethods);
-    rootResource.write(this, conf);
+    PojoTypes types = new PojoTypes();
+
+    rootResource.write(this, conf, types);
     new IndexWriter(conf, rootResource, this).write();
     new SummaryWriter(conf, rootResource, this).write();
+
+    if (conf.enablePojoJsonDataObjects) {
+	    new DataObjectIndexWriter(conf, rootResource, this, types).write();
+	    for (ClassDoc cDoc : types.getResolvedTypes()) {
+    		new PojoClassWriter(conf, cDoc, types, rootResource, this).write();
+	    }
+    }
+
     Utils.copyResources(conf);
   }
 

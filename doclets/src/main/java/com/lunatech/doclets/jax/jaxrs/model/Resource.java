@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.ws.rs.DELETE;
@@ -36,6 +37,7 @@ import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.writers.ResourceWriter;
 import com.sun.javadoc.Doc;
+import com.sun.javadoc.Type;
 
 public class Resource {
 
@@ -161,12 +163,12 @@ public class Resource {
     return fragmentWithNoRegex;
   }
 
-  public void write(JAXRSDoclet doclet, JAXConfiguration configuration) {
+  public void write(JAXRSDoclet doclet, JAXConfiguration configuration, PojoTypes types) {
     ResourceWriter writer = new ResourceWriter(configuration, this, doclet);
-    writer.write();
+    writer.write(types);
     for (String subResourceKey : subResources.keySet()) {
       Resource subResource = subResources.get(subResourceKey);
-      subResource.write(doclet, configuration);
+      subResource.write(doclet, configuration, types);
     }
   }
 

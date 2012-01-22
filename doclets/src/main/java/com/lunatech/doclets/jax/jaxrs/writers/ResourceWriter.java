@@ -21,14 +21,17 @@ package com.lunatech.doclets.jax.jaxrs.writers;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
+import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.sun.javadoc.Doc;
+import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class ResourceWriter extends DocletWriter {
@@ -46,24 +49,19 @@ public class ResourceWriter extends DocletWriter {
     }
   }
 
-  public void write() {
+  public void write(PojoTypes types) {
     boolean isRoot = resource.getParent() == null;
     String selected = isRoot ? "Root resource" : "";
     printPrelude(isRoot, selected);
     printResourceInfo();
     printSubresources();
-    printMethods();
+    if (resource.hasRealMethods()) {
+      printMethodOverview(resource.getMethods());
+      printMethodDetails(resource.getMethods(), types);
+    }
     tag("hr");
     printPostlude(selected);
     writer.flush();
-  }
-
-  private void printMethods() {
-    if (!resource.hasRealMethods())
-      return;
-    List<ResourceMethod> methods = resource.getMethods();
-    printMethodOverview(methods);
-    printMethodDetails(methods);
   }
 
   private void printMethodOverview(List<ResourceMethod> methods) {
@@ -98,7 +96,7 @@ public class ResourceWriter extends DocletWriter {
     close("table");
   }
 
-  private void printMethodDetails(List<ResourceMethod> methods) {
+  private void printMethodDetails(List<ResourceMethod> methods, PojoTypes types) {
     tag("hr");
     open("table class='info' id='methods-details'");
     around("caption class='TableCaption'", "Method Detail");
@@ -110,7 +108,7 @@ public class ResourceWriter extends DocletWriter {
         continue;
       open("tr");
       open("td");
-      new MethodWriter(method, this, doclet).print();
+      new MethodWriter(method, this, doclet).print(types);
       close("td");
       close("tr");
     }

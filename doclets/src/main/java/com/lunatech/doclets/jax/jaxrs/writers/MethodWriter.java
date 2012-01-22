@@ -20,20 +20,25 @@ package com.lunatech.doclets.jax.jaxrs.writers;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
 
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.Utils.InvalidJaxTypeException;
 import com.lunatech.doclets.jax.Utils.JaxType;
+import com.lunatech.doclets.jax.jaxrs.JAXRSConfiguration;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.MethodOutput;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
+import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
+import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Tag;
@@ -49,13 +54,13 @@ public class MethodWriter extends DocletWriter {
     this.method = method;
   }
 
-  public void print() {
+  public void print(PojoTypes types) {
     for (String httpMethod : method.getMethods()) {
-      printMethod(httpMethod);
+      printMethod(httpMethod, types);
     }
   }
 
-  private void printMethod(String httpMethod) {
+  private void printMethod(String httpMethod, PojoTypes types) {
     around("a name='" + httpMethod + "'", "");
     if(getJAXRSConfiguration().enableHTTPExample
         || getJAXRSConfiguration().enableJavaScriptExample){
@@ -79,8 +84,8 @@ public class MethodWriter extends DocletWriter {
     }
     printIncludes();
     open("dl");
-    printInput();
-    printOutput();
+    printInput(types);
+    printOutput(types);
     printParameters(method.getQueryParameters(), "Query");
     // done on resource
     // printParameters(method.getPathParameters(), "Path");
@@ -147,7 +152,7 @@ public class MethodWriter extends DocletWriter {
     printTaglets(HTTPTaglet.NAME);
   }
 
-  private void printOutput() {
+  private void printOutput(PojoTypes types) {
     open("dt");
     around("b", "Output:");
     close("dt");
@@ -166,7 +171,7 @@ public class MethodWriter extends DocletWriter {
           e.printStackTrace();
         }
         if (returnType != null)
-          printOutputType(returnType);
+          printOutputType(returnType.getType(), types);
         else
           around("tt", escape(typeName));
         if (output.getOutputDoc(i) != null) {
@@ -178,7 +183,7 @@ public class MethodWriter extends DocletWriter {
     } else {
       open("dd");
       Type returnType = output.getOutputType();
-      printOutputType(returnType);
+      printOutputType(returnType, types);
       if (output.getOutputDoc() != null) {
         print(" - ");
         print(output.getOutputDoc());
@@ -187,16 +192,35 @@ public class MethodWriter extends DocletWriter {
     }
   }
 
-  private void printOutputType(Type type) {
+  private void printOutputType(JaxType type, PojoTypes types) {
+    if (type.getType() == null) {
+      doclet.warn("Type information not found: " + type.getTypeName());
+      print(type.getTypeName());
+      return;
+    }
+    printOutputType(type.getType(), types);
+  }
+
+  private void printOutputType(Type type, PojoTypes types) {
     open("tt");
-    printOutputGenericType(type);
+    printOutputGenericType(type, types);
     close("tt");
   }
 
-  private void printOutputGenericType(Type type) {
+  private void printOutputGenericType(Type type, PojoTypes types) {
     String link = null;
     if (!type.isPrimitive()) {
       link = Utils.getExternalLink(configuration.parentConfiguration, type, writer);
+
+      if ((link == null) && getJAXRSConfiguration().enablePojoJsonDataObjects) {
+        if (isPojoToGenerate(type)) {
+          ClassDoc cDoc = type.asClassDoc();
+          link = Utils.urlToRoot(getResource()) + DataObjectIndexWriter.getLink(cDoc);
+          types.addResolvedType(cDoc);
+        } else {
+          types.addUnresolvedType(type);
+        }
+      }
     }
 
     if (link == null) {
@@ -214,53 +238,26 @@ public class MethodWriter extends DocletWriter {
         } else {
           print(",");
         }
-        printOutputGenericType(genericType);
+        printOutputGenericType(genericType, types);
       }
       print("&gt;");
     }
     print(type.dimension());
   }
 
-  private void printOutputType(JaxType type) {
-    open("tt");
-    printOutputGenericType(type);
-    close("tt");
+  private boolean isPojoToGenerate(Type type) {
+    JAXRSConfiguration jaxrsConfiguration = getJAXRSConfiguration();
+    if (type.asClassDoc() == null) {
+      return false;
+    }
+    if (jaxrsConfiguration.onlyOutputPojosMatching != null) {
+      Matcher m = jaxrsConfiguration.onlyOutputPojosMatching.matcher(type.qualifiedTypeName());
+      return m.matches();
+    }
+    return true;
   }
 
-  private void printOutputGenericType(JaxType type) {
-    String link = null;
-    if (type.getType() == null) {
-      doclet.warn("Type information not found: " + type.getTypeName());
-      print(type.getTypeName());
-      return;
-    }
-
-    if (!type.getType().isPrimitive()) {
-      link = Utils.getExternalLink(configuration.parentConfiguration, type.getType(), writer);
-    }
-
-    if (link == null) {
-      print(type.getType().qualifiedTypeName());
-    } else {
-      around("a href='" + link + "'", type.getType().typeName());
-    }
-    if (type.hasParameters()) {
-      boolean first = true;
-      print("&lt;");
-      for (JaxType genericType : type.getParameters()) {
-        if (first) {
-          first = false;
-        } else {
-          print(",");
-        }
-        printOutputGenericType(genericType);
-      }
-      print("&gt;");
-    }
-    print(type.getDimension());
-  }
-
-  private void printInput() {
+  private void printInput(PojoTypes types) {
     MethodParameter inputParameter = method.getInputParameter();
     if (inputParameter == null)
       return;
@@ -278,13 +275,13 @@ public class MethodWriter extends DocletWriter {
         e.printStackTrace();
       }
       if (returnType != null)
-        printOutputType(returnType);
+        printOutputType(returnType.getType(), types);
       else
         around("tt", escape(typeName));
     } else {
       open("dd");
       Type returnType = inputParameter.getType();
-      printOutputType(returnType);
+      printOutputType(returnType, types);
     }
     String doc = inputParameter.getDoc();
     if (!Utils.isEmptyOrNull(doc)) {
