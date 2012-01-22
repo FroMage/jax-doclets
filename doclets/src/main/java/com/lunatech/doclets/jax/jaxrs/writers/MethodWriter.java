@@ -399,21 +399,32 @@ public class MethodWriter extends DocletWriter {
         first = false;
       }
     }
-    print("\n");
 
     Map<String, MethodParameter> headerParameters = method.getHeaderParameters();
     if (!headerParameters.isEmpty()) {
-      for (String name : headerParameters.keySet()) {
+      print("\n");
+      Iterator<String> keys = headerParameters.keySet().iterator();
+      while(keys.hasNext()) {
+        String name = keys.next();
         print(name);
-        print(": …\n");
+        print(": …");
+        if (keys.hasNext()) {
+          print("\n");
+        }
       }
     }
     Map<String, MethodParameter> cookieParameters = method.getCookieParameters();
     if (!cookieParameters.isEmpty()) {
-      for (String name : cookieParameters.keySet()) {
+      print("\n");
+      Iterator<String> keys = headerParameters.keySet().iterator();
+      while(keys.hasNext()) {
+        String name = keys.next();
         print("Cookie: ");
         print(name);
-        print("=…\n");
+        print(": …");
+        if (keys.hasNext()) {
+          print("\n");
+        }
       }
     }
 
@@ -429,7 +440,6 @@ public class MethodWriter extends DocletWriter {
         first = false;
       }
     }
-    print("\n");
     close("pre");
   }
 }
