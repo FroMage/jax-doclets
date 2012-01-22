@@ -106,8 +106,8 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     Collections.sort(jaxrsMethods);
     Resource rootResource = Resource.getRootResource(jaxrsMethods);
     rootResource.write(this, conf);
-    new IndexWriter(conf, rootResource).write();
-    new SummaryWriter(conf, rootResource).write();
+    new IndexWriter(conf, rootResource, this).write();
+    new SummaryWriter(conf, rootResource, this).write();
     Utils.copyResources(conf);
   }
 

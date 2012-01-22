@@ -22,18 +22,16 @@ import java.io.IOException;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.sun.javadoc.Doc;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
-public class IndexWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
+public class IndexWriter extends DocletWriter {
 
-  private Resource resource;
-
-  public IndexWriter(JAXConfiguration configuration, Resource resource) {
-    super(configuration, getWriter(configuration));
-    this.resource = resource;
+  public IndexWriter(JAXConfiguration configuration, Resource resource, JAXRSDoclet doclet) {
+    super(configuration, getWriter(configuration), resource, doclet);
   }
 
   private static HtmlDocletWriter getWriter(JAXConfiguration configuration) {
@@ -111,8 +109,4 @@ public class IndexWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
     printHeader("Resource index");
   }
 
-  protected void printOtherMenuItems(String selected) {
-    printMenuItem("Index", writer.relativePath + "overview-index.html", selected);
-    printMenuItem("Root resource", writer.relativePath + "index.html", selected);
-  }
 }
