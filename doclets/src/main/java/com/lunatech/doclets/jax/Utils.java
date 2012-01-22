@@ -333,6 +333,10 @@ public class Utils {
     return DirectoryManager.getPath(jpaClass.getPackageName());
   }
 
+  public static String classToPath(ClassDoc cDoc) {
+    return DirectoryManager.getPath(cDoc.containingPackage().name());
+  }
+
   public static String urlToPath(Resource resource) {
     String name = resource.getAbsolutePath();
     if (name.startsWith("/"))
@@ -345,6 +349,10 @@ public class Utils {
     if (name.startsWith("/"))
       name = name.substring(1);
     return name.replace('/', File.separatorChar);
+  }
+
+  public static String urlToClass(ClassDoc from, ClassDoc to) {
+    return classToRoot(from) + classToPath(to) + "/" + to.simpleTypeName() + ".html";
   }
 
   public static String urlToClass(JAXBClass from, JAXBClass to) {
@@ -361,6 +369,10 @@ public class Utils {
 
   public static String classToRoot(JAXBClass klass) {
     return DirectoryManager.getRelativePath(klass.getPackageName());
+  }
+
+  public static String classToRoot(ClassDoc cDoc) {
+  	return DirectoryManager.getRelativePath(cDoc.containingPackage());
   }
 
   public static String classToRoot(JPAClass klass) {
