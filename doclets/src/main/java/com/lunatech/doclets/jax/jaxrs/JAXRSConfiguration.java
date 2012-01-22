@@ -1,5 +1,7 @@
 package com.lunatech.doclets.jax.jaxrs;
 
+import java.util.regex.Pattern;
+
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
@@ -12,6 +14,10 @@ public class JAXRSConfiguration extends JAXConfiguration {
 
   public boolean enableJavaScriptExample;
 
+  public boolean enablePojoJsonDataObjects ;
+
+	public Pattern onlyOutputPojosMatching;
+
   public JAXRSConfiguration(ConfigurationImpl conf) {
     super(conf);
   }
@@ -22,5 +28,12 @@ public class JAXRSConfiguration extends JAXConfiguration {
     jaxrscontext = Utils.getOption(options, "-jaxrscontext");
     enableHTTPExample = !Utils.hasOption(options, "-disablehttpexample");
     enableJavaScriptExample = !Utils.hasOption(options, "-disablejavascriptexample");
+    enablePojoJsonDataObjects = Utils.hasOption(options, "-enablepojojson");
+
+    String pattern = Utils.getOption(options, "-matchingpojonamesonly");
+    if (pattern != null) {
+    	onlyOutputPojosMatching = Pattern.compile(pattern);
+    }
   }
+
 }

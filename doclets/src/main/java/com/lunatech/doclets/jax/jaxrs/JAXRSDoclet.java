@@ -54,11 +54,13 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
   private static final Class<?>[] jaxrsAnnotations = new Class<?>[] { Path.class };
 
   public static int optionLength(final String option) {
-    if ("-jaxrscontext".equals(option)) {
+    if ("-jaxrscontext".equals(option)
+    		|| "-matchingpojonamesonly".equals(option)) {
       return 2;
     }
     if ("-disablehttpexample".equals(option)
-        || "-disablejavascriptexample".equals(option)) {
+        || "-disablejavascriptexample".equals(option)
+        || "-enablepojojson".equals(option)) {
       return 1;
     }
     return HtmlDoclet.optionLength(option);
