@@ -267,5 +267,5 @@ a:visited {
 }
 {code}
 
-Note that wherever possible we´ve stuck with the JavaDoc CSS class names so you can reuse your 
+Note that wherever possible we've stuck with the JavaDoc CSS class names so you can reuse your 
 existing JavaDoc stylesheets.
