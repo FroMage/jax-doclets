@@ -110,7 +110,11 @@ public class DocletWriter {
   }
 
   protected void printMenu(String selected) {
-    open("table class='menu'", "colgroup");
+  	printMenu(selected, null);
+  }
+
+  protected void printMenu(String selected, String subStyle) {
+    open("table class='menu " + (subStyle != null ? "menu-" + subStyle : "") + "'", "colgroup");
     tag("col", "col");
     close("colgroup");
     open("tbody", "tr");
