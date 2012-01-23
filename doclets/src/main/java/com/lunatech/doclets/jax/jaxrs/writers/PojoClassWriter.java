@@ -135,7 +135,7 @@ public class PojoClassWriter extends DocletWriter {
   }
 
   private void printMemberTypeGeneric(Type type) {
-  	System.err.println("Type : " + type.qualifiedTypeName());
+    // System.err.println("Type : " + type.qualifiedTypeName());
   	if (type.isPrimitive() || type.qualifiedTypeName().startsWith("java.lang")) {
   		print(type.simpleTypeName());
   	} else {
