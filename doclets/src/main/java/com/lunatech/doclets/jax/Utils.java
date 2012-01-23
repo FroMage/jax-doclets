@@ -656,17 +656,21 @@ public class Utils {
     // then the class itself
     if (klass.typeName().equals(typeName))
       return klass;
-    // then go through the named imports
-    for (ClassDoc importedClass : klass.importedClasses()) {
-      if (importedClass.typeName().equals(typeName))
-        return importedClass;
-    }
-    // then the package imports
-    for (PackageDoc importedPackage : klass.importedPackages()) {
-      for (ClassDoc importedClass : importedPackage.allClasses(false)) {
+    try {
+      // then go through the named imports
+      for (ClassDoc importedClass : klass.importedClasses()) {
         if (importedClass.typeName().equals(typeName))
           return importedClass;
       }
+      // then the package imports
+      for (PackageDoc importedPackage : klass.importedPackages()) {
+        for (ClassDoc importedClass : importedPackage.allClasses(false)) {
+          if (importedClass.typeName().equals(typeName))
+            return importedClass;
+        }
+      }
+    } catch (NullPointerException e) {
+
     }
     // now try FQDN
     Type type = doclet.forName(typeName);
