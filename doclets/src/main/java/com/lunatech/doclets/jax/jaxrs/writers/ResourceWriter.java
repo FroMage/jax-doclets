@@ -203,10 +203,12 @@ public class ResourceWriter extends DocletWriter {
     else
       print(buf.toString());
     close("h2");
+    open("div class='doc-comment'");
     Doc javaDoc = this.resource.getJavaDoc();
     if (javaDoc != null && javaDoc.tags() != null) {
       writer.printInlineComment(javaDoc);
     }
+    close("div");
     do {
       boolean needsPathHeading = true;
       List<ResourceMethod> lrm = this.resource.getMethods();
