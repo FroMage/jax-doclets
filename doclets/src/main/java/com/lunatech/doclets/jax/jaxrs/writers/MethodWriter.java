@@ -65,7 +65,7 @@ public class MethodWriter extends DocletWriter {
     around("h3", httpMethod + " " + Utils.getAbsolutePath(this, resource));
     if (!Utils.isEmptyOrNull(method.getDoc())) {
       open("p");
-      print(method.getDoc());
+      writer.printInlineComment(method.getJavaDoc());
       close("p");
     }
     printIncludes();
