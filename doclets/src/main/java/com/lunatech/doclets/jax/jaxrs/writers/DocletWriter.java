@@ -44,6 +44,16 @@ public class DocletWriter extends com.lunatech.doclets.jax.writers.DocletWriter 
     printMenuItem("Index", writer.relativePath + "overview-index.html", selected);
     printMenuItem("Root resource", writer.relativePath + "index.html", selected);
   }
+
+  protected final void printPrelude(final String title, final String selected) {
+    printHeader(title);
+    printMenu(selected, "top");
+  }
+
+  protected final void printPostlude(String selected) {
+    printMenu(selected, "bottom");
+    printFooter();
+  }
   
   public JAXRSConfiguration getJAXRSConfiguration(){
     return (JAXRSConfiguration) configuration;

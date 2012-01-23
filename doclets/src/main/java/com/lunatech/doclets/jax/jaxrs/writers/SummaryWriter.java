@@ -46,12 +46,10 @@ public class SummaryWriter extends com.lunatech.doclets.jax.writers.DocletWriter
   }
 
   public void write() {
-    printHeader();
-    printMenu("Overview");
+    printPrelude("Overview of resources", "Overview");
     printResources();
     tag("hr");
-    printMenu("Overview");
-    printFooter();
+    printPostlude("Overview");
     writer.flush();
     writer.close();
   }

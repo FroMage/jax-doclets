@@ -45,12 +45,10 @@ public class IndexWriter extends com.lunatech.doclets.jax.writers.DocletWriter {
   }
 
   public void write() {
-    printHeader();
-    printMenu("Index");
+    printPrelude("Resource index", "Index");
     printResources();
     tag("hr");
-    printMenu("Index");
-    printFooter();
+    printPostlude("Index");
     writer.flush();
     writer.close();
   }

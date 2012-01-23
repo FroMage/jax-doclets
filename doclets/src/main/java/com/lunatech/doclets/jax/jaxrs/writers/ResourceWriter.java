@@ -49,14 +49,12 @@ public class ResourceWriter extends DocletWriter {
   public void write() {
     boolean isRoot = resource.getParent() == null;
     String selected = isRoot ? "Root resource" : "";
-    printHeader(isRoot);
-    printMenu(selected);
+    printPrelude(isRoot, selected);
     printResourceInfo();
     printSubresources();
     printMethods();
     tag("hr");
-    printMenu(selected);
-    printFooter();
+    printPostlude(selected);
     writer.flush();
   }
 
@@ -245,11 +243,11 @@ public class ResourceWriter extends DocletWriter {
 
   }
 
-  private void printHeader(boolean isRoot) {
+  private void printPrelude(boolean isRoot, String selected) {
     if (isRoot)
-      printHeader("Root Resource");
+      printPrelude("Root Resource", selected);
     else
-      printHeader("Resource " + resource.getName());
+      printPrelude("Resource " + resource.getName(), selected);
   }
 
   protected void printThirdMenu() {
