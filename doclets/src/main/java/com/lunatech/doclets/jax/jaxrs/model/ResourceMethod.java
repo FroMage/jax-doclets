@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -109,6 +109,18 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
     if (methods.isEmpty() && !declaringMethod.returnType().isPrimitive())
       resourceLocator = new ResourceClass(declaringMethod.returnType().asClassDoc(), this);
 
+  }
+
+  public ResourceClass getResourceClass() {
+    return resource;
+  }
+
+  public ClassDoc getDeclaringClass() {
+    return declaringClass;
+  }
+
+  public MethodDoc getMethodDoc() {
+    return method;
   }
 
   public MethodOutput getOutput() {

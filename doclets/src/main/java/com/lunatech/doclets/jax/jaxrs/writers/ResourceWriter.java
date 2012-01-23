@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -21,29 +21,28 @@ package com.lunatech.doclets.jax.jaxrs.writers;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
+import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
 import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.sun.javadoc.Doc;
-import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class ResourceWriter extends DocletWriter {
 
-  public ResourceWriter(JAXConfiguration configuration, Resource resource, JAXRSDoclet doclet) {
-    super(configuration, getWriter(configuration, resource), resource, doclet);
+  public ResourceWriter(JAXConfiguration configuration, JAXRSApplication application, Resource resource, JAXRSDoclet doclet) {
+    super(configuration, getWriter(configuration, application, resource), application, resource, doclet);
   }
 
-  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, Resource resource) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, JAXRSApplication application, Resource resource) {
     String pathName = Utils.urlToSystemPath(resource);
     try {
-      return new HtmlDocletWriter(configuration.parentConfiguration, pathName, "index.html", Utils.urlToRoot(resource));
+      return new JAXRSHtmlDocletWriter(application, configuration, pathName, "index.html", Utils.urlToRoot(resource));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -117,7 +116,7 @@ public class ResourceWriter extends DocletWriter {
         continue;
       open("tr");
       open("td");
-      new MethodWriter(method, this, doclet).print(types);
+      new MethodWriter(method, this, doclet, application).print(types);
       close("td");
       close("tr");
     }

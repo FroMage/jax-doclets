@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -31,6 +31,7 @@ import com.lunatech.doclets.jax.Utils.InvalidJaxTypeException;
 import com.lunatech.doclets.jax.Utils.JaxType;
 import com.lunatech.doclets.jax.jaxrs.JAXRSConfiguration;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
+import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.MethodOutput;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
 import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
@@ -49,8 +50,8 @@ public class MethodWriter extends DocletWriter {
 
   private ResourceMethod method;
 
-  public MethodWriter(ResourceMethod method, ResourceWriter resourceWriter, JAXRSDoclet doclet) {
-    super(resourceWriter.getConfiguration(), resourceWriter.getWriter(), resourceWriter.getResource(), doclet);
+  public MethodWriter(ResourceMethod method, ResourceWriter resourceWriter, JAXRSDoclet doclet, JAXRSApplication application) {
+    super(resourceWriter.getConfiguration(), resourceWriter.getWriter(), application, resourceWriter.getResource(), doclet);
     this.method = method;
   }
 

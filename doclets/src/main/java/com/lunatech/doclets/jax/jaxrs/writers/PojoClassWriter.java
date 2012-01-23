@@ -19,23 +19,15 @@
 package com.lunatech.doclets.jax.jaxrs.writers;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Set;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
-import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
-import com.lunatech.doclets.jax.jaxb.model.Attribute;
-import com.lunatech.doclets.jax.jaxb.model.Element;
-import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
-import com.lunatech.doclets.jax.jaxb.model.JAXBMember;
-import com.lunatech.doclets.jax.jaxb.model.MemberType;
-import com.lunatech.doclets.jax.jaxb.model.Value;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
+import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
-import com.sun.javadoc.Doc;
 import com.sun.javadoc.ClassDoc;
+import com.sun.javadoc.Doc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Type;
@@ -49,16 +41,17 @@ public class PojoClassWriter extends DocletWriter {
 
 	private PojoTypes pojoTypes;
 
-  public PojoClassWriter(JAXConfiguration configuration, ClassDoc cDoc, PojoTypes types, Resource resource, JAXRSDoclet doclet) {
-    super(configuration, getWriter(configuration, cDoc), resource, doclet);
+  public PojoClassWriter(JAXConfiguration configuration, JAXRSApplication application, ClassDoc cDoc, PojoTypes types, Resource resource,
+      JAXRSDoclet doclet) {
+    super(configuration, getWriter(configuration, application, cDoc), application, resource, doclet);
     this.cDoc = cDoc;
     this.pojoTypes = types;
   }
 
-  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, ClassDoc cDoc) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, JAXRSApplication application, ClassDoc cDoc) {
     try {
-      return new HtmlDocletWriter(configuration.parentConfiguration, Utils.classToPath(cDoc), cDoc.simpleTypeName() + ".html",
-          Utils.classToRoot(cDoc));
+      return new JAXRSHtmlDocletWriter(application, configuration, Utils.classToPath(cDoc), cDoc.simpleTypeName()
+          + ".html", Utils.classToRoot(cDoc));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

@@ -31,6 +31,7 @@ import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
+import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
@@ -46,14 +47,14 @@ public class DataObjectIndexWriter extends DocletWriter {
 
   private PojoTypes pojoTypes;
 
-	public DataObjectIndexWriter(JAXConfiguration configuration, Resource resource, JAXRSDoclet doclet, PojoTypes types) {
-    super(configuration, getWriter(configuration), resource, doclet);
+  public DataObjectIndexWriter(JAXConfiguration configuration, JAXRSApplication application, JAXRSDoclet doclet, PojoTypes types) {
+    super(configuration, getWriter(configuration, application), application, application.getRootResource(), doclet);
     this.pojoTypes = types;
   }
 
-  private static HtmlDocletWriter getWriter(JAXConfiguration configuration) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, JAXRSApplication application) {
     try {
-      return new HtmlDocletWriter(configuration.parentConfiguration, "", "objects-index.html", "");
+      return new JAXRSHtmlDocletWriter(application, configuration, "", "objects-index.html", "");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

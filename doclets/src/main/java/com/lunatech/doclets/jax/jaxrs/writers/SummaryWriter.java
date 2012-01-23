@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ import java.util.Map;
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
+import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.sun.javadoc.Doc;
@@ -31,13 +32,13 @@ import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class SummaryWriter extends DocletWriter {
 
-  public SummaryWriter(JAXConfiguration configuration, Resource resource, JAXRSDoclet doclet) {
-    super(configuration, getWriter(configuration), resource, doclet);
+  public SummaryWriter(JAXConfiguration configuration, JAXRSApplication application, JAXRSDoclet doclet) {
+    super(configuration, getWriter(configuration, application), application, application.getRootResource(), doclet);
   }
 
-  private static HtmlDocletWriter getWriter(JAXConfiguration configuration) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, JAXRSApplication application) {
     try {
-      return new HtmlDocletWriter(configuration.parentConfiguration, "", "overview-summary.html", "");
+      return new JAXRSHtmlDocletWriter(application, configuration, "", "overview-summary.html", "");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

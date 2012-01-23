@@ -30,6 +30,7 @@ import javax.ws.rs.Path;
 
 import com.lunatech.doclets.jax.JAXDoclet;
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
@@ -59,8 +60,6 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
 
   public final HtmlDoclet htmlDoclet = new HtmlDoclet();
 
-  private static final Class<?>[] jaxrsAnnotations = new Class<?>[] { Path.class };
-
   public static int optionLength(final String option) {
     if ("-jaxrscontext".equals(option)
     		|| "-matchingpojonamesonly".equals(option)) {
@@ -81,8 +80,6 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
   public static LanguageVersion languageVersion() {
     return AbstractDoclet.languageVersion();
   }
-
-  private List<ResourceMethod> jaxrsMethods = new LinkedList<ResourceMethod>();
 
   public static boolean start(final RootDoc rootDoc) {
     new JAXRSDoclet(rootDoc).start();
@@ -105,32 +102,23 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
   }
 
   public void start() {
-    final ClassDoc[] classes = conf.parentConfiguration.root.classes();
-    for (final ClassDoc klass : classes) {
-      if (Utils.findAnnotatedClass(klass, jaxrsAnnotations) != null) {
-        handleJAXRSClass(klass);
-      }
-    }
-    Collections.sort(jaxrsMethods);
-    Resource rootResource = Resource.getRootResource(jaxrsMethods);
+    JAXRSApplication app = new JAXRSApplication(conf);
+    Resource rootResource = app.getRootResource();
+
     PojoTypes types = new PojoTypes();
 
-    rootResource.write(this, conf, types);
-    new IndexWriter(conf, rootResource, this).write();
-    new SummaryWriter(conf, rootResource, this).write();
+    rootResource.write(this, conf, app, types);
+    new IndexWriter(conf, app, this).write();
+    new SummaryWriter(conf, app, this).write();
 
     if (conf.enablePojoJsonDataObjects) {
-	    new DataObjectIndexWriter(conf, rootResource, this, types).write();
+      new DataObjectIndexWriter(conf, app, this, types).write();
 	    for (ClassDoc cDoc : types.getResolvedTypes()) {
-    		new PojoClassWriter(conf, cDoc, types, rootResource, this).write();
+        new PojoClassWriter(conf, app, cDoc, types, rootResource, this).write();
 	    }
     }
 
     Utils.copyResources(conf);
-  }
-
-  private void handleJAXRSClass(final ClassDoc klass) {
-    jaxrsMethods.addAll(new ResourceClass(klass, null).getMethods());
   }
 
   public void warn(String warning) {
