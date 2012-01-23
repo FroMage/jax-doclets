@@ -224,9 +224,9 @@ public class MethodWriter extends DocletWriter {
     }
 
     if (link == null) {
-      print(type.qualifiedTypeName());
+      around("span title='" + type.qualifiedTypeName() + "'", type.typeName());
     } else {
-      around("a href='" + link + "'", type.typeName());
+      around("a title='" + type.qualifiedTypeName() + "' + href='" + link + "'", type.typeName());
     }
     ParameterizedType pType = type.asParameterizedType();
     if (pType != null) {
