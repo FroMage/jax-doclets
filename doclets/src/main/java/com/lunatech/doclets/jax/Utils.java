@@ -837,21 +837,25 @@ public class Utils {
     }
   }
 
-  private static String addContextPath(DocletWriter writer, String url) {
+  private static String addContextPath(JAXConfiguration config, String resource) {
     // FIXME: move this to JAXRSConfiguration
-    String jaxrscontext = getOption(writer.getConfiguration().parentConfiguration.root.options(), "-jaxrscontext");
+    String jaxrscontext = getOption(config.parentConfiguration.root.options(), "-jaxrscontext");
     if (jaxrscontext == null)
-      return url;
+      return resource;
     else
-      return appendURLFragments(jaxrscontext, url);
+      return appendURLFragments(jaxrscontext, resource);
   }
 
   public static String getDisplayURL(DocletWriter writer, Resource resource, ResourceMethod method) {
-    return addContextPath(writer, method.getURL(resource));
+    return addContextPath(writer.getConfiguration(), method.getURL(resource));
   }
 
   public static String getAbsolutePath(DocletWriter writer, Resource resource) {
-    return addContextPath(writer, resource.getAbsolutePath());
+    return addContextPath(writer.getConfiguration(), resource.getAbsolutePath());
+  }
+
+  public static String getAbsolutePath(JAXConfiguration config, Resource resource) {
+    return addContextPath(config, resource.getAbsolutePath());
   }
 
   public static void log(String mesg) {
