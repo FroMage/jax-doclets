@@ -62,21 +62,7 @@ public class MethodWriter extends DocletWriter {
 
   private void printMethod(String httpMethod, PojoTypes types) {
     around("a name='" + httpMethod + "'", "");
-    if(getJAXRSConfiguration().enableHTTPExample
-        || getJAXRSConfiguration().enableJavaScriptExample){
-      open("table class='examples'", "tr");
-      if(getJAXRSConfiguration().enableHTTPExample){
-        open("td");
-        printHTTPExample(httpMethod);
-        close("td");
-      }
-      if(getJAXRSConfiguration().enableJavaScriptExample){
-        open("td");
-        printAPIExample();
-        close("td");
-      }
-      close("tr", "table");
-    }
+    around("h3", httpMethod + " " + Utils.getAbsolutePath(this, resource));
     if (!Utils.isEmptyOrNull(method.getDoc())) {
       open("p");
       print(method.getDoc());
@@ -84,6 +70,26 @@ public class MethodWriter extends DocletWriter {
     }
     printIncludes();
     open("dl");
+    boolean doubleExample = getJAXRSConfiguration().enableHTTPExample
+        && getJAXRSConfiguration().enableJavaScriptExample;
+    if (doubleExample) {
+      open("table class='examples'", "tr");
+      open("td");
+    }
+    if (getJAXRSConfiguration().enableHTTPExample) {
+      printHTTPExample(httpMethod);
+    }
+    if (doubleExample) {
+      close("td");
+      open("td");
+    }
+    if (getJAXRSConfiguration().enableJavaScriptExample) {
+      printAPIExample();
+    }
+    if (doubleExample) {
+      close("td");
+      close("tr", "table");
+    }
     printInput(types);
     printOutput(types);
     printParameters(method.getQueryParameters(), "Query");
@@ -321,7 +327,8 @@ public class MethodWriter extends DocletWriter {
   }
 
   private void printAPIExample() {
-    around("b", "API Example:");
+    around("dt", "API Example:");
+    open("dd");
     /*
      * We are using tt instead of pre to avoid whitespace issues in the doc's
      * first sentence tags that would show up in a pre and would not in a tt.
@@ -344,6 +351,7 @@ public class MethodWriter extends DocletWriter {
     print("});");
     close("tt");
     close("p");
+    close("dd");
   }
 
   private boolean printAPIParameters(Map<String, MethodParameter> parameters, boolean hasOne) {
@@ -374,7 +382,8 @@ public class MethodWriter extends DocletWriter {
   }
 
   private void printHTTPExample(String httpMethod) {
-    around("b", "HTTP Example:");
+    around("dt", "HTTP Example:");
+    open("dd");
     open("pre");
     String absPath = Utils.getAbsolutePath(this, resource);
 
@@ -441,5 +450,6 @@ public class MethodWriter extends DocletWriter {
       }
     }
     close("pre");
+    close("dd");
   }
 }

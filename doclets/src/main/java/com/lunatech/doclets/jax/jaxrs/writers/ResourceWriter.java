@@ -53,10 +53,14 @@ public class ResourceWriter extends DocletWriter {
     boolean isRoot = resource.getParent() == null;
     String selected = isRoot ? "Root resource" : "";
     printPrelude(isRoot, selected);
+    open("dl");
     printResourceInfo();
     printSubresources();
     if (resource.hasRealMethods()) {
       printMethodOverview(resource.getMethods());
+    }
+    close("dl");
+    if (resource.hasRealMethods()) {
       printMethodDetails(resource.getMethods(), types);
     }
     tag("hr");
@@ -66,11 +70,15 @@ public class ResourceWriter extends DocletWriter {
 
   private void printMethodOverview(List<ResourceMethod> methods) {
     tag("hr");
+    open("dt");
+    print("Resource Methods");
+    close("dt");
+    open("dd");
     open("table class='info' id='methods-summary'");
     around("caption class='TableCaption'", "Method Summary");
     open("tbody");
     open("tr");
-    around("th class='TableHeader'", "Resource");
+    around("th class='TableHeader'", "Name");
     around("th class='TableHeader'", "Description");
     close("tr");
     for (ResourceMethod method : methods) {
@@ -94,6 +102,7 @@ public class ResourceWriter extends DocletWriter {
     }
     close("tbody");
     close("table");
+    close("dd");
   }
 
   private void printMethodDetails(List<ResourceMethod> methods, PojoTypes types) {
@@ -121,6 +130,10 @@ public class ResourceWriter extends DocletWriter {
     if (resources.isEmpty())
       return;
     tag("hr");
+    open("dt");
+    print("Sub-Resources");
+    close("dt");
+    open("dd");
     open("table class='info' id='resources'");
     around("caption class='TableCaption'", "Resources");
     open("tbody");
@@ -155,6 +168,7 @@ public class ResourceWriter extends DocletWriter {
     }
     close("tbody");
     close("table");
+    close("dd");
   }
 
   private Resource deepFilter(Resource resource) {
@@ -221,7 +235,6 @@ public class ResourceWriter extends DocletWriter {
       Map<String, MethodParameter> parameters = rm.getPathParameters();
       for (MethodParameter param : parameters.values()) {
         if (needsPathHeading) {
-          open("dl");
           open("dt");
           around("b", "Path parameters:");
           close("dt");
@@ -237,7 +250,6 @@ public class ResourceWriter extends DocletWriter {
         close("dd");
       }
       if (!needsPathHeading) {
-        close("dl");
       }
     } while (false);
 
