@@ -9,7 +9,7 @@ import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 public class JAXRSConfiguration extends JAXConfiguration {
 
   public String jaxrscontext;
-  
+
   public boolean enableHTTPExample;
 
   public boolean enableJavaScriptExample;
@@ -31,7 +31,7 @@ public class JAXRSConfiguration extends JAXConfiguration {
     enablePojoJsonDataObjects = Utils.hasOption(options, "-enablepojojson");
 
     String pattern = Utils.getOption(options, "-matchingpojonamesonly");
-    if (pattern != null) {
+    if ((pattern != null) && !pattern.trim().isEmpty()) {
     	onlyOutputPojosMatching = Pattern.compile(pattern);
     }
   }
