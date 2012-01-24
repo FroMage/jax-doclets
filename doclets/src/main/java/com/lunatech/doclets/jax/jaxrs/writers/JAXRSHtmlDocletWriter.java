@@ -36,7 +36,6 @@ public class JAXRSHtmlDocletWriter extends HtmlDocletWriter {
   public String seeTagToString(SeeTag tag) {
     final ClassDoc cDoc = tag.referencedClass();
     MemberDoc member = tag.referencedMember();
-    System.err.println(cDoc.qualifiedName() + "#" + member + " in " + tag.holder().name() + " -----> ");
 
     Resource res = null;
     String linkText = null;
@@ -54,10 +53,8 @@ public class JAXRSHtmlDocletWriter extends HtmlDocletWriter {
       res = application.findResourceForMethod(cDoc, (MethodDoc) member);
 
       if (res != null) {
-        System.err.println("Found resource " + res.getAbsolutePath());
         ResourceMethod rMethod = res.findMethod((MethodDoc) member);
         if (rMethod != null) {
-          System.err.println("Found method " + rMethod.getMethodDoc().qualifiedName());
           linkText = getDisplayText(res, rMethod);
           hash = rMethod.getMethods().get(0);
         }
@@ -80,7 +77,6 @@ public class JAXRSHtmlDocletWriter extends HtmlDocletWriter {
       if (hash != null) {
         link += "#" + hash;
       }
-      System.err.println(link + " (" + linkText + ") <" + linkTitle + ">");
       return String.format("<tt><a href='%s' title='%s'>%s</a></tt>", link, linkTitle, linkText);
     }
 
