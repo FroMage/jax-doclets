@@ -61,7 +61,7 @@ public class DataObjectIndexWriter extends DocletWriter {
   }
 
   public void write() {
-    printPrelude("Overview of JSON data objects", "Data objects");
+    printPrelude("Data object index", "Data objects");
 
     Comparator<Type> typeSimpleNameComparator = new Comparator<Type>() {
 			@Override
