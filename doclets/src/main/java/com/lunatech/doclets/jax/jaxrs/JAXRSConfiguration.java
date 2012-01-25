@@ -16,7 +16,9 @@ public class JAXRSConfiguration extends JAXConfiguration {
 
   public boolean enablePojoJsonDataObjects ;
 
-	public Pattern onlyOutputPojosMatching;
+  public Pattern onlyOutputPojosMatching;
+
+  public Pattern onlyOutputResourcesMatching;
 
   public JAXRSConfiguration(ConfigurationImpl conf) {
     super(conf);
@@ -30,10 +32,16 @@ public class JAXRSConfiguration extends JAXConfiguration {
     enableJavaScriptExample = !Utils.hasOption(options, "-disablejavascriptexample");
     enablePojoJsonDataObjects = Utils.hasOption(options, "-enablepojojson");
 
-    String pattern = Utils.getOption(options, "-matchingpojonamesonly");
-    if ((pattern != null) && !pattern.trim().isEmpty()) {
-    	onlyOutputPojosMatching = Pattern.compile(pattern);
+    String jsonPattern = Utils.getOption(options, "-matchingpojonamesonly");
+    if ((jsonPattern != null) && !jsonPattern.trim().isEmpty()) {
+      onlyOutputPojosMatching = Pattern.compile(jsonPattern);
     }
+
+    String resourcePattern = Utils.getOption(options, "-matchingresourcesonly");
+    if ((resourcePattern != null) && !resourcePattern.trim().isEmpty()) {
+      onlyOutputResourcesMatching = Pattern.compile(resourcePattern);
+    }
+
   }
 
 }

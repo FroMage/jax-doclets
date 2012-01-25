@@ -3,6 +3,7 @@ package com.lunatech.doclets.jax.jaxrs.model;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import javax.ws.rs.Path;
 
@@ -20,11 +21,14 @@ public class JAXRSApplication {
 
   private Resource rootResource;
 
+  private final JAXRSConfiguration conf;
+
   public JAXRSApplication(JAXRSConfiguration conf) {
-    discoverJAXRSResources(conf);
+    this.conf = conf;
+    discoverJAXRSResources();
   }
 
-  private void discoverJAXRSResources(JAXRSConfiguration conf) {
+  private void discoverJAXRSResources() {
     final ClassDoc[] classes = conf.parentConfiguration.root.classes();
     for (final ClassDoc klass : classes) {
       if (Utils.findAnnotatedClass(klass, jaxrsAnnotations) != null) {
@@ -36,6 +40,12 @@ public class JAXRSApplication {
   }
 
   private void handleJAXRSClass(final ClassDoc klass) {
+    if (conf.onlyOutputResourcesMatching != null) {
+      Matcher m = conf.onlyOutputResourcesMatching.matcher(klass.qualifiedTypeName());
+      if(!m.matches()) {
+        return;
+      }
+    }
     jaxrsMethods.addAll(new ResourceClass(klass, null).getMethods());
   }
 

@@ -62,7 +62,8 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
 
   public static int optionLength(final String option) {
     if ("-jaxrscontext".equals(option)
-    		|| "-matchingpojonamesonly".equals(option)) {
+        || "-matchingpojonamesonly".equals(option)
+        || "-matchingresourcesonly".equals(option)) {
       return 2;
     }
     if ("-disablehttpexample".equals(option)
@@ -113,9 +114,9 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
 
     if (conf.enablePojoJsonDataObjects) {
       new DataObjectIndexWriter(conf, app, this, types).write();
-	    for (ClassDoc cDoc : types.getResolvedTypes()) {
+      for (ClassDoc cDoc : types.getResolvedTypes()) {
         new PojoClassWriter(conf, app, cDoc, types, rootResource, this).write();
-	    }
+      }
     }
 
     Utils.copyResources(conf);
