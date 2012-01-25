@@ -111,7 +111,7 @@ public class PojoClassWriter extends DocletWriter {
       open("td");
       Doc javaDoc = member;
       if (javaDoc.firstSentenceTags() != null)
-        writer.printSummaryComment(javaDoc);
+        writer.printInlineComment(javaDoc);
       close("td");
       close("tr");
 
