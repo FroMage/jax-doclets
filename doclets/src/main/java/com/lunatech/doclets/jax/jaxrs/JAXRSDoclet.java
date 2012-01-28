@@ -25,6 +25,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.io.*;
+import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.Path;
 
@@ -64,7 +67,8 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
   public static int optionLength(final String option) {
     if ("-jaxrscontext".equals(option)
         || "-matchingpojonamesonly".equals(option)
-        || "-matchingresourcesonly".equals(option)) {
+        || "-matchingresourcesonly".equals(option)
+        || "-pathexcludefilter".equals(option)) {
       return 2;
     }
     if ("-disablehttpexample".equals(option)
@@ -121,7 +125,6 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
         new PojoClassWriter(conf, app, cDoc, types, rootResource, this).write();
       }
     }
-
     Utils.copyResources(conf);
   }
 

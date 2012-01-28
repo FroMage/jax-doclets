@@ -1,6 +1,8 @@
 package com.lunatech.doclets.jax.jaxrs;
 
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
@@ -13,6 +15,8 @@ public class JAXRSConfiguration extends JAXConfiguration {
   public boolean enableHTTPExample;
 
   public boolean enableJavaScriptExample;
+  
+  public List<String> pathExcludeFilters = new ArrayList<String>();
 
   public boolean enablePojoJsonDataObjects ;
 
@@ -30,18 +34,7 @@ public class JAXRSConfiguration extends JAXConfiguration {
     jaxrscontext = Utils.getOption(options, "-jaxrscontext");
     enableHTTPExample = !Utils.hasOption(options, "-disablehttpexample");
     enableJavaScriptExample = !Utils.hasOption(options, "-disablejavascriptexample");
-    enablePojoJsonDataObjects = Utils.hasOption(options, "-enablepojojson");
-
-    String jsonPattern = Utils.getOption(options, "-matchingpojonamesonly");
-    if ((jsonPattern != null) && !jsonPattern.trim().isEmpty()) {
-      onlyOutputPojosMatching = Pattern.compile(jsonPattern);
-    }
-
-    String resourcePattern = Utils.getOption(options, "-matchingresourcesonly");
-    if ((resourcePattern != null) && !resourcePattern.trim().isEmpty()) {
-      onlyOutputResourcesMatching = Pattern.compile(resourcePattern);
-    }
-
+    pathExcludeFilters.addAll(Utils.getOptions(options, "-pathexcludefilter"));
   }
 
 }

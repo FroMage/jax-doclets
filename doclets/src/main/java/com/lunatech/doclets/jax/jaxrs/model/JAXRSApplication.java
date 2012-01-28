@@ -1,9 +1,11 @@
 package com.lunatech.doclets.jax.jaxrs.model;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.Path;
 
@@ -36,7 +38,34 @@ public class JAXRSApplication {
       }
     }
     Collections.sort(jaxrsMethods);
+    filterMethods();
     rootResource = buildRootResource();
+  }
+  
+  private void filterMethods() {
+    if (conf.pathExcludeFilters.isEmpty())
+      return;
+
+    System.out.println("Resource methods exclude filters are defined");
+
+    // collection for paths removing, since jaxrsMethods is immutable
+    List<ResourceMethod> toRemove = new LinkedList<ResourceMethod>();
+    for (String regexpFilter : conf.pathExcludeFilters) {
+      System.out.println("Filtering upon filter " + regexpFilter);
+      Pattern p = Pattern.compile(regexpFilter);
+      Iterator<ResourceMethod> irm = jaxrsMethods.iterator();
+      while (irm.hasNext()) {
+        ResourceMethod rm = irm.next();
+
+        if (p.matcher(rm.getPath()).matches()) {
+          System.out.println("Resource method removed: " + rm);
+          toRemove.add(rm);
+        }
+      }
+    }
+    int beforeRemoving = jaxrsMethods.size();
+    jaxrsMethods.removeAll(toRemove);
+    System.out.println("Resource methods removed. Was " + beforeRemoving + ", now " + jaxrsMethods.size());
   }
 
   private void handleJAXRSClass(final ClassDoc klass) {
