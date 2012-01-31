@@ -13,4 +13,11 @@ public class RegexPathTest {
                     @PathParam("again") String again) {
     return "foo";
   }
+
+  @GET
+  @Path("{more : a{2}b{3,2}}{again}-with-whitespace")
+  public String getAgain(@PathParam("foo") String foo, @PathParam("bar") String bar, @PathParam("more") String more,
+                    @PathParam("again") String again) {
+    return "foo";
+  }
 }

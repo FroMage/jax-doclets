@@ -759,7 +759,7 @@ public class Utils {
   }
 
   public static String removeFragmentRegexes(String fragment, Map<String, String> regexFragments) {
-    Pattern regexPattern = Pattern.compile("\\{(\\w[\\w\\.-]*):");
+    Pattern regexPattern = Pattern.compile("\\{(\\w[\\w\\.-]*)\\s*:");
     Matcher regexMatcher = regexPattern.matcher(fragment);
     int start = 0;
     char[] fragmentArray = fragment.toCharArray();
