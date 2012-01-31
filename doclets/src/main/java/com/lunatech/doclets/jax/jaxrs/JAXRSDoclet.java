@@ -106,13 +106,14 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     JAXRSApplication app = new JAXRSApplication(conf);
     Resource rootResource = app.getRootResource();
 
-    PojoTypes types = new PojoTypes();
+    PojoTypes types = new PojoTypes(conf);
 
     rootResource.write(this, conf, app, types);
     new IndexWriter(conf, app, this).write();
     new SummaryWriter(conf, app, this).write();
 
     if (conf.enablePojoJsonDataObjects) {
+      types.resolveSubclassDtos();
       new DataObjectIndexWriter(conf, app, this, types).write();
       for (ClassDoc cDoc : types.getResolvedTypes()) {
         new PojoClassWriter(conf, app, cDoc, types, rootResource, this).write();

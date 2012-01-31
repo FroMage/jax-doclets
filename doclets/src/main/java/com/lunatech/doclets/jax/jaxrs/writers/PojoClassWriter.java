@@ -19,6 +19,7 @@
 package com.lunatech.doclets.jax.jaxrs.writers;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
@@ -76,6 +77,31 @@ public class PojoClassWriter extends DocletWriter {
     around("span class='name'", "Data object: " + cDoc.simpleTypeName());
     around("span class='namespace'", "(in " + getContainer() + ")");
     close("h2");
+
+    ClassDoc superClass = cDoc.superclass();
+    if (pojoTypes.getResolvedTypes().contains(superClass)) {
+      open("dl class='supertype'");
+      around("dt", "Supertype:");
+      open("dd");
+      around("a title='" + superClass.qualifiedTypeName() + "' href='" + Utils.urlToClass(cDoc, superClass) + "'",
+          superClass.simpleTypeName());
+      close("dd", "dl");
+    }
+    List<ClassDoc> subClasses = pojoTypes.getSubclasses(cDoc);
+    if (!subClasses.isEmpty()) {
+      open("dl class='subtypes'");
+      around("dt", "Known sub-types:");
+      open("dd");
+      for (int i = 0; i < subClasses.size(); i++) {
+        ClassDoc scDoc = subClasses.get(i);
+        around("a title='" + scDoc.qualifiedTypeName() + "' href='" + Utils.urlToClass(cDoc, scDoc) + "'", scDoc.simpleTypeName());
+        if (i < (subClasses.size() - 1)) {
+          print(",");
+        }
+      }
+      close("dd", "dl");
+    }
+
     Doc javaDoc = cDoc;
     if (javaDoc.tags() != null) {
       writer.printInlineComment(javaDoc);

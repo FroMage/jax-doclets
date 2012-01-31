@@ -66,7 +66,7 @@ public class DataObjectIndexWriter extends DocletWriter {
     Comparator<Type> typeSimpleNameComparator = new Comparator<Type>() {
 			@Override
       public int compare(Type t0, Type t1) {
-				return t0.simpleTypeName().compareTo(t1.simpleTypeName());
+        return t0.simpleTypeName().compareTo(t1.simpleTypeName());
       }
     };
     List<Type> resolvedClasses = new ArrayList<Type>(pojoTypes.getResolvedTypes());
@@ -102,9 +102,18 @@ public class DataObjectIndexWriter extends DocletWriter {
       open("tr");
       open("td");
       if (cDoc != null) {
-      	around("a href='" + writer.relativePath + getLink(cDoc) + "'", cDoc.simpleTypeName());
+        around("a title='" + cDoc.qualifiedTypeName() + "' + href='" + writer.relativePath + getLink(cDoc) + "'", cDoc.simpleTypeName());
+        ClassDoc superClass = cDoc.superclass();
+        if (pojoTypes.getResolvedTypes().contains(superClass)) {
+          open("span class='supertype'");
+          print(" extends ");
+          around("a title='" + superClass.qualifiedTypeName() + "' href='" + writer.relativePath + getLink(superClass) + "'",
+              superClass.simpleTypeName());
+          close("span");
+        }
+
       } else {
-      	print(klass.simpleTypeName());
+        print(klass.simpleTypeName());
       }
       close("td");
       open("td");

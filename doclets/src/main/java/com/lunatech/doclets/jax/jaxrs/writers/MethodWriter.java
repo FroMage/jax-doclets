@@ -221,12 +221,8 @@ public class MethodWriter extends DocletWriter {
       link = Utils.getExternalLink(configuration.parentConfiguration, type, writer);
 
       if ((link == null) && getJAXRSConfiguration().enablePojoJsonDataObjects) {
-        if (isPojoToGenerate(type)) {
-          ClassDoc cDoc = type.asClassDoc();
-          link = Utils.urlToRoot(getResource()) + DataObjectIndexWriter.getLink(cDoc);
-          types.addResolvedType(cDoc);
-        } else {
-          types.addUnresolvedType(type);
+        if (types.resolveUsedType(type)) {
+          link = Utils.urlToRoot(getResource()) + DataObjectIndexWriter.getLink(type.asClassDoc());
         }
       }
     }
@@ -251,18 +247,6 @@ public class MethodWriter extends DocletWriter {
       print("&gt;");
     }
     print(type.dimension());
-  }
-
-  private boolean isPojoToGenerate(Type type) {
-    JAXRSConfiguration jaxrsConfiguration = getJAXRSConfiguration();
-    if (type.asClassDoc() == null) {
-      return false;
-    }
-    if (jaxrsConfiguration.onlyOutputPojosMatching != null) {
-      Matcher m = jaxrsConfiguration.onlyOutputPojosMatching.matcher(type.qualifiedTypeName());
-      return m.matches();
-    }
-    return true;
   }
 
   private void printInput(PojoTypes types) {
