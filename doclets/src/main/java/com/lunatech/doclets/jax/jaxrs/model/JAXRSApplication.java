@@ -94,7 +94,7 @@ public class JAXRSApplication {
   }
 
   static boolean areEqual(MethodDoc m1, MethodDoc m2) {
-    if (!m1.qualifiedName().equals(m2.qualifiedName())) {
+    if (!m1.name().equals(m2.name())) {
       return false;
     }
     Parameter[] p1 = m1.parameters();
