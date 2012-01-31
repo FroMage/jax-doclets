@@ -177,10 +177,11 @@ public class MethodWriter extends DocletWriter {
           doclet.warn("Invalid @returnWrapped type: " + typeName);
           e.printStackTrace();
         }
-        if (returnType != null)
-          printOutputType(returnType.getType(), types);
-        else
+        if (returnType != null) {
+          printOutputType(returnType, types);
+        } else {
           around("tt", escape(typeName));
+        }
         if (output.getOutputDoc(i) != null) {
           print(" - ");
           print(output.getOutputDoc(i));
@@ -282,7 +283,7 @@ public class MethodWriter extends DocletWriter {
         e.printStackTrace();
       }
       if (returnType != null)
-        printOutputType(returnType.getType(), types);
+        printOutputType(returnType, types);
       else
         around("tt", escape(typeName));
     } else {
