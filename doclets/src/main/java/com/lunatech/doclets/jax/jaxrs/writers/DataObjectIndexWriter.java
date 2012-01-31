@@ -120,7 +120,7 @@ public class DataObjectIndexWriter extends DocletWriter {
   }
 
   static String getLink(final ClassDoc type) {
-  	return Utils.classToPath(type) + "/" + type.simpleTypeName() + ".html";
+    return Utils.classToPath(type) + "/" + type.typeName() + ".html";
   }
 
 }

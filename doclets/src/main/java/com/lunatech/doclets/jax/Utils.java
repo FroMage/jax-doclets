@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -352,7 +352,7 @@ public class Utils {
   }
 
   public static String urlToClass(ClassDoc from, ClassDoc to) {
-    return classToRoot(from) + classToPath(to) + "/" + to.simpleTypeName() + ".html";
+    return classToRoot(from) + classToPath(to) + "/" + to.name() + ".html";
   }
 
   public static String urlToClass(JAXBClass from, JAXBClass to) {
@@ -516,7 +516,7 @@ public class Utils {
 
   /**
    * Returns either Produces.class or ProduceMime.class (old version)
-   * 
+   *
    * @return
    */
   public static Class<?> getProducesClass() {
@@ -533,7 +533,7 @@ public class Utils {
 
   /**
    * Returns either Consumes.class or ConsumeMime.class (old version)
-   * 
+   *
    * @return
    */
   public static Class<?> getConsumesClass() {

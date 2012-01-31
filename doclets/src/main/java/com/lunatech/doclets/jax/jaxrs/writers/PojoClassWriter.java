@@ -50,7 +50,7 @@ public class PojoClassWriter extends DocletWriter {
 
   private static HtmlDocletWriter getWriter(JAXConfiguration configuration, JAXRSApplication application, ClassDoc cDoc) {
     try {
-      return new JAXRSHtmlDocletWriter(application, configuration, Utils.classToPath(cDoc), cDoc.simpleTypeName()
+      return new JAXRSHtmlDocletWriter(application, configuration, Utils.classToPath(cDoc), cDoc.typeName()
           + ".html", Utils.classToRoot(cDoc));
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -58,7 +58,7 @@ public class PojoClassWriter extends DocletWriter {
   }
 
   public void write() {
-  	printPrelude("Data object: " + cDoc.simpleTypeName(), "");
+    printPrelude("Data object: " + cDoc.typeName(), "");
     printSummary();
     printElements();
     tag("hr");
@@ -132,15 +132,13 @@ public class PojoClassWriter extends DocletWriter {
   	if (type.isPrimitive() || type.qualifiedTypeName().startsWith("java.lang")) {
   		print(type.simpleTypeName());
   	} else {
-  		ClassDoc fDoc = type.asClassDoc();
-  		if (fDoc == null || fDoc.qualifiedName().equals(cDoc.qualifiedName())
-  				|| !this.pojoTypes.getResolvedTypes().contains(fDoc)) {
-  			around("span title='" + type.qualifiedTypeName() + "'", type.typeName());
-  		} else {
-  			around("a title='" + fDoc.qualifiedTypeName() + "' href='"
-  					   + Utils.urlToClass(cDoc, fDoc) + "'", fDoc.typeName());
-  		}
-  	}
+      ClassDoc fDoc = type.asClassDoc();
+      if (fDoc == null || fDoc.qualifiedName().equals(cDoc.qualifiedName()) || !this.pojoTypes.getResolvedTypes().contains(fDoc)) {
+        around("span title='" + type.qualifiedTypeName() + "'", type.simpleTypeName());
+      } else {
+        around("a title='" + fDoc.qualifiedTypeName() + "' href='" + Utils.urlToClass(cDoc, fDoc) + "'", fDoc.simpleTypeName());
+      }
+    }
     ParameterizedType pType = type.asParameterizedType();
     if (pType != null) {
       boolean first = true;
