@@ -105,6 +105,9 @@ public class PojoClassWriter extends DocletWriter {
     around("th class='TableHeader DescriptionHeader'", "Description");
     close("tr");
     for (FieldDoc member : fieldDocs) {
+      if (member.isStatic()) {
+        continue;
+      }
       open("tr");
 	    open("td id='m_" + member.name() + "'");
 	    print(member.name());
