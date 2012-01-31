@@ -74,7 +74,7 @@ public class PojoClassWriter extends DocletWriter {
   private void printSummary() {
     open("h2 class='classname'");
     around("span class='name'", "Data object: " + cDoc.simpleTypeName());
-    around("span class='namespace'", "(" + cDoc.containingPackage().name() + ")");
+    around("span class='namespace'", "(in " + getContainer() + ")");
     close("h2");
     Doc javaDoc = cDoc;
     if (javaDoc.tags() != null) {
@@ -85,6 +85,10 @@ public class PojoClassWriter extends DocletWriter {
     // printJSONExample();
     // close("td");
     // close("tr", "table");
+  }
+
+  private String getContainer() {
+    return (cDoc.containingClass() == null) ? cDoc.containingPackage().name() : cDoc.containingClass().qualifiedTypeName();
   }
 
   private void printMembers(FieldDoc[] fieldDocs, String title) {
