@@ -110,15 +110,17 @@ public class DocletWriter {
   }
 
   protected void printMenu(String selected) {
-    open("table class='menu'", "colgroup");
-    tag("col", "col");
-    close("colgroup");
-    open("tbody", "tr");
-    open("td class='NavBarCell1' colspan='2'");
-    printTopMenu(selected);
-    close("td", "tr");
-    printThirdMenu();
-    close("table");
+    if(!configuration.parentConfiguration.nonavbar) {
+      open("table class='menu'", "colgroup");
+      tag("col", "col");
+      close("colgroup");
+      open("tbody", "tr");
+      open("td class='NavBarCell1' colspan='2'");
+      printTopMenu(selected);
+      close("td", "tr");
+      printThirdMenu();
+      close("table");
+    }
   }
 
   protected void printThirdMenu() {}
