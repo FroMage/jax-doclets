@@ -105,7 +105,6 @@ public class ResourceWriter extends DocletWriter {
     open("table class='info' id='methods-details'");
     around("caption class='TableCaption'", "Method Detail");
     open("tbody");
-    close("tr");
     for (ResourceMethod method : methods) {
       // skip resource locator methods
       if (method.isResourceLocator())
