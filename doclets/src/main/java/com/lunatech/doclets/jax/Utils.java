@@ -101,6 +101,9 @@ public class Utils {
   }
 
   public static MethodDoc findAnnotatedMethod(final ClassDoc declaringClass, final MethodDoc method, final Class<?>... soughtAnnotations) {
+    if(isExcluded(method)) {
+        return null;
+    }
     final AnnotationDesc onMethod = findAnnotation(method, soughtAnnotations);
     if (onMethod != null) {
       return method;
@@ -193,7 +196,7 @@ public class Utils {
     final Type[] interfaceTypes = klass.interfaceTypes();
     for (final Type interfaceType : interfaceTypes) {
       final ClassDoc interfaceClassDoc = interfaceType.asClassDoc();
-      if (interfaceClassDoc != null) {
+      if (interfaceClassDoc != null && !isExcluded(interfaceClassDoc)) {
         if (hasAnnotation(interfaceClassDoc, soughtAnnotations)) {
           return interfaceClassDoc;
         }
@@ -207,7 +210,7 @@ public class Utils {
   }
 
   public static ClassDoc findAnnotatedClass(final ClassDoc klass, final Class<?>... soughtAnnotations) {
-    if (!klass.isClass())
+    if (!klass.isClass() || isExcluded(klass))
       return null;
     if (hasAnnotation(klass, soughtAnnotations)) {
       return klass;
@@ -840,5 +843,9 @@ public class Utils {
 
   public static void log(String mesg) {
     // System.err.println(mesg);
+  }
+
+  private static boolean isExcluded(Doc doc) {
+      return doc.tags("exclude").length != 0;
   }
 }
