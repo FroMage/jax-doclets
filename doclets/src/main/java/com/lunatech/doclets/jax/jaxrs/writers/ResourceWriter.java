@@ -219,8 +219,7 @@ public class ResourceWriter extends DocletWriter {
       }
       // All methods on same resource, so path should be same
       ResourceMethod rm = lrm.get(0);
-      Map<String, MethodParameter> parameters = rm.getPathParameters();
-      for (MethodParameter param : parameters.values()) {
+      for (MethodParameter param : rm.getPathParameters()) {
         if (needsPathHeading) {
           open("dl");
           open("dt");
