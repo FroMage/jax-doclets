@@ -21,7 +21,6 @@ package com.lunatech.doclets.jax.jaxrs.writers;
 import java.io.File;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.lunatech.doclets.jax.Utils;
