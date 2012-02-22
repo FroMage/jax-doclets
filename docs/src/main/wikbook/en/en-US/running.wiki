@@ -211,6 +211,7 @@ These parameters are valid for all jax-doclets
 |{{-footer}}|The footer which is inserted on every page footer.|
 |{{-charset}}|The charset to use for source files and produced HTML documentation.|
 |{{-link}}{anchor:id=-link}|Path to another JavaDoc documentation. This is used to produce links to other package's documentation, either regular JavaDoc or to JAXB documentation in the case of the JAX-RS doclet.|
+|{{-nonavbar}}|Prevents the generation of the navigation bar.|
 
 h3. JAX-RS doclet parameters
 
