@@ -29,12 +29,7 @@ import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
-import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.IncludeTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.InputWrappedTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
-import com.lunatech.doclets.jax.jaxrs.tags.ReturnWrappedTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.*;
 import com.lunatech.doclets.jax.jaxrs.writers.IndexWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
 import com.sun.javadoc.ClassDoc;
@@ -87,6 +82,7 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new ReturnWrappedTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new InputWrappedTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new IncludeTaglet()));
+    htmlDoclet.configuration.tagletManager.addCustomTag(new ExcludeTaglet());
   }
 
   @Override
