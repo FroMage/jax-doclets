@@ -274,7 +274,7 @@ public class Utils {
   }
 
   public static String appendURLFragments(String... fragments) {
-    StringBuffer strbuf = new StringBuffer();
+    StringBuilder strbuf = new StringBuilder();
     for (String fragment : fragments) {
       // skip empty fragments
       if (fragment == null || fragment.length() == 0)
@@ -381,7 +381,7 @@ public class Utils {
     if (from == null || from.length() == 0) {
       return "";
     }
-    StringBuffer pathstr = new StringBuffer();
+    StringBuilder pathstr = new StringBuilder();
     for (int i = 0; i < from.length(); i++) {
       char ch = from.charAt(i);
       if (ch == '/') {
@@ -397,14 +397,8 @@ public class Utils {
       return;
     }
     File dir = new File(path);
-    if (dir.exists()) {
-      return;
-    } else {
-      if (dir.mkdirs()) {
-        return;
-      } else {
-        throw new RuntimeException("Could not create path: " + path);
-      }
+    if (!dir.exists() && !dir.mkdirs()) {
+      throw new RuntimeException("Could not create path: " + path);
     }
   }
 
