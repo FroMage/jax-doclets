@@ -19,6 +19,7 @@
 package com.lunatech.doclets.jax.jaxrs.model;
 
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,7 +113,7 @@ public class Resource {
       return "/";
   }
 
-  public static Resource getRootResource(List<ResourceMethod> resourceMethods) {
+  public static Resource getRootResource(Collection<ResourceMethod> resourceMethods) {
     Resource rootResource = new Resource("", null);
     for (ResourceMethod resourceMethod : resourceMethods) {
       rootResource.addResourceMethod(resourceMethod);
