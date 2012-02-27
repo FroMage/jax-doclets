@@ -146,8 +146,7 @@ public class Resource {
     for (ResourceMethod method : methods) {
       dump(offset + 1, "+ [M]" + method.toString());
     }
-    for (String subResourceKey : subResources.keySet()) {
-      Resource subResource = subResources.get(subResourceKey);
+    for (Resource subResource : subResources.values()) {
       subResource.dump(offset + 1);
     }
   }
@@ -165,8 +164,7 @@ public class Resource {
   public void write(JAXRSDoclet doclet, JAXConfiguration configuration) {
     ResourceWriter writer = new ResourceWriter(configuration, this, doclet);
     writer.write();
-    for (String subResourceKey : subResources.keySet()) {
-      Resource subResource = subResources.get(subResourceKey);
+    for (Resource subResource : subResources.values()) {
       subResource.write(doclet, configuration);
     }
   }
@@ -180,8 +178,6 @@ public class Resource {
   }
 
   public boolean hasRealMethods() {
-    if (methods.isEmpty())
-      return false;
     for (ResourceMethod method : methods) {
       if (!method.isResourceLocator())
         return true;
@@ -194,7 +190,7 @@ public class Resource {
   }
 
   public String getPathFrom(Resource parent) {
-    StringBuffer strbuf = new StringBuffer();
+    StringBuilder strbuf = new StringBuilder();
     Resource resource = this;
     while (resource != parent) {
       strbuf.insert(0, resource.getName());
