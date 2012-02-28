@@ -19,7 +19,7 @@
 package com.lunatech.doclets.jax.jaxrs;
 
 import java.util.Collections;
-import java.util.Collection;
+import java.util.List;
 import java.util.LinkedList;
 
 import javax.ws.rs.Path;
@@ -67,7 +67,7 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     return AbstractDoclet.languageVersion();
   }
 
-  private Collection<ResourceMethod> jaxrsMethods = new LinkedList<ResourceMethod>();
+  private List<ResourceMethod> jaxrsMethods = new LinkedList<ResourceMethod>();
 
   public static boolean start(final RootDoc rootDoc) {
     new JAXRSDoclet(rootDoc).start();
@@ -97,6 +97,7 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
         handleJAXRSClass(klass);
       }
     }
+    Collections.sort(this.jaxrsMethods);
     Resource rootResource = Resource.getRootResource(jaxrsMethods);
     rootResource.write(this, conf);
     new IndexWriter(conf, rootResource).write();
