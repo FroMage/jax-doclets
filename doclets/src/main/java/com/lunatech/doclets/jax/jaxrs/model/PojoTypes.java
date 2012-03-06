@@ -19,7 +19,16 @@ public class PojoTypes {
   public static Comparator<Type> TYPE_COMPARATOR = new Comparator<Type>() {
 		@Override
     public int compare(Type t0, Type t1) {
-			String qt0 = t0.qualifiedTypeName();
+      if (t0 == t1) {
+        return 0;
+      }
+      if (t0 == null) {
+        return -1;
+      }
+      if (t1 == null) {
+        return 1;
+      }
+      String qt0 = t0.qualifiedTypeName();
       String qt1 = t1.qualifiedTypeName();
       if (qt0 == qt1) {
         return 0;
