@@ -594,6 +594,19 @@ public class Utils {
     }
     return null;
   }
+  
+  public static List<String> getOptions(String options[][], String optionName) {
+	  List<String> result = new ArrayList<String>();
+	    for (String option[] : options) {
+	      String name = option[0];
+	      if (!optionName.equals(name)) {
+	        continue;
+	      }
+	      String value = option.length > 1 ? option[1] : null;
+	      result.add(value);
+	    }
+	    return result;
+	  }  
 
   /**
    * @return true if optionName exists in one of the options.
@@ -743,7 +756,7 @@ public class Utils {
   }
 
   public static String removeFragmentRegexes(String fragment, Map<String, String> regexFragments) {
-    Pattern regexPattern = Pattern.compile("\\{(\\w[\\w\\.-]*)\\s*:");
+    Pattern regexPattern = Pattern.compile("\\{(\\w[\\w\\.-]*)[ ]*:");
     Matcher regexMatcher = regexPattern.matcher(fragment);
     int start = 0;
     char[] fragmentArray = fragment.toCharArray();

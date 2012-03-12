@@ -18,6 +18,9 @@ public class JAXBConfiguration extends JAXConfiguration {
   
   public boolean enableXMLExample = true;
 
+  public boolean useJSONPlainAttribute = false;
+
+  
   public JAXBConfiguration(ConfigurationImpl conf) {
     super(conf);
   }
@@ -33,5 +36,7 @@ public class JAXBConfiguration extends JAXConfiguration {
     enableJSONTypeName = !Utils.hasOption(options, "-disablejsontypename");
     enableJSONExample = !Utils.hasOption(options, "-disablejsonexample");
     enableXMLExample = !Utils.hasOption(options, "-disablexmlexample");
+    
+    useJSONPlainAttribute = Utils.hasOption(options, "-useplainjsonattributenames");
   }
 }

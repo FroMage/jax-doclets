@@ -52,7 +52,8 @@ public class JAXBDoclet extends JAXDoclet<JAXBConfiguration> {
     if ("-disablejaxbmethodoutput".equals(option)
         || "-disablejsontypename".equals(option)
         || "-disablexmlexample".equals(option)
-        || "-disablejsonexample".equals(option)) {
+        || "-disablejsonexample".equals(option)
+        || "-useplainjsonattributenames".equals(option)) {
       return 1;
     }
     return HtmlDoclet.optionLength(option);
