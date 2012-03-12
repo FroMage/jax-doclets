@@ -20,11 +20,31 @@ package com.lunatech.doclets.jax.jaxb.model;
 
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ProgramElementDoc;
+import com.sun.javadoc.AnnotationDesc.ElementValuePair;
 
-public class Attribute extends Node {
+public abstract class Node extends JAXBMember {
 
-  public Attribute(JAXBClass klass, ProgramElementDoc property, String name, AnnotationDesc xmlAttributeAnnotation) {
+  protected Node(JAXBClass klass, ProgramElementDoc property, String name, AnnotationDesc xmlAttributeAnnotation) {
     super(klass, property, name, xmlAttributeAnnotation);
+  }
+  
+  public boolean isRequired(){
+    ElementValuePair elementValuePair = getElementAttribute("required");
+    if(elementValuePair != null){
+      return "true".equalsIgnoreCase(elementValuePair.value().toString());
+    }
+    return false;
+  }
+  
+  protected ElementValuePair getElementAttribute(String attributeName){
+    if(xmlAnnotation != null && xmlAnnotation.elementValues() != null){
+      for (ElementValuePair elementValuePair : xmlAnnotation.elementValues()) {
+        if(attributeName.equals(elementValuePair.element().name())){
+          return elementValuePair;
+        }
+      }
+    }
+    return null;
   }
   
 }

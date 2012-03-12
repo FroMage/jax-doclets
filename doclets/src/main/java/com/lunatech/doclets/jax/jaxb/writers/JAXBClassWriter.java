@@ -29,6 +29,7 @@ import com.lunatech.doclets.jax.jaxb.model.Element;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
 import com.lunatech.doclets.jax.jaxb.model.JAXBMember;
 import com.lunatech.doclets.jax.jaxb.model.MemberType;
+import com.lunatech.doclets.jax.jaxb.model.Node;
 import com.lunatech.doclets.jax.jaxb.model.Value;
 import com.sun.javadoc.Doc;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
@@ -89,8 +90,8 @@ public class JAXBClassWriter extends DocletWriter {
       around("th class='TableHeader'", "Name");
     }
     around("th class='TableHeader'", "Type");
+    around("th class='TableHeader'", "Required");
     if(type == MemberType.Element){
-      around("th class='TableHeader'", "Required");
       around("th class='TableHeader'", "Nillable");
       around("th class='TableHeader'", "Default Value");
     }
@@ -112,11 +113,13 @@ public class JAXBClassWriter extends DocletWriter {
       open("td");
       printXMLMemberType(member, true);
       close("td");
+      if(!isValue){
+        open("td");
+        print("" + ((Node) member).isRequired());
+        close("td");
+      }
       if(type == MemberType.Element){
         Element element = (Element) member;
-        open("td");
-        print("" + element.isRequired());
-        close("td");
         open("td");
         print("" + element.isNillable());
         close("td");
