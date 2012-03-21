@@ -101,6 +101,9 @@ public class Utils {
   }
 
   public static MethodDoc findAnnotatedMethod(final ClassDoc declaringClass, final MethodDoc method, final Class<?>... soughtAnnotations) {
+    if(isExcluded(method)) {
+        return null;
+    }
     final AnnotationDesc onMethod = findAnnotation(method, soughtAnnotations);
     if (onMethod != null) {
       return method;
@@ -193,7 +196,7 @@ public class Utils {
     final Type[] interfaceTypes = klass.interfaceTypes();
     for (final Type interfaceType : interfaceTypes) {
       final ClassDoc interfaceClassDoc = interfaceType.asClassDoc();
-      if (interfaceClassDoc != null) {
+      if (interfaceClassDoc != null && !isExcluded(interfaceClassDoc)) {
         if (hasAnnotation(interfaceClassDoc, soughtAnnotations)) {
           return interfaceClassDoc;
         }
@@ -207,7 +210,7 @@ public class Utils {
   }
 
   public static ClassDoc findAnnotatedClass(final ClassDoc klass, final Class<?>... soughtAnnotations) {
-    if (!klass.isClass())
+    if (!klass.isClass() || isExcluded(klass))
       return null;
     if (hasAnnotation(klass, soughtAnnotations)) {
       return klass;
@@ -271,7 +274,7 @@ public class Utils {
   }
 
   public static String appendURLFragments(String... fragments) {
-    StringBuffer strbuf = new StringBuffer();
+    StringBuilder strbuf = new StringBuilder();
     for (String fragment : fragments) {
       // skip empty fragments
       if (fragment == null || fragment.length() == 0)
@@ -378,7 +381,7 @@ public class Utils {
     if (from == null || from.length() == 0) {
       return "";
     }
-    StringBuffer pathstr = new StringBuffer();
+    StringBuilder pathstr = new StringBuilder();
     for (int i = 0; i < from.length(); i++) {
       char ch = from.charAt(i);
       if (ch == '/') {
@@ -394,14 +397,8 @@ public class Utils {
       return;
     }
     File dir = new File(path);
-    if (dir.exists()) {
-      return;
-    } else {
-      if (dir.mkdirs()) {
-        return;
-      } else {
-        throw new RuntimeException("Could not create path: " + path);
-      }
+    if (!dir.exists() && !dir.mkdirs()) {
+      throw new RuntimeException("Could not create path: " + path);
     }
   }
 
@@ -840,5 +837,9 @@ public class Utils {
 
   public static void log(String mesg) {
     // System.err.println(mesg);
+  }
+
+  private static boolean isExcluded(Doc doc) {
+      return doc.tags("exclude").length != 0;
   }
 }
