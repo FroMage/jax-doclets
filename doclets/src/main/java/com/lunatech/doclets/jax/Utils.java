@@ -840,10 +840,11 @@ public class Utils {
   private static String addContextPath(JAXConfiguration config, String resource) {
     // FIXME: move this to JAXRSConfiguration
     String jaxrscontext = getOption(config.parentConfiguration.root.options(), "-jaxrscontext");
-    if (jaxrscontext == null)
-      return resource;
-    else
+    if (jaxrscontext == null) {
+      return appendURLFragments("/", resource);
+    } else {
       return appendURLFragments(jaxrscontext, resource);
+    }
   }
 
   public static String getDisplayURL(DocletWriter writer, Resource resource, ResourceMethod method) {

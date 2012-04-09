@@ -108,10 +108,13 @@ public class Resource {
   }
 
   public String getAbsolutePath() {
-    if (parent != null)
+    if (parent != null) {
       return Utils.appendURLFragments(parent.getAbsolutePath(), getName());
-    else
-      return "/";
+    } else {
+      // Suppress the / on root resources, to make it consistent with display of sub-resources
+      // The context path will always be pre-pended to this for display
+      return "";
+    }
   }
 
   private void addSubResource(String firstFragment, ResourceMethod resourceMethod) {
