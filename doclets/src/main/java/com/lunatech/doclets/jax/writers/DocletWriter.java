@@ -76,10 +76,10 @@ public class DocletWriter {
   }
 
   protected void printHeader(String title) {
+    open("!DOCTYPE html");
     open("HTML");
     open("HEAD");
     around("TITLE", title);
-    close("TITLE");
     tag("LINK REL='stylesheet' TYPE='text/css' HREF='" + writer.relativePath + "doclet.css' TITLE='Style'");
     String charset = configuration.parentConfiguration.charset;
     if (Utils.isEmptyOrNull(charset))
@@ -114,15 +114,17 @@ public class DocletWriter {
   }
 
   protected void printMenu(String selected, String subStyle) {
-    open("table class='menu " + (subStyle != null ? "menu-" + subStyle : "") + "'", "colgroup");
-    tag("col", "col");
-    close("colgroup");
-    open("tbody", "tr");
-    open("td class='NavBarCell1' colspan='2'");
-    printTopMenu(selected);
-    close("td", "tr");
-    printThirdMenu();
-    close("table");
+    if(!configuration.parentConfiguration.nonavbar) {
+      open("table class='menu " + (subStyle != null ? "menu-" + subStyle : "") + "'", "colgroup");
+      tag("col", "col");
+      close("colgroup");
+      open("tbody", "tr");
+      open("td class='NavBarCell1' colspan='2'");
+      printTopMenu(selected);
+      close("td", "tr");
+      printThirdMenu();
+      close("table");
+    }
   }
 
   protected void printThirdMenu() {}

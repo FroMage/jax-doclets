@@ -42,6 +42,7 @@ The following specific JavaDoc tags are supported on resource methods:
 |{{@RequestHeader \{header\} \{doc\} }}|This is used to document HTTP request headers. Can be used multiple times.|
 |{{@ResponseHeader \{header\} \{doc\} }}|This is used to document HTTP response headers. Can be used multiple times.|
 |{{@include \{file\} }}|Includes the specified relative file in the resource documentation. Can be used multiple times.|
+|{{@exclude}}|Excludes the annotated method or resource from generated documentation. If a resource is excluded, none of its methods will appear in the documentation either.|
 
 h2. Supported JAX-RS annotations
 

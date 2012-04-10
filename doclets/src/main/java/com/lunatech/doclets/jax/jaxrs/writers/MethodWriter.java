@@ -22,7 +22,6 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 
@@ -283,13 +282,13 @@ public class MethodWriter extends DocletWriter {
     close("dd");
   }
 
-  private void printParameters(Map<String, MethodParameter> parameters, String header) {
+  private void printParameters(List<MethodParameter> parameters, String header) {
     if (parameters.isEmpty())
       return;
     open("dt");
     around("b", header + " parameters:");
     close("dt");
-    for (MethodParameter param : parameters.values()) {
+    for (MethodParameter param : parameters) {
       open("dd");
       around("b", param.getName());
       String doc = param.getDoc();
@@ -340,9 +339,9 @@ public class MethodWriter extends DocletWriter {
     close("dd");
   }
 
-  private boolean printAPIParameters(Map<String, MethodParameter> parameters, boolean hasOne) {
-    for (String name : parameters.keySet()) {
-      printAPIParameter(name, parameters.get(name), hasOne);
+  private boolean printAPIParameters(List<MethodParameter> parameters, boolean hasOne) {
+    for (MethodParameter parameter : parameters) {
+      printAPIParameter(parameter.getName(), parameter, hasOne);
       hasOne = true;
     }
     return hasOne;
@@ -374,63 +373,66 @@ public class MethodWriter extends DocletWriter {
     String absPath = Utils.getAbsolutePath(this, resource);
 
     print(httpMethod + " " + absPath);
-    Map<String, MethodParameter> matrixParameters = method.getMatrixParameters();
+    List<MethodParameter> matrixParameters = method.getMatrixParameters();
     if (!matrixParameters.isEmpty()) {
-      for (String name : matrixParameters.keySet()) {
+      for (MethodParameter parameter : matrixParameters) {
         print(";");
-        print(name);
+        print(parameter.getName());
         print("=…");
       }
     }
-    Map<String, MethodParameter> queryParameters = method.getQueryParameters();
+    List<MethodParameter> queryParameters = method.getQueryParameters();
     if (!queryParameters.isEmpty()) {
-      print("?");
       boolean first = true;
-      for (String name : queryParameters.keySet()) {
-        if (!first)
+      for (MethodParameter parameter : queryParameters) {
+        if (first) {
+          print("?");
+        } else {
           print("&amp;");
-        print(name);
+        }
+        print(parameter.getName());
         print("=…");
         first = false;
       }
     }
 
-    Map<String, MethodParameter> headerParameters = method.getHeaderParameters();
+    List<MethodParameter> headerParameters = method.getHeaderParameters();
     if (!headerParameters.isEmpty()) {
       print("\n");
-      Iterator<String> keys = headerParameters.keySet().iterator();
-      while(keys.hasNext()) {
-        String name = keys.next();
-        print(name);
+      Iterator<MethodParameter> params = headerParameters.iterator();
+      while(params.hasNext()) {
+        MethodParameter parameter = params.next();
+        print(parameter.getName());
         print(": …");
-        if (keys.hasNext()) {
+        if (params.hasNext()) {
           print("\n");
         }
       }
     }
-    Map<String, MethodParameter> cookieParameters = method.getCookieParameters();
+    List<MethodParameter> cookieParameters = method.getCookieParameters();
     if (!cookieParameters.isEmpty()) {
       print("\n");
-      Iterator<String> keys = headerParameters.keySet().iterator();
-      while(keys.hasNext()) {
-        String name = keys.next();
+      Iterator<MethodParameter> params = headerParameters.iterator();
+      while (params.hasNext()) {
+        MethodParameter parameter = params.next();
         print("Cookie: ");
-        print(name);
+        print(parameter.getName());
         print(": …");
-        if (keys.hasNext()) {
+        if (params.hasNext()) {
           print("\n");
         }
       }
     }
 
-    Map<String, MethodParameter> formParameters = method.getFormParameters();
-    if (!formParameters.isEmpty()) {
-      print("\n");
+    if (!method.getFormParameters().isEmpty()) {
       boolean first = true;
-      for (String name : formParameters.keySet()) {
-        if (!first)
+      for (MethodParameter parameter : method.getFormParameters()) {
+        if(first) {
+          print("\n");
+        } else {
           print("&amp;");
-        print(name);
+        }
+        print(parameter.getName());
         print("=…");
         first = false;
       }

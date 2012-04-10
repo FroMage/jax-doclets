@@ -109,7 +109,6 @@ public class ResourceWriter extends DocletWriter {
     open("table class='info' id='methods-details'");
     around("caption class='TableCaption'", "Method Detail");
     open("tbody");
-    close("tr");
     for (ResourceMethod method : methods) {
       // skip resource locator methods
       if (method.isResourceLocator())
@@ -231,8 +230,7 @@ public class ResourceWriter extends DocletWriter {
       }
       // All methods on same resource, so path should be same
       ResourceMethod rm = lrm.get(0);
-      Map<String, MethodParameter> parameters = rm.getPathParameters();
-      for (MethodParameter param : parameters.values()) {
+      for (MethodParameter param : rm.getPathParameters()) {
         if (needsPathHeading) {
           open("dt");
           around("b", "Path parameters:");

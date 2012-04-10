@@ -49,6 +49,7 @@ import com.sun.javadoc.Parameter;
 import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 import com.sun.javadoc.ParameterizedType;
+import java.util.Arrays;
 
 public class ResourceMethod implements Comparable<ResourceMethod> {
 
@@ -66,17 +67,17 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
 
   private MethodDoc method;
 
-  final Map<String, MethodParameter> pathParameters = new HashMap<String, MethodParameter>();
+  final List<MethodParameter> pathParameters = new ArrayList<MethodParameter>();
 
-  final Map<String, MethodParameter> matrixParameters = new HashMap<String, MethodParameter>();
+  final List<MethodParameter> matrixParameters = new ArrayList<MethodParameter>();
 
-  final Map<String, MethodParameter> queryParameters = new HashMap<String, MethodParameter>();
+  final List<MethodParameter> queryParameters = new ArrayList<MethodParameter>();
 
-  final Map<String, MethodParameter> headerParameters = new HashMap<String, MethodParameter>();
+  final List<MethodParameter> headerParameters = new ArrayList<MethodParameter>();
 
-  final Map<String, MethodParameter> cookieParameters = new HashMap<String, MethodParameter>();
+  final List<MethodParameter> cookieParameters = new ArrayList<MethodParameter>();
 
-  final Map<String, MethodParameter> formParameters = new HashMap<String, MethodParameter>();
+  final List<MethodParameter> formParameters = new ArrayList<MethodParameter>();
 
   private List<AnnotationDesc> methods = new LinkedList<AnnotationDesc>();
 
@@ -163,40 +164,37 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
       final AnnotationDesc pathParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, PathParam.class);
       if (pathParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(pathParamAnnotation);
-        pathParameters.put(name, new RealMethodParameter(parameter, i, pathParamAnnotation, MethodParameterType.Path, declaringMethod));
+        pathParameters.add(new RealMethodParameter(parameter, i, pathParamAnnotation, MethodParameterType.Path, declaringMethod));
         continue;
       }
       final AnnotationDesc matrixParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, MatrixParam.class);
       if (matrixParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(matrixParamAnnotation);
-        matrixParameters.put(name,
-                             new RealMethodParameter(parameter, i, matrixParamAnnotation, MethodParameterType.Matrix, declaringMethod));
+        matrixParameters.add(new RealMethodParameter(parameter, i, matrixParamAnnotation, MethodParameterType.Matrix, declaringMethod));
         continue;
       }
       final AnnotationDesc queryParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, QueryParam.class);
       if (queryParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(queryParamAnnotation);
-        queryParameters.put(name, new RealMethodParameter(parameter, i, queryParamAnnotation, MethodParameterType.Query, declaringMethod));
+        queryParameters.add(new RealMethodParameter(parameter, i, queryParamAnnotation, MethodParameterType.Query, declaringMethod));
         continue;
       }
       final AnnotationDesc cookieParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, CookieParam.class);
       if (cookieParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(cookieParamAnnotation);
-        cookieParameters.put(name,
-                             new RealMethodParameter(parameter, i, cookieParamAnnotation, MethodParameterType.Cookie, declaringMethod));
+        cookieParameters.add(new RealMethodParameter(parameter, i, cookieParamAnnotation, MethodParameterType.Cookie, declaringMethod));
         continue;
       }
       final AnnotationDesc formParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, FormParam.class);
       if (formParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(formParamAnnotation);
-        formParameters.put(name, new RealMethodParameter(parameter, i, formParamAnnotation, MethodParameterType.Form, declaringMethod));
+        formParameters.add(new RealMethodParameter(parameter, i, formParamAnnotation, MethodParameterType.Form, declaringMethod));
         continue;
       }
       final AnnotationDesc headerParamAnnotation = Utils.findParameterAnnotation(declaringMethod, parameter, i, HeaderParam.class);
       if (headerParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(headerParamAnnotation);
-        headerParameters.put(name,
-                             new RealMethodParameter(parameter, i, headerParamAnnotation, MethodParameterType.Header, declaringMethod));
+        headerParameters.add(new RealMethodParameter(parameter, i, headerParamAnnotation, MethodParameterType.Header, declaringMethod));
         continue;
       }
       if (formClass != null) {
@@ -219,37 +217,35 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
       final AnnotationDesc pathParamAnnotation = Utils.findAnnotation(field, PathParam.class);
       if (pathParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(pathParamAnnotation);
-        pathParameters.put(name, new FormFieldParameter(field, pathParamAnnotation, MethodParameterType.Path));
+        pathParameters.add(new FormFieldParameter(field, pathParamAnnotation, MethodParameterType.Path));
         continue;
       }
       final AnnotationDesc matrixParamAnnotation = Utils.findAnnotation(field, MatrixParam.class);
       if (matrixParamAnnotation != null) {
-        String name = (String) Utils.getAnnotationValue(matrixParamAnnotation);
-        matrixParameters.put(name, new FormFieldParameter(field, matrixParamAnnotation, MethodParameterType.Matrix));
+        matrixParameters.add(new FormFieldParameter(field, matrixParamAnnotation, MethodParameterType.Matrix));
         continue;
       }
       final AnnotationDesc queryParamAnnotation = Utils.findAnnotation(field, QueryParam.class);
       if (queryParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(queryParamAnnotation);
-        queryParameters.put(name, new FormFieldParameter(field, queryParamAnnotation, MethodParameterType.Query));
+        queryParameters.add(new FormFieldParameter(field, queryParamAnnotation, MethodParameterType.Query));
         continue;
       }
       final AnnotationDesc headerParamAnnotation = Utils.findAnnotation(field, HeaderParam.class);
       if (headerParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(headerParamAnnotation);
-        headerParameters.put(name, new FormFieldParameter(field, headerParamAnnotation, MethodParameterType.Header));
+        headerParameters.add(new FormFieldParameter(field, headerParamAnnotation, MethodParameterType.Header));
         continue;
       }
       final AnnotationDesc cookieParamAnnotation = Utils.findAnnotation(field, CookieParam.class);
       if (cookieParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(cookieParamAnnotation);
-        cookieParameters.put(name, new FormFieldParameter(field, cookieParamAnnotation, MethodParameterType.Cookie));
+        cookieParameters.add(new FormFieldParameter(field, cookieParamAnnotation, MethodParameterType.Cookie));
         continue;
       }
       final AnnotationDesc formParamAnnotation = Utils.findAnnotation(field, FormParam.class);
       if (formParamAnnotation != null) {
-        String name = (String) Utils.getAnnotationValue(formParamAnnotation);
-        formParameters.put(name, new FormFieldParameter(field, formParamAnnotation, MethodParameterType.Form));
+        formParameters.add(new FormFieldParameter(field, formParamAnnotation, MethodParameterType.Form));
         continue;
       }
       final AnnotationDesc contextAnnotation = Utils.findAnnotation(field, Context.class);
@@ -265,37 +261,37 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
       final AnnotationDesc pathParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, PathParam.class);
       if (pathParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(pathParamAnnotation);
-        pathParameters.put(name, new FormMethodParameter(method, pathParamAnnotation, MethodParameterType.Path));
+        pathParameters.add(new FormMethodParameter(method, pathParamAnnotation, MethodParameterType.Path));
         continue;
       }
       final AnnotationDesc matrixParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, MatrixParam.class);
       if (matrixParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(matrixParamAnnotation);
-        matrixParameters.put(name, new FormMethodParameter(method, matrixParamAnnotation, MethodParameterType.Matrix));
+        matrixParameters.add(new FormMethodParameter(method, matrixParamAnnotation, MethodParameterType.Matrix));
         continue;
       }
       final AnnotationDesc queryParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, QueryParam.class);
       if (queryParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(queryParamAnnotation);
-        queryParameters.put(name, new FormMethodParameter(method, queryParamAnnotation, MethodParameterType.Query));
+        queryParameters.add(new FormMethodParameter(method, queryParamAnnotation, MethodParameterType.Query));
         continue;
       }
       final AnnotationDesc headerParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, HeaderParam.class);
       if (headerParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(headerParamAnnotation);
-        headerParameters.put(name, new FormMethodParameter(method, headerParamAnnotation, MethodParameterType.Header));
+        headerParameters.add(new FormMethodParameter(method, headerParamAnnotation, MethodParameterType.Header));
         continue;
       }
       final AnnotationDesc cookieParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, CookieParam.class);
       if (cookieParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(cookieParamAnnotation);
-        cookieParameters.put(name, new FormMethodParameter(method, cookieParamAnnotation, MethodParameterType.Cookie));
+        cookieParameters.add(new FormMethodParameter(method, cookieParamAnnotation, MethodParameterType.Cookie));
         continue;
       }
       final AnnotationDesc formParamAnnotation = Utils.findParameterAnnotation(method, parameter, 0, FormParam.class);
       if (formParamAnnotation != null) {
         String name = (String) Utils.getAnnotationValue(formParamAnnotation);
-        formParameters.put(name, new FormMethodParameter(method, formParamAnnotation, MethodParameterType.Form));
+        formParameters.add(new FormMethodParameter(method, formParamAnnotation, MethodParameterType.Form));
         continue;
       }
       final AnnotationDesc contextAnnotation = Utils.findParameterAnnotation(method, parameter, 0, Context.class);
@@ -321,7 +317,7 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   }
 
   public String toString() {
-    StringBuffer strbuf = new StringBuffer(path);
+    StringBuilder strbuf = new StringBuilder(path);
     strbuf.append(" ");
     for (AnnotationDesc method : methods) {
       strbuf.append(method.annotationType().name());
@@ -339,23 +335,21 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   }
 
   public List<String> getProduces() {
-    if (getProducesAnnotation() == null)
+    AnnotationDesc produces = getProducesAnnotation();
+    if (produces == null) {
       return Collections.emptyList();
-    List<String> producedMIMEs = new ArrayList<String>();
-    for (String mime : Utils.getAnnotationValues(getProducesAnnotation())) {
-      producedMIMEs.add(mime);
+    } else {
+      return Arrays.asList(Utils.getAnnotationValues(produces));
     }
-    return producedMIMEs;
   }
 
   public List<String> getConsumes() {
-    if (getConsumesAnnotation() == null)
+    AnnotationDesc consumes = getConsumesAnnotation();
+    if (consumes == null) {
       return Collections.emptyList();
-    List<String> consumedMIMEs = new ArrayList<String>();
-    for (String mime : Utils.getAnnotationValues(getConsumesAnnotation())) {
-      consumedMIMEs.add(mime);
+    } else {
+      return Arrays.asList(Utils.getAnnotationValues(consumes));
     }
-    return consumedMIMEs;
   }
 
   public MethodDoc getJavaDoc() {
@@ -370,59 +364,59 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
     return declaringMethod.firstSentenceTags();
   }
 
-  public Map<String, MethodParameter> getQueryParameters() {
+  public List<MethodParameter> getQueryParameters() {
     if (resource.isSubResource()) {
-      Map<String, MethodParameter> allQueryParameters = new HashMap<String, MethodParameter>(resource.getParentMethod()
+      List<MethodParameter> allQueryParameters = new ArrayList<MethodParameter>(resource.getParentMethod()
           .getQueryParameters());
-      allQueryParameters.putAll(queryParameters);
+      allQueryParameters.addAll(queryParameters);
       return allQueryParameters;
     }
     return queryParameters;
   }
 
-  public Map<String, MethodParameter> getPathParameters() {
+  public List<MethodParameter> getPathParameters() {
     if (resource.isSubResource()) {
-      Map<String, MethodParameter> allPathParameters = new HashMap<String, MethodParameter>(resource.getParentMethod().getPathParameters());
-      allPathParameters.putAll(pathParameters);
+      List<MethodParameter> allPathParameters = new ArrayList<MethodParameter>(resource.getParentMethod().getPathParameters());
+      allPathParameters.addAll(pathParameters);
       return allPathParameters;
     }
     return pathParameters;
   }
 
-  public Map<String, MethodParameter> getMatrixParameters() {
+  public List<MethodParameter> getMatrixParameters() {
     if (resource.isSubResource()) {
-      Map<String, MethodParameter> allMatrixParameters = new HashMap<String, MethodParameter>(resource.getParentMethod()
+      List<MethodParameter> allMatrixParameters = new ArrayList<MethodParameter>(resource.getParentMethod()
           .getMatrixParameters());
-      allMatrixParameters.putAll(matrixParameters);
+      allMatrixParameters.addAll(matrixParameters);
       return allMatrixParameters;
     }
     return matrixParameters;
   }
 
-  public Map<String, MethodParameter> getCookieParameters() {
+  public List<MethodParameter> getCookieParameters() {
     if (resource.isSubResource()) {
-      Map<String, MethodParameter> allCookieParameters = new HashMap<String, MethodParameter>(resource.getParentMethod()
+      List<MethodParameter> allCookieParameters = new ArrayList<MethodParameter>(resource.getParentMethod()
           .getCookieParameters());
-      allCookieParameters.putAll(cookieParameters);
+      allCookieParameters.addAll(cookieParameters);
       return allCookieParameters;
     }
     return cookieParameters;
   }
 
-  public Map<String, MethodParameter> getHeaderParameters() {
+  public List<MethodParameter> getHeaderParameters() {
     if (resource.isSubResource()) {
-      Map<String, MethodParameter> allHeaderParameters = new HashMap<String, MethodParameter>(resource.getParentMethod()
+      List<MethodParameter> allHeaderParameters = new ArrayList<MethodParameter>(resource.getParentMethod()
           .getHeaderParameters());
-      allHeaderParameters.putAll(headerParameters);
+      allHeaderParameters.addAll(headerParameters);
       return allHeaderParameters;
     }
     return headerParameters;
   }
 
-  public Map<String, MethodParameter> getFormParameters() {
+  public List<MethodParameter> getFormParameters() {
     if (resource.isSubResource()) {
-      Map<String, MethodParameter> allFormParameters = new HashMap<String, MethodParameter>(resource.getParentMethod().getFormParameters());
-      allFormParameters.putAll(formParameters);
+      List<MethodParameter> allFormParameters = new ArrayList<MethodParameter>(resource.getParentMethod().getFormParameters());
+      allFormParameters.addAll(formParameters);
       return allFormParameters;
     }
     return formParameters;
@@ -445,26 +439,24 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
   }
 
   public String getURL(Resource resource) {
-    StringBuffer strbuf = new StringBuffer(resource.getAbsolutePath());
-    Map<String, MethodParameter> matrixParameters = getMatrixParameters();
-    if (!matrixParameters.isEmpty()) {
-      for (String name : matrixParameters.keySet()) {
-        strbuf.append(";");
-        strbuf.append(name);
-        strbuf.append("=…");
-      }
+    StringBuilder strbuf = new StringBuilder(resource.getAbsolutePath());
+
+    for (MethodParameter parameter : getMatrixParameters()) {
+      strbuf.append(";");
+      strbuf.append(parameter.getName());
+      strbuf.append("=…");
     }
-    Map<String, MethodParameter> queryParameters = getQueryParameters();
-    if (!queryParameters.isEmpty()) {
-      strbuf.append("?");
-      boolean first = true;
-      for (String name : queryParameters.keySet()) {
-        if (!first)
-          strbuf.append("&amp;");
-        strbuf.append(name);
-        strbuf.append("=…");
-        first = false;
+
+    boolean first = true;
+    for (MethodParameter parameter : getQueryParameters()) {
+      if(first) {
+        strbuf.append("?");
+      } else {
+        strbuf.append("&amp;");
       }
+      strbuf.append(parameter.getName());
+      strbuf.append("=…");
+      first = false;
     }
     return strbuf.toString();
   }

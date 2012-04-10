@@ -35,6 +35,7 @@ import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
+import com.lunatech.doclets.jax.jaxrs.tags.ExcludeTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.IncludeTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.InputWrappedTaglet;
@@ -95,6 +96,7 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new ReturnWrappedTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new InputWrappedTaglet()));
     htmlDoclet.configuration.tagletManager.addCustomTag(new LegacyTaglet(new IncludeTaglet()));
+    htmlDoclet.configuration.tagletManager.addCustomTag(new ExcludeTaglet());
   }
 
   @Override
