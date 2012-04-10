@@ -29,6 +29,7 @@ import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
+import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.Doc;
 import com.sun.javadoc.FieldDoc;
@@ -163,7 +164,15 @@ public class PojoClassWriter extends DocletWriter {
     // TODO: This won't cope with any of the more esoteric Jackson strategies for mapping properties (including auto-detection strategies)
     if (method.name().startsWith("get")
         || (method.name().startsWith("is") && method.returnType().simpleTypeName().equalsIgnoreCase("boolean"))) {
+      // Jackson @JsonIgnore
+      final AnnotationDesc jsonIgnore = Utils.findAnnotation(method.annotations(),
+          "org.codehaus.jackson.annotate.JsonIgnore",
+          "com.fasterxml.jackson.annotation.JsonIgnore");
+      if (jsonIgnore == null || Boolean.FALSE.equals(Utils.getAnnotationValue(jsonIgnore))) {
         return true;
+      } else {
+        System.err.println(method.qualifiedName() + " is @JsonIgnored");
+      }
     }
     return false;
   }
