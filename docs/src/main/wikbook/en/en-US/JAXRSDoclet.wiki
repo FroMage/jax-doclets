@@ -64,3 +64,25 @@ If the optional RESTEasy dependency is present,
 the following RESTEasy annotations are supported on resource methods or classes:
 
 * {{@Form}}
+
+h2. POJO Mapping
+
+Some JAX-RS frameworks (e.g. Jersey) support the use of POJO style JSON serialization/deserialization.
+To support this, the JAX-RS doclet provides a POJO JSON documentation mode (enabled using the {{-pojojson}} configuration option, and associated configuration options). 
+
+When POJO JSON documentation mode is enabled, the objects used in resource methods will be documented as POJO objects, unless they are already documented in linked documentation (e.g. standard Java types, or JAXB Doclet documentation).
+
+The following items are documented:
+* DTO object types (including linking in JavaDoc)
+* JavaBean style properties
+* Generic and parameter types (used in properties or as type parameters in DTO types)
+* Enumerated types
+* Subclasses of DTO object types (polymorphic DTOs)
+
+A separate Data objects page is added to the top level menu when POJO JSON documentation mode is enabled.
+
+h3. Supported Jackson Features
+
+In the POJO JSON documentation mode, the following annotations will be detected on property accessors, and will suppress documentation for that property:
+* {{org.codehaus.jackson.annotate.JsonIgnore}} (Jackson 1.x)
+* {{com.fasterxml.jackson.annotation.JsonIgnore}} (Jackson 2.x)
