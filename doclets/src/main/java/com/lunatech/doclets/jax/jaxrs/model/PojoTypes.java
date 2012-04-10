@@ -73,7 +73,6 @@ public class PojoTypes {
     if (isPojoToDocument(type)) {
       if (!this.resolvedTypes.contains(cDoc)) {
         this.resolvedTypes.add(cDoc);
-        System.err.println("Resolved type " + cDoc.qualifiedTypeName());
         resolveFieldDtos(cDoc);
       }
       return true;

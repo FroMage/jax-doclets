@@ -19,6 +19,8 @@
 package com.lunatech.doclets.jax.jaxrs.writers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
@@ -30,6 +32,8 @@ import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.Doc;
 import com.sun.javadoc.FieldDoc;
+import com.sun.javadoc.MemberDoc;
+import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
@@ -40,13 +44,16 @@ public class PojoClassWriter extends DocletWriter {
 
   private final ClassDoc cDoc;
 
-	private PojoTypes pojoTypes;
+  private final PojoTypes pojoTypes;
+
+  private final PropertyDoc[] properties;
 
   public PojoClassWriter(JAXConfiguration configuration, JAXRSApplication application, ClassDoc cDoc, PojoTypes types, Resource resource,
       JAXRSDoclet doclet) {
     super(configuration, getWriter(configuration, application, cDoc), application, resource, doclet);
     this.cDoc = cDoc;
     this.pojoTypes = types;
+    this.properties = getProperties(cDoc);
   }
 
   private static HtmlDocletWriter getWriter(JAXConfiguration configuration, JAXRSApplication application, ClassDoc cDoc) {
@@ -69,7 +76,7 @@ public class PojoClassWriter extends DocletWriter {
   }
 
   private void printElements() {
-    printMembers(cDoc.fields(false), "Fields");
+      printProperties(properties, "Properties");
   }
 
   private void printSummary() {
@@ -117,9 +124,46 @@ public class PojoClassWriter extends DocletWriter {
     return (cDoc.containingClass() == null) ? cDoc.containingPackage().name() : cDoc.containingClass().qualifiedTypeName();
   }
 
-  private void printMembers(FieldDoc[] fieldDocs, String title) {
-    if (fieldDocs.length == 0)
-      return;
+  private static PropertyDoc[] getProperties(ClassDoc classDoc) {
+    final List<PropertyDoc> properties = new ArrayList<PropertyDoc>();
+
+    for (final MethodDoc method : classDoc.methods()) {
+      if (isDocumentableProperty(method)) {
+        // TODO: Look at the Jackson annotations governing property names
+        // TODO: Handle read-only/write-only properties
+        PropertyDoc prop = new PropertyDoc(getPropertyName(method.name()), method.returnType(), method);
+        properties.add(prop);
+      }
+    }
+    PropertyDoc[] props = properties.toArray(new PropertyDoc[properties.size()]);
+    Arrays.sort(props);
+    return props;
+  }
+
+  private static boolean isDocumentableProperty(final MethodDoc method) {
+    // Poor mans JavaBean property recognition
+    // TODO: This won't cope with any of the more esoteric Jackson strategies for mapping properties (including auto-detection strategies)
+    if (method.name().startsWith("get")
+        || (method.name().startsWith("is") && method.returnType().simpleTypeName().equalsIgnoreCase("boolean"))) {
+        return true;
+    }
+    return false;
+  }
+
+  private static String getPropertyName(final String memberName) {
+    String basename = null;
+    if (memberName.startsWith("is")) {
+      basename = memberName.substring("is".length());
+    } else if (memberName.startsWith("get")) {
+      basename = memberName.substring("get".length());
+    }
+    if (basename != null) {
+      return Character.toLowerCase(basename.charAt(0)) + basename.substring(1);
+    }
+    return memberName;
+  }
+
+  private void printProperties(PropertyDoc[] propertyDocs, String title) {
     tag("hr");
     open("table class='info' id='" + title + "'");
     around("caption class='TableCaption'", title);
@@ -130,21 +174,19 @@ public class PojoClassWriter extends DocletWriter {
     around("th class='TableHeader'", "Type");
     around("th class='TableHeader DescriptionHeader'", "Description");
     close("tr");
-    for (FieldDoc member : fieldDocs) {
-      if (member.isStatic()) {
-        continue;
-      }
+    for (PropertyDoc member : propertyDocs) {
       open("tr");
-	    open("td id='m_" + member.name() + "'");
-	    print(member.name());
+      open("td id='m_" + member.getName() + "'");
+      print(member.getName());
 	    close("td");
       open("td");
       printMemberType(member);
       close("td");
       open("td");
-      Doc javaDoc = member;
-      if (javaDoc.firstSentenceTags() != null)
+      Doc javaDoc = member.getMemberDoc();
+      if (!Utils.isEmptyOrNull(javaDoc.commentText())) {
         writer.printInlineComment(javaDoc);
+      }
       close("td");
       close("tr");
 
@@ -153,15 +195,14 @@ public class PojoClassWriter extends DocletWriter {
     close("table");
   }
 
-  private void printMemberType(FieldDoc field) {
+  private void printMemberType(PropertyDoc prop) {
     open("tt");
-    final Type type = field.type();
+    final Type type = prop.getType();
     printMemberTypeGeneric(type);
     close("tt");
   }
 
   private void printMemberTypeGeneric(Type type) {
-    // System.err.println("Type : " + type.qualifiedTypeName());
   	if (type.isPrimitive() || type.qualifiedTypeName().startsWith("java.lang")) {
   		print(type.simpleTypeName());
   	} else {
@@ -190,5 +231,36 @@ public class PojoClassWriter extends DocletWriter {
 
   }
 
+  @SuppressWarnings("restriction")
+  private static class PropertyDoc implements Comparable<PropertyDoc> {
+
+    private final String name;
+    private final Type type;
+    private final MemberDoc memberDoc;
+
+    public PropertyDoc(String name, Type type, MemberDoc memberDoc) {
+      this.name = name;
+      this.type = type;
+      this.memberDoc = memberDoc;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public Type getType() {
+      return type;
+    }
+
+    public MemberDoc getMemberDoc() {
+      return memberDoc;
+    }
+
+    @Override
+    public int compareTo(PropertyDoc o) {
+      return name.compareTo(o.name);
+    }
+
+  }
 
 }
