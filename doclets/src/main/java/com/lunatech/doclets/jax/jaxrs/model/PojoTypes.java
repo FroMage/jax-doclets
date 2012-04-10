@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSConfiguration;
+import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Type;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
@@ -63,6 +64,12 @@ public class PojoTypes {
 
   public boolean resolveUsedType(Type type) {
     final ClassDoc cDoc = type.asClassDoc();
+    if (type.asParameterizedType() != null) {
+      for (final Type param : type.asParameterizedType().typeArguments()) {
+        resolveUsedType(param);
+      }
+      // Fall through to process parameterized base type
+    }
     if (isPojoToDocument(type)) {
       if (!this.resolvedTypes.contains(cDoc)) {
         this.resolvedTypes.add(cDoc);
@@ -81,6 +88,8 @@ public class PojoTypes {
     for (FieldDoc fDoc : cDoc.fields(false)) {
       resolveUsedType(fDoc.type());
     }
+    // TODO: Inspect JavaBean property accessor return types as well
+    // (otherwise this will miss any types in those that aren't in the object model).
   }
 
   public void resolveSubclassDtos() {
