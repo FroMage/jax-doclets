@@ -10,7 +10,7 @@ JavaDoc is used. Documentation for a given RESTful URL is taken from the method 
 {{@HEAD}}, {{@POST}}, {{@PUT}} or {{@DELETE}}
 for that URL (in order of preference).
 
-JAX-RS resource locators are supported.
+JAX-RS resource locators, including Class factory resource locators (resource locator methods with a {{Class<?>}} return type) are supported.
 
 {note}Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then
 the JAX-RS doclet using the [{{-link}}|#-link] parameter.{note}
