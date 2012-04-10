@@ -238,7 +238,7 @@
 							</docletArtifacts>
 							<destDir>jaxrsdocs-pojo</destDir>
 							<reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
-							<additionalparam>-jaxrscontext rest -disablejavascriptexample -enablepojojson -matchingpojonamesonly com\.lunatech\..*</additionalparam>
+							<additionalparam>-jaxrscontext rest -disablejavascriptexample -enablepojojson -matchingresourcesonly com\.lunatech\..*\.pojo\..* -matchingpojonamesonly com\.lunatech\..*\.pojo\..*</additionalparam>
 						</configuration>
 					</execution>
 				</executions>
