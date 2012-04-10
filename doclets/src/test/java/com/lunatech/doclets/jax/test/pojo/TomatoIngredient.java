@@ -1,5 +1,8 @@
 package com.lunatech.doclets.jax.test.pojo;
 
+/**
+ * Red stuff
+ */
 public class TomatoIngredient extends Ingredient {
 
   private String variety;
