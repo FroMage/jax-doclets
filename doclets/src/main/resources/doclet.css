@@ -120,7 +120,7 @@ table.examples pre {
 
 /* Pojo */
 
-span.supertype {
+span.typedetail {
  position:relative;
  top: 0.1em;
  font-size:smaller;

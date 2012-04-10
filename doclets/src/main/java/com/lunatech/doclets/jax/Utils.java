@@ -175,6 +175,18 @@ public class Utils {
     return null;
   }
 
+  public static AnnotationDesc findAnnotation(final AnnotationDesc[] annotations, final String... soughtAnnotations) {
+    for (final AnnotationDesc annotation : annotations) {
+      final AnnotationTypeDoc annotationType = annotation.annotationType();
+      for (final String soughtAnnotation : soughtAnnotations) {
+        if (annotationType.qualifiedTypeName().equals(soughtAnnotation)) {
+          return annotation;
+        }
+      }
+    }
+    return null;
+  }
+
   public static List<AnnotationDesc> findAnnotations(final AnnotationDesc[] annotations, final Class<?>... soughtAnnotations) {
     List<AnnotationDesc> ret = new LinkedList<AnnotationDesc>();
     for (final AnnotationDesc annotation : annotations) {

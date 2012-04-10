@@ -66,7 +66,13 @@ public class PojoClassWriter extends DocletWriter {
   }
 
   public void write() {
-    printPrelude("Data object: " + cDoc.typeName(), "");
+    final String objectType;
+    if (cDoc.isEnum()) {
+      objectType = "Enumeration";
+    } else {
+      objectType = "Data object";
+    }
+    printPrelude(objectType + ": " + cDoc.typeName(), "");
     printSummary();
     printElements();
     tag("hr");
@@ -76,12 +82,24 @@ public class PojoClassWriter extends DocletWriter {
   }
 
   private void printElements() {
+    if (cDoc.isEnum()) {
+      printEnumConstants();
+    } else {
       printProperties(properties, "Properties");
+    }
   }
+
 
   private void printSummary() {
     open("h2 class='classname'");
-    around("span class='name'", "Data object: " + cDoc.simpleTypeName());
+    // TODO: Factor this
+    final String objectType;
+    if (cDoc.isEnum()) {
+      objectType = "Enumeration";
+    } else {
+      objectType = "Data object";
+    }
+    around("span class='name'", objectType + ": " + cDoc.simpleTypeName());
     around("span class='namespace'", "(in " + getContainer() + ")");
     close("h2");
 
@@ -161,6 +179,34 @@ public class PojoClassWriter extends DocletWriter {
       return Character.toLowerCase(basename.charAt(0)) + basename.substring(1);
     }
     return memberName;
+  }
+
+  private void printEnumConstants() {
+    tag("hr");
+    open("table class='info' id='EnumConstants'");
+    around("caption class='TableCaption'", "Enum Constants");
+    open("tbody");
+    open("tr");
+
+    around("th class='TableHeader'", "Constant");
+    around("th class='TableHeader DescriptionHeader'", "Description");
+    close("tr");
+    for (final FieldDoc enumConst : cDoc.enumConstants()) {
+      open("tr");
+      open("td id='ec_" + enumConst.name() + "'");
+      print(enumConst.name());
+      close("td");
+      open("td");
+      Doc javaDoc = enumConst;
+      if (!Utils.isEmptyOrNull(javaDoc.commentText())) {
+        writer.printInlineComment(javaDoc);
+      }
+      close("td");
+      close("tr");
+
+    }
+    close("tbody");
+    close("table");
   }
 
   private void printProperties(PropertyDoc[] propertyDocs, String title) {
