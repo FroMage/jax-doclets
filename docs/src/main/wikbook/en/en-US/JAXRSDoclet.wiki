@@ -22,6 +22,14 @@ The following standard JavaDoc tags are supported on resource methods:
 ||Tag||Function||
 |{{@param \{name\} \{doc\} }}|This is used to document the corresponding resource method parameters annotated with {{@PathParam}}, {{@QueryParam}} or {{@MatrixParam}}. Can be used at most once per parameter name.|
 |{{@return \{doc\} }}|Documents the entity returned from this resource method. Can only be used once.|
+|{{@link \{DTO/resource class/resource class#method\} }} | Inline linking to DTO objects, resources and resource methods to be linked to. |
+
+h2. Linking in JAX-RS JavaDoc
+
+The following types of {{@link}} links are supported:
+* Links to a DTO object type - 
+* Links to a resource class - produces a link to the resource summary, with the resource URL as the link text (e.g. {{/rest/resource}}).
+* Links to a resource method - produces a link to the resource method summary, with the resource method and URL as the link text (e.g. {{GET /rest/resource}}).
 
 h2. Supported specific JavaDoc tags
 
