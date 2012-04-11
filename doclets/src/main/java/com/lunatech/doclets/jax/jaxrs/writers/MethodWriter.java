@@ -104,6 +104,9 @@ public class MethodWriter extends DocletWriter {
     printHTTPCodes();
     printHTTPRequestHeaders();
     printHTTPResponseHeaders();
+
+    printSince(method.getJavaDoc());
+    printSeeAlso(method.getJavaDoc());
     // printSees();
     close("dl");
   }

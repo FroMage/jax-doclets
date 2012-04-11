@@ -22,6 +22,10 @@ public class PojoRESTPizza {
    * The PojoPizzas resource
    *
    * @return the list of all the PojoPizzas matching the query
+   * @see PojoPizza
+   * @see PojoRESTPizza
+   * @see PojoRESTPizza#getPojoPizza(String)
+   * @since 1.2
    */
   @GET
   public List<PojoPizza> getPojoPizzas(@Form Query query) {
