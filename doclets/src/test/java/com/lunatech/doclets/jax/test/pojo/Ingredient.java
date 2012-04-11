@@ -2,6 +2,12 @@ package com.lunatech.doclets.jax.test.pojo;
 
 /**
  * General type for pizza ingredients.
+ * <p>
+ * Maybe you want {@link APizzaIngredientThatDoesntExist}.
+ * <p>
+ * Or maybe you want to look at {@link Ingredient#aMethodThatDoesntExist()}
+ * <p>
+ * Or maybe you needed to look at {@link PojoRESTPizza#aResourceMethodThatDoesntExist()}
  * 
  */
 public class Ingredient {
