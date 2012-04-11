@@ -125,3 +125,10 @@ span.typedetail {
  top: 0.1em;
  font-size:smaller;
 }
+
+dl.subtypes dt,
+dl.supertype dt,
+dl.since dt,
+dl.seealso dt {
+	font-weight: bold;
+}

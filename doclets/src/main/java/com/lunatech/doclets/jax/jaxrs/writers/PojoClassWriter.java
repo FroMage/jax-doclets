@@ -36,6 +36,8 @@ import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.MemberDoc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ParameterizedType;
+import com.sun.javadoc.SeeTag;
+import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
@@ -92,7 +94,7 @@ public class PojoClassWriter extends DocletWriter {
 
 
   private void printSummary() {
-    open("h2 class='classname'");
+    open("h2 class='pojosummary'");
     // TODO: Factor this
     final String objectType;
     if (cDoc.isEnum()) {
@@ -132,11 +134,11 @@ public class PojoClassWriter extends DocletWriter {
     if (javaDoc.tags() != null) {
       writer.printInlineComment(javaDoc);
     }
-    // open("table class='examples'", "tr");
-    // open("td");
-    // printJSONExample();
-    // close("td");
-    // close("tr", "table");
+    // @since
+    printSince(javaDoc);
+
+    // @see tags
+    printSeeAlso(javaDoc);
   }
 
   private String getContainer() {

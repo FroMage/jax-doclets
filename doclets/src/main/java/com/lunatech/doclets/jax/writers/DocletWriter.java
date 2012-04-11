@@ -20,6 +20,9 @@ package com.lunatech.doclets.jax.writers;
 
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
+import com.sun.javadoc.Doc;
+import com.sun.javadoc.SeeTag;
+import com.sun.javadoc.Tag;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class DocletWriter {
@@ -159,4 +162,33 @@ public class DocletWriter {
   protected String escape(String str) {
     return str.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
   }
+
+  protected void printSeeAlso(Doc javaDoc) {
+    SeeTag[] seeTags = javaDoc.seeTags();
+    if ((seeTags != null) && (seeTags.length > 0)) {
+      open("dl class='seealso'");
+      around("dt", "See Also:");
+      open("dd");
+      for (int i = 0; i < seeTags.length; i++) {
+        SeeTag seeTag = seeTags[i];
+        writer.printSummaryComment(javaDoc, new SeeTag[] { seeTag });
+        if (i < (seeTags.length - 1)) {
+          writer.write(", ");
+        }
+      }
+      close("dd", "dl");
+    }
+  }
+
+  protected void printSince(Doc javaDoc) {
+    Tag[] sinceTags = javaDoc.tags("since");
+    if ((sinceTags != null) && (sinceTags.length > 0)) {
+      open("dl class='since'");
+      around("dt", "Since:");
+      open("dd");
+      writer.write(sinceTags[0].text());
+      close("dd", "dl");
+    }
+  }
+
 }

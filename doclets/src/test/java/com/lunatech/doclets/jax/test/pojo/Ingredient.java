@@ -9,6 +9,10 @@ package com.lunatech.doclets.jax.test.pojo;
  * <p>
  * Or maybe you needed to look at {@link PojoRESTPizza#aResourceMethodThatDoesntExist()}
  * 
+ * @see PojoPizza
+ * @see PojoRESTPizza
+ * @see PojoRESTPizza#getPojoPizza(String)
+ * @since 1.2
  */
 public class Ingredient {
 
