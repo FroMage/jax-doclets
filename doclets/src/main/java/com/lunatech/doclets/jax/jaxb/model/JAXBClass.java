@@ -84,8 +84,11 @@ public class JAXBClass implements Comparable<JAXBClass> {
   private void setupMembers(ClassDoc klass) {
     ClassDoc accessorAnnotationType = Utils.findAnnotatedClass(klass, XmlAccessorType.class);
     AnnotationDesc accessorAnnotation = null;
-    if (accessorAnnotationType != null)
+    if (accessorAnnotationType != null) {
       accessorAnnotation = Utils.findAnnotation(accessorAnnotationType, XmlAccessorType.class);
+    } else { 
+      accessorAnnotation = Utils.findAnnotation(klass.containingPackage(), XmlAccessorType.class);
+    }
     XmlAccessType accessType = XmlAccessType.PUBLIC_MEMBER;
     // System.err.println("Accessor: " + accessorAnnotation);
     if (accessorAnnotation != null) {
