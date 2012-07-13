@@ -1,5 +1,6 @@
 package com.lunatech.doclets.jax.jaxb.testcase;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -78,4 +79,14 @@ public class ClassExample {
     this.integerList = integerList;
   }
 
+  @XmlElement
+  private Collection<String> stringCollection;
+  
+  public Collection<String> getStringCollection() {
+    return stringCollection;
+  }
+  
+  public void setStringCollection(Collection<String> stringCollection) {
+    this.stringCollection = stringCollection;
+  }
 }
