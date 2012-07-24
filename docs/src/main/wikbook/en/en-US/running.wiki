@@ -236,6 +236,7 @@ These parameters are only valid for the JAXB doclet
 |{{-disablejsontypename}}|If you want to hide the serialised type name from the JSON examples.|
 |{{-disablexmlexample}}|Disables the generated XML examples.|
 |{{-disablejsonexample}}|Disables the generated JSON examples.|
+|{{-jsonconvention jettison,badgerfish,mapped}}|Selects the JSON examples style. Defaults to {{jettison}}.|
 
 h3. JPA doclet parameters
 
