@@ -307,7 +307,7 @@ public class JAXBClassWriter extends DocletWriter {
       print(",\n");
     }
     for (Value value : jaxbClass.getValues()) {
-      print("   ");
+      print("   \"$\": ");
       printJSONMemberType(value, true);
       print(",\n");
     }
