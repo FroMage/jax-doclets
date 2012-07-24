@@ -286,7 +286,9 @@ public class JAXBClassWriter extends DocletWriter {
     print(" {\n");
     Collection<Attribute> attributes = jaxbClass.getAttributes();
     for (Attribute attribute : attributes) {
-      print("  \"@");
+      print("   \"");
+      if(!((JAXBConfiguration) configuration).useJSONPlainAttribute)
+    	  print("@");
       around("a href='#m_" + attribute.getName() + "'", attribute.getName());
       print("\": ");
       printJSONMemberType(attribute, false);
