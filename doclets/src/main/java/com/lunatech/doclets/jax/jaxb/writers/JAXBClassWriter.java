@@ -90,7 +90,9 @@ public class JAXBClassWriter extends DocletWriter {
       around("th class='TableHeader'", "Name");
     }
     around("th class='TableHeader'", "Type");
-    around("th class='TableHeader'", "Required");
+    if (!isValue) {
+      around("th class='TableHeader'", "Required");
+    }
     if(type == MemberType.Element){
       around("th class='TableHeader'", "Nillable");
       around("th class='TableHeader'", "Default Value");
