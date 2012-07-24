@@ -166,6 +166,10 @@ public class Utils {
     return findAnnotation(parameter.annotations(), soughtAnnotations);
   }
 
+  public static AnnotationDesc findAnnotation(final PackageDoc pack, final Class<?>... soughtAnnotations) {
+    return findAnnotation(pack.annotations(), soughtAnnotations);
+  }
+  
   public static AnnotationDesc findAnnotation(final AnnotationDesc[] annotations, final Class<?>... soughtAnnotations) {
     for (final AnnotationDesc annotation : annotations) {
       final AnnotationTypeDoc annotationType = annotation.annotationType();
@@ -232,6 +236,8 @@ public class Utils {
     ClassDoc doc = type.asClassDoc();
     if (doc == null)
       return null;
+    if (doc.qualifiedTypeName().equals(typeName))
+      return type;
     if (doc.isInterface())
       return findSuperTypeFromInterface(doc, typeName);
     if (doc.isClass() && !doc.isEnum() && !doc.isError() && !doc.isException())
