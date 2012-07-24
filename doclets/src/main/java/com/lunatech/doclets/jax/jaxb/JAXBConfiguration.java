@@ -18,7 +18,7 @@ public class JAXBConfiguration extends JAXConfiguration {
   
   public boolean enableXMLExample = true;
 
-  public boolean useJSONPlainAttribute = false;
+  public JSONConvention jsonConvention = JSONConvention.JETTISON_MAPPED;
 
   
   public JAXBConfiguration(ConfigurationImpl conf) {
@@ -37,6 +37,15 @@ public class JAXBConfiguration extends JAXConfiguration {
     enableJSONExample = !Utils.hasOption(options, "-disablejsonexample");
     enableXMLExample = !Utils.hasOption(options, "-disablexmlexample");
     
-    useJSONPlainAttribute = Utils.hasOption(options, "-useplainjsonattributenames");
+    String jsonConvention = Utils.getOption(options, "-jsonconvention");
+    if(jsonConvention == null || "jettison".equals(jsonConvention))
+      this.jsonConvention = JSONConvention.JETTISON_MAPPED;
+    else if("badgerfish".equals(jsonConvention))
+      this.jsonConvention = JSONConvention.BADGERFISH;
+    else if("mapped".equals(jsonConvention))
+      this.jsonConvention = JSONConvention.MAPPED;
+    else{
+      parentConfiguration.root.printError("Unknown JSON convention: "+jsonConvention+" (must be one of 'jettison' (default), 'badgerfish', 'mapped')");
+    }
   }
 }

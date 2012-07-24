@@ -46,14 +46,14 @@ public class JAXBDoclet extends JAXDoclet<JAXBConfiguration> {
   private static final Class<?>[] jaxbAnnotations = new Class<?>[] { XmlRootElement.class };
 
   public static int optionLength(final String option) {
-    if ("-matchingjaxbnamesonly".equals(option)) {
+    if ("-matchingjaxbnamesonly".equals(option)
+        || "-jsonconvention".equals(option)) {
       return 2;
     }
     if ("-disablejaxbmethodoutput".equals(option)
         || "-disablejsontypename".equals(option)
         || "-disablexmlexample".equals(option)
-        || "-disablejsonexample".equals(option)
-        || "-useplainjsonattributenames".equals(option)) {
+        || "-disablejsonexample".equals(option)) {
       return 1;
     }
     return HtmlDoclet.optionLength(option);
@@ -68,6 +68,15 @@ public class JAXBDoclet extends JAXDoclet<JAXBConfiguration> {
       if(value != null)
         Pattern.compile(value);
     } catch (Throwable t) {
+      return false;
+    }
+
+    String jsonConvention = Utils.getOption(options, "-jsonconvention");
+    if(jsonConvention != null 
+        && !jsonConvention.equals("mapped")
+        && !jsonConvention.equals("jettison")
+        && !jsonConvention.equals("badgerfish")){
+      reporter.printError("Unknown JSON convention: "+jsonConvention+" (must be one of 'jettison' (default), 'badgerfish', 'mapped')");
       return false;
     }
     return true;

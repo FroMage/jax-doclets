@@ -24,6 +24,7 @@ import java.util.Collection;
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxb.JAXBConfiguration;
+import com.lunatech.doclets.jax.jaxb.JSONConvention;
 import com.lunatech.doclets.jax.jaxb.model.Attribute;
 import com.lunatech.doclets.jax.jaxb.model.Element;
 import com.lunatech.doclets.jax.jaxb.model.JAXBClass;
@@ -281,6 +282,7 @@ public class JAXBClassWriter extends DocletWriter {
   }
 
   private void printJSONExample() {
+    JSONConvention convention = ((JAXBConfiguration) configuration).jsonConvention;
     around("b", "JSON Example:");
     open("pre");
     if (((JAXBConfiguration) configuration).enableJSONTypeName)
@@ -289,7 +291,7 @@ public class JAXBClassWriter extends DocletWriter {
     Collection<Attribute> attributes = jaxbClass.getAttributes();
     for (Attribute attribute : attributes) {
       print("   \"");
-      if(!((JAXBConfiguration) configuration).useJSONPlainAttribute)
+      if(convention != JSONConvention.MAPPED)
     	  print("@");
       around("a href='#m_" + attribute.getName() + "'", attribute.getName());
       print("\": ");
