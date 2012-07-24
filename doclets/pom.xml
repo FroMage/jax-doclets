@@ -55,7 +55,7 @@
 	<!-- Only depend on the tools.jar for the Sun JDK. See http://maven.apache.org/general.html#tools-jar-dependency -->
 	<profiles>
 		<profile>
-			<id>default-tools.jar</id>
+			<id>default-tools-sun.jar</id>
 			<activation>
 				<property>
 					<name>java.vendor</name>
@@ -69,6 +69,21 @@
 				</dependency>
 			</dependencies>
 		</profile>
+        <profile>
+            <id>default-tools-oracle.jar</id>
+            <activation>
+                <property>
+                    <name>java.vendor</name>
+                    <value>Oracle Corporation</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sun</groupId>
+                    <artifactId>tools</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
 	</profiles>
 	
 	<build>
