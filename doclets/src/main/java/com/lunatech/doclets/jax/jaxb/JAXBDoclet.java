@@ -68,6 +68,7 @@ public class JAXBDoclet extends JAXDoclet<JAXBConfiguration> {
       if(value != null)
         Pattern.compile(value);
     } catch (Throwable t) {
+      reporter.printError("Invalid pattern for '-matchingjaxbnamesonly' option: '"+value+"' (not a valid regex)");
       return false;
     }
 
