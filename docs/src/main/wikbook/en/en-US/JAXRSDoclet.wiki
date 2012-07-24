@@ -10,7 +10,7 @@ JavaDoc is used. Documentation for a given RESTful URL is taken from the method 
 {{@HEAD}}, {{@POST}}, {{@PUT}} or {{@DELETE}}
 for that URL (in order of preference).
 
-JAX-RS resource locators are supported.
+JAX-RS resource locators, including Class factory resource locators (resource locator methods with a {{Class<?>}} return type) are supported.
 
 {note}Since the JAX-RS supports links to JAXB documentation, you should first run the JAXB doclet, then
 the JAX-RS doclet using the [{{-link}}|#-link] parameter.{note}
@@ -22,6 +22,14 @@ The following standard JavaDoc tags are supported on resource methods:
 ||Tag||Function||
 |{{@param \{name\} \{doc\} }}|This is used to document the corresponding resource method parameters annotated with {{@PathParam}}, {{@QueryParam}} or {{@MatrixParam}}. Can be used at most once per parameter name.|
 |{{@return \{doc\} }}|Documents the entity returned from this resource method. Can only be used once.|
+|{{@link \{DTO/resource class/resource class#method\} }} | Inline linking to DTO objects, resources and resource methods to be linked to. |
+
+h2. Linking in JAX-RS JavaDoc
+
+The following types of {{@link}} links are supported:
+* Links to a DTO object type - 
+* Links to a resource class - produces a link to the resource summary, with the resource URL as the link text (e.g. {{/rest/resource}}).
+* Links to a resource method - produces a link to the resource method summary, with the resource method and URL as the link text (e.g. {{GET /rest/resource}}).
 
 h2. Supported specific JavaDoc tags
 
@@ -57,3 +65,25 @@ If the optional RESTEasy dependency is present,
 the following RESTEasy annotations are supported on resource methods or classes:
 
 * {{@Form}}
+
+h2. POJO Mapping
+
+Some JAX-RS frameworks (e.g. Jersey) support the use of POJO style JSON serialization/deserialization.
+To support this, the JAX-RS doclet provides a POJO JSON documentation mode (enabled using the {{-pojojson}} configuration option, and associated configuration options). 
+
+When POJO JSON documentation mode is enabled, the objects used in resource methods will be documented as POJO objects, unless they are already documented in linked documentation (e.g. standard Java types, or JAXB Doclet documentation).
+
+The following items are documented:
+* DTO object types (including linking in JavaDoc)
+* JavaBean style properties
+* Generic and parameter types (used in properties or as type parameters in DTO types)
+* Enumerated types
+* Subclasses of DTO object types (polymorphic DTOs)
+
+A separate Data objects page is added to the top level menu when POJO JSON documentation mode is enabled.
+
+h3. Supported Jackson Features
+
+In the POJO JSON documentation mode, the following annotations will be detected on property accessors, and will suppress documentation for that property:
+* {{org.codehaus.jackson.annotate.JsonIgnore}} (Jackson 1.x)
+* {{com.fasterxml.jackson.annotation.JsonIgnore}} (Jackson 2.x)

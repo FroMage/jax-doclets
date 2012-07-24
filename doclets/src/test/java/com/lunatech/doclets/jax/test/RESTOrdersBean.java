@@ -115,8 +115,21 @@ public class RESTOrdersBean implements RESTOrders {
     Open, Closed;
   }
 
+  /**
+   * A comment.
+   *
+   * More information may be contained in an {@link ExtraComment}
+   * 
+   */
   @XmlRootElement
   public static class Comment {}
+
+  /**
+   * An extension to {@link Comment} that adds extra comment.
+   *
+   */
+  @XmlRootElement
+  public static class ExtraComment extends Comment {}
 
   @XmlRootElement
   public static class Attachment {

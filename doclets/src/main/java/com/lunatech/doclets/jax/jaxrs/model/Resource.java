@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@ package com.lunatech.doclets.jax.jaxrs.model;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.writers.ResourceWriter;
 import com.sun.javadoc.Doc;
+import com.sun.javadoc.MethodDoc;
 
 public class Resource {
 
@@ -107,18 +109,13 @@ public class Resource {
   }
 
   public String getAbsolutePath() {
-    if (parent != null)
+    if (parent != null) {
       return Utils.appendURLFragments(parent.getAbsolutePath(), getName());
-    else
-      return "/";
-  }
-
-  public static Resource getRootResource(Collection<ResourceMethod> resourceMethods) {
-    Resource rootResource = new Resource("", null);
-    for (ResourceMethod resourceMethod : resourceMethods) {
-      rootResource.addResourceMethod(resourceMethod);
+    } else {
+      // Suppress the / on root resources, to make it consistent with display of sub-resources
+      // The context path will always be pre-pended to this for display
+      return "";
     }
-    return rootResource;
   }
 
   private void addSubResource(String firstFragment, ResourceMethod resourceMethod) {
@@ -132,7 +129,7 @@ public class Resource {
     subResource.addResourceMethod(resourceMethod);
   }
 
-  private void addResourceMethod(ResourceMethod resourceMethod) {
+  void addResourceMethod(ResourceMethod resourceMethod) {
     String firstFragment = Utils.getFirstURLFragment(resourceMethod.getPath().substring(getAbsolutePath().length()));
     if (firstFragment == null) {
       methods.add(resourceMethod);
@@ -161,11 +158,11 @@ public class Resource {
     return fragmentWithNoRegex;
   }
 
-  public void write(JAXRSDoclet doclet, JAXConfiguration configuration) {
-    ResourceWriter writer = new ResourceWriter(configuration, this, doclet);
-    writer.write();
+  public void write(JAXRSDoclet doclet, JAXConfiguration configuration, JAXRSApplication application, PojoTypes types) {
+    ResourceWriter writer = new ResourceWriter(configuration, application, this, doclet);
+    writer.write(types);
     for (Resource subResource : subResources.values()) {
-      subResource.write(doclet, configuration);
+      subResource.write(doclet, configuration, application, types);
     }
   }
 
@@ -200,4 +197,14 @@ public class Resource {
     }
     return strbuf.toString();
   }
+
+  public ResourceMethod findMethod(MethodDoc member) {
+    for (ResourceMethod method : methods) {
+      if (JAXRSApplication.areEqual(method.getMethodDoc(), member)) {
+        return method;
+      }
+    }
+    return null;
+  }
+
 }

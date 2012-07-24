@@ -68,8 +68,11 @@ public interface RESTOrders {
   public Response getOrders(@QueryParam("creator") String creatorKey, @QueryParam("filter") final String filter);
 
   /**
-   * Adds a new order
+   * Adds a new order.
    * 
+   * To list existing orders, use the {@link #getOrders(String, String) listing
+   * resource}
+   *
    * @param newOrder
    *          the new order to add
    * @HTTP 201 When created
@@ -95,8 +98,11 @@ public interface RESTOrders {
   // Order
 
   /**
-   * The order resource
-   * 
+   * The order resource.
+   *
+   * This can be used to obtain an order, or multiple orders can be obtained
+   * using {@link #getOrders(String, String)}.
+   *
    * @param orderKey
    *          the order key
    * @return the order found
