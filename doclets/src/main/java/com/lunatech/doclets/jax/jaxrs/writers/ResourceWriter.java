@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -25,7 +25,9 @@ import java.util.Map;
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
+import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.MethodParameter;
+import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.sun.javadoc.Doc;
@@ -33,48 +35,49 @@ import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
 public class ResourceWriter extends DocletWriter {
 
-  public ResourceWriter(JAXConfiguration configuration, Resource resource, JAXRSDoclet doclet) {
-    super(configuration, getWriter(configuration, resource), resource, doclet);
+  public ResourceWriter(JAXConfiguration configuration, JAXRSApplication application, Resource resource, JAXRSDoclet doclet) {
+    super(configuration, getWriter(configuration, application, resource), application, resource, doclet);
   }
 
-  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, Resource resource) {
+  private static HtmlDocletWriter getWriter(JAXConfiguration configuration, JAXRSApplication application, Resource resource) {
     String pathName = Utils.urlToSystemPath(resource);
     try {
-      return new HtmlDocletWriter(configuration.parentConfiguration, pathName, "index.html", Utils.urlToRoot(resource));
+      return new JAXRSHtmlDocletWriter(application, configuration, pathName, "index.html", Utils.urlToRoot(resource));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public void write() {
+  public void write(PojoTypes types) {
     boolean isRoot = resource.getParent() == null;
     String selected = isRoot ? "Root resource" : "";
-    printHeader(isRoot);
-    printMenu(selected);
+    printPrelude(isRoot, selected);
+    open("dl");
     printResourceInfo();
     printSubresources();
-    printMethods();
+    if (resource.hasRealMethods()) {
+      printMethodOverview(resource.getMethods());
+    }
+    close("dl");
+    if (resource.hasRealMethods()) {
+      printMethodDetails(resource.getMethods(), types);
+    }
     tag("hr");
-    printMenu(selected);
-    printFooter();
+    printPostlude(selected);
     writer.flush();
-  }
-
-  private void printMethods() {
-    if (!resource.hasRealMethods())
-      return;
-    List<ResourceMethod> methods = resource.getMethods();
-    printMethodOverview(methods);
-    printMethodDetails(methods);
   }
 
   private void printMethodOverview(List<ResourceMethod> methods) {
     tag("hr");
+    open("dt");
+    print("Resource Methods");
+    close("dt");
+    open("dd");
     open("table class='info' id='methods-summary'");
     around("caption class='TableCaption'", "Method Summary");
     open("tbody");
     open("tr");
-    around("th class='TableHeader'", "Resource");
+    around("th class='TableHeader'", "Name");
     around("th class='TableHeader'", "Description");
     close("tr");
     for (ResourceMethod method : methods) {
@@ -98,9 +101,10 @@ public class ResourceWriter extends DocletWriter {
     }
     close("tbody");
     close("table");
+    close("dd");
   }
 
-  private void printMethodDetails(List<ResourceMethod> methods) {
+  private void printMethodDetails(List<ResourceMethod> methods, PojoTypes types) {
     tag("hr");
     open("table class='info' id='methods-details'");
     around("caption class='TableCaption'", "Method Detail");
@@ -111,7 +115,7 @@ public class ResourceWriter extends DocletWriter {
         continue;
       open("tr");
       open("td");
-      new MethodWriter(method, this, doclet).print();
+      new MethodWriter(method, this, doclet, application).print(types);
       close("td");
       close("tr");
     }
@@ -124,6 +128,10 @@ public class ResourceWriter extends DocletWriter {
     if (resources.isEmpty())
       return;
     tag("hr");
+    open("dt");
+    print("Sub-Resources");
+    close("dt");
+    open("dd");
     open("table class='info' id='resources'");
     around("caption class='TableCaption'", "Resources");
     open("tbody");
@@ -158,6 +166,7 @@ public class ResourceWriter extends DocletWriter {
     }
     close("tbody");
     close("table");
+    close("dd");
   }
 
   private Resource deepFilter(Resource resource) {
@@ -206,10 +215,12 @@ public class ResourceWriter extends DocletWriter {
     else
       print(buf.toString());
     close("h2");
+    open("div class='doc-comment'");
     Doc javaDoc = this.resource.getJavaDoc();
     if (javaDoc != null && javaDoc.tags() != null) {
       writer.printInlineComment(javaDoc);
     }
+    close("div");
     do {
       boolean needsPathHeading = true;
       List<ResourceMethod> lrm = this.resource.getMethods();
@@ -221,7 +232,6 @@ public class ResourceWriter extends DocletWriter {
       ResourceMethod rm = lrm.get(0);
       for (MethodParameter param : rm.getPathParameters()) {
         if (needsPathHeading) {
-          open("dl");
           open("dt");
           around("b", "Path parameters:");
           close("dt");
@@ -237,17 +247,16 @@ public class ResourceWriter extends DocletWriter {
         close("dd");
       }
       if (!needsPathHeading) {
-        close("dl");
       }
     } while (false);
 
   }
 
-  private void printHeader(boolean isRoot) {
+  private void printPrelude(boolean isRoot, String selected) {
     if (isRoot)
-      printHeader("Root Resource");
+      printPrelude("Root Resource", selected);
     else
-      printHeader("Resource " + resource.getName());
+      printPrelude("Resource " + resource.getName(), selected);
   }
 
   protected void printThirdMenu() {

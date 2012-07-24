@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -182,6 +182,18 @@ public class Utils {
     return null;
   }
 
+  public static AnnotationDesc findAnnotation(final AnnotationDesc[] annotations, final String... soughtAnnotations) {
+    for (final AnnotationDesc annotation : annotations) {
+      final AnnotationTypeDoc annotationType = annotation.annotationType();
+      for (final String soughtAnnotation : soughtAnnotations) {
+        if (annotationType.qualifiedTypeName().equals(soughtAnnotation)) {
+          return annotation;
+        }
+      }
+    }
+    return null;
+  }
+
   public static List<AnnotationDesc> findAnnotations(final AnnotationDesc[] annotations, final Class<?>... soughtAnnotations) {
     List<AnnotationDesc> ret = new LinkedList<AnnotationDesc>();
     for (final AnnotationDesc annotation : annotations) {
@@ -342,6 +354,10 @@ public class Utils {
     return DirectoryManager.getPath(jpaClass.getPackageName());
   }
 
+  public static String classToPath(ClassDoc cDoc) {
+    return DirectoryManager.getPath(cDoc.containingPackage().name());
+  }
+
   public static String urlToPath(Resource resource) {
     String name = resource.getAbsolutePath();
     if (name.startsWith("/"))
@@ -354,6 +370,10 @@ public class Utils {
     if (name.startsWith("/"))
       name = name.substring(1);
     return name.replace('/', File.separatorChar);
+  }
+
+  public static String urlToClass(ClassDoc from, ClassDoc to) {
+    return classToRoot(from) + classToPath(to) + "/" + to.name() + ".html";
   }
 
   public static String urlToClass(JAXBClass from, JAXBClass to) {
@@ -370,6 +390,10 @@ public class Utils {
 
   public static String classToRoot(JAXBClass klass) {
     return DirectoryManager.getRelativePath(klass.getPackageName());
+  }
+
+  public static String classToRoot(ClassDoc cDoc) {
+  	return DirectoryManager.getRelativePath(cDoc.containingPackage());
   }
 
   public static String classToRoot(JPAClass klass) {
@@ -507,7 +531,7 @@ public class Utils {
 
   /**
    * Returns either Produces.class or ProduceMime.class (old version)
-   * 
+   *
    * @return
    */
   public static Class<?> getProducesClass() {
@@ -524,7 +548,7 @@ public class Utils {
 
   /**
    * Returns either Consumes.class or ConsumeMime.class (old version)
-   * 
+   *
    * @return
    */
   public static Class<?> getConsumesClass() {
@@ -647,17 +671,21 @@ public class Utils {
     // then the class itself
     if (klass.typeName().equals(typeName))
       return klass;
-    // then go through the named imports
-    for (ClassDoc importedClass : klass.importedClasses()) {
-      if (importedClass.typeName().equals(typeName))
-        return importedClass;
-    }
-    // then the package imports
-    for (PackageDoc importedPackage : klass.importedPackages()) {
-      for (ClassDoc importedClass : importedPackage.allClasses(false)) {
+    try {
+      // then go through the named imports
+      for (ClassDoc importedClass : klass.importedClasses()) {
         if (importedClass.typeName().equals(typeName))
           return importedClass;
       }
+      // then the package imports
+      for (PackageDoc importedPackage : klass.importedPackages()) {
+        for (ClassDoc importedClass : importedPackage.allClasses(false)) {
+          if (importedClass.typeName().equals(typeName))
+            return importedClass;
+        }
+      }
+    } catch (NullPointerException e) {
+
     }
     // now try FQDN
     Type type = doclet.forName(typeName);
@@ -824,21 +852,26 @@ public class Utils {
     }
   }
 
-  private static String addContextPath(DocletWriter writer, String url) {
+  private static String addContextPath(JAXConfiguration config, String resource) {
     // FIXME: move this to JAXRSConfiguration
-    String jaxrscontext = getOption(writer.getConfiguration().parentConfiguration.root.options(), "-jaxrscontext");
-    if (jaxrscontext == null)
-      return url;
-    else
-      return appendURLFragments(jaxrscontext, url);
+    String jaxrscontext = getOption(config.parentConfiguration.root.options(), "-jaxrscontext");
+    if (jaxrscontext == null) {
+      return appendURLFragments("/", resource);
+    } else {
+      return appendURLFragments(jaxrscontext, resource);
+    }
   }
 
   public static String getDisplayURL(DocletWriter writer, Resource resource, ResourceMethod method) {
-    return addContextPath(writer, method.getURL(resource));
+    return addContextPath(writer.getConfiguration(), method.getURL(resource));
   }
 
   public static String getAbsolutePath(DocletWriter writer, Resource resource) {
-    return addContextPath(writer, resource.getAbsolutePath());
+    return addContextPath(writer.getConfiguration(), resource.getAbsolutePath());
+  }
+
+  public static String getAbsolutePath(JAXConfiguration config, Resource resource) {
+    return addContextPath(config, resource.getAbsolutePath());
   }
 
   public static void log(String mesg) {

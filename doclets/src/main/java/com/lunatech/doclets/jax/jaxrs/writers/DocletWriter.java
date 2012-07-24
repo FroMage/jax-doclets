@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@ package com.lunatech.doclets.jax.jaxrs.writers;
 import com.lunatech.doclets.jax.JAXConfiguration;
 import com.lunatech.doclets.jax.jaxrs.JAXRSConfiguration;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
+import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 
@@ -30,21 +31,42 @@ public class DocletWriter extends com.lunatech.doclets.jax.writers.DocletWriter 
 
   protected JAXRSDoclet doclet;
 
-  public DocletWriter(JAXConfiguration configuration, HtmlDocletWriter writer, Resource resource, JAXRSDoclet doclet) {
+  protected JAXRSApplication application;
+
+  public DocletWriter(JAXConfiguration configuration, HtmlDocletWriter writer, JAXRSApplication application, Resource resource,
+      JAXRSDoclet doclet) {
     super(configuration, writer);
     this.resource = resource;
     this.doclet = doclet;
+    this.application = application;
   }
 
   public Resource getResource() {
     return resource;
   }
 
+  public JAXRSApplication getApplication() {
+    return application;
+  }
+
   protected void printOtherMenuItems(String selected) {
     printMenuItem("Index", writer.relativePath + "overview-index.html", selected);
+    if (getJAXRSConfiguration().enablePojoJsonDataObjects) {
+    	printMenuItem("Data objects", writer.relativePath + "objects-index.html", selected);
+    }
     printMenuItem("Root resource", writer.relativePath + "index.html", selected);
   }
-  
+
+  protected final void printPrelude(final String title, final String selected) {
+    printHeader(title);
+    printMenu(selected, "top");
+  }
+
+  protected final void printPostlude(String selected) {
+    printMenu(selected, "bottom");
+    printFooter();
+  }
+
   public JAXRSConfiguration getJAXRSConfiguration(){
     return (JAXRSConfiguration) configuration;
   }

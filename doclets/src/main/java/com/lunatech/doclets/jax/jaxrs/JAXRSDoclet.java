@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -19,24 +19,39 @@
 package com.lunatech.doclets.jax.jaxrs;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.ws.rs.Path;
 
 import com.lunatech.doclets.jax.JAXDoclet;
 import com.lunatech.doclets.jax.Utils;
+import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
+import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
 import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
-import com.lunatech.doclets.jax.jaxrs.tags.*;
+import com.lunatech.doclets.jax.jaxrs.tags.ExcludeTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.IncludeTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.InputWrappedTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
+import com.lunatech.doclets.jax.jaxrs.tags.ReturnWrappedTaglet;
 import com.lunatech.doclets.jax.jaxrs.writers.IndexWriter;
+import com.lunatech.doclets.jax.jaxrs.writers.DataObjectIndexWriter;
+import com.lunatech.doclets.jax.jaxrs.writers.PojoClassWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.SourcePosition;
+import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
@@ -46,14 +61,15 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
 
   public final HtmlDoclet htmlDoclet = new HtmlDoclet();
 
-  private static final Class<?>[] jaxrsAnnotations = new Class<?>[] { Path.class };
-
   public static int optionLength(final String option) {
-    if ("-jaxrscontext".equals(option)) {
+    if ("-jaxrscontext".equals(option)
+        || "-matchingpojonamesonly".equals(option)
+        || "-matchingresourcesonly".equals(option)) {
       return 2;
     }
     if ("-disablehttpexample".equals(option)
-        || "-disablejavascriptexample".equals(option)) {
+        || "-disablejavascriptexample".equals(option)
+        || "-enablepojojson".equals(option)) {
       return 1;
     }
     return HtmlDoclet.optionLength(option);
@@ -66,8 +82,6 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
   public static LanguageVersion languageVersion() {
     return AbstractDoclet.languageVersion();
   }
-
-  private List<ResourceMethod> jaxrsMethods = new LinkedList<ResourceMethod>();
 
   public static boolean start(final RootDoc rootDoc) {
     new JAXRSDoclet(rootDoc).start();
@@ -91,22 +105,24 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
   }
 
   public void start() {
-    final ClassDoc[] classes = conf.parentConfiguration.root.classes();
-    for (final ClassDoc klass : classes) {
-      if (Utils.findAnnotatedClass(klass, jaxrsAnnotations) != null) {
-        handleJAXRSClass(klass);
+    JAXRSApplication app = new JAXRSApplication(conf);
+    Resource rootResource = app.getRootResource();
+
+    PojoTypes types = new PojoTypes(conf);
+
+    rootResource.write(this, conf, app, types);
+    new IndexWriter(conf, app, this).write();
+    new SummaryWriter(conf, app, this).write();
+
+    if (conf.enablePojoJsonDataObjects) {
+      types.resolveSubclassDtos();
+      new DataObjectIndexWriter(conf, app, this, types).write();
+      for (ClassDoc cDoc : types.getResolvedTypes()) {
+        new PojoClassWriter(conf, app, cDoc, types, rootResource, this).write();
       }
     }
-    Collections.sort(this.jaxrsMethods);
-    Resource rootResource = Resource.getRootResource(jaxrsMethods);
-    rootResource.write(this, conf);
-    new IndexWriter(conf, rootResource).write();
-    new SummaryWriter(conf, rootResource).write();
-    Utils.copyResources(conf);
-  }
 
-  private void handleJAXRSClass(final ClassDoc klass) {
-    jaxrsMethods.addAll(new ResourceClass(klass, null).getMethods());
+    Utils.copyResources(conf);
   }
 
   public void warn(String warning) {

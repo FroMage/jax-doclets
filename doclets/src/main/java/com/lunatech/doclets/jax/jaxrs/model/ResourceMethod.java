@@ -1,6 +1,6 @@
 /*
     Copyright 2009 Lunatech Research
-    
+
     This file is part of jax-doclets.
 
     jax-doclets is free software: you can redistribute it and/or modify
@@ -47,6 +47,8 @@ import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.Parameter;
 import com.sun.javadoc.Tag;
+import com.sun.javadoc.Type;
+import com.sun.javadoc.ParameterizedType;
 import java.util.Arrays;
 
 public class ResourceMethod implements Comparable<ResourceMethod> {
@@ -107,9 +109,29 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
     setupMethods();
     setupMIMEs();
     // is this a resource locator?
-    if (methods.isEmpty() && !declaringMethod.returnType().isPrimitive())
-      resourceLocator = new ResourceClass(declaringMethod.returnType().asClassDoc(), this);
+    if (methods.isEmpty() && !declaringMethod.returnType().isPrimitive()) {
+      // Handle Class style resource locator factory methods
+      Type t = declaringMethod.returnType();
+    	if("java.lang.Class".equals(t.qualifiedTypeName())) {
+        ParameterizedType p = t.asParameterizedType();
+       	 	if (p != null) {
+       	 		t = p.typeArguments()[0];
+       	 	}
+    	}
+       resourceLocator = new ResourceClass(t.asClassDoc(), this);
+    }
+  }
 
+  public ResourceClass getResourceClass() {
+    return resource;
+  }
+
+  public ClassDoc getDeclaringClass() {
+    return declaringClass;
+  }
+
+  public MethodDoc getMethodDoc() {
+    return method;
   }
 
   public MethodOutput getOutput() {
