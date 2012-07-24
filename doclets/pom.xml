@@ -124,7 +124,7 @@
 							<links>
 								<link>http://java.sun.com/javase/7/docs/api/</link>
 							</links>
-							<additionalparam>-disablejsontypename</additionalparam>
+							<additionalparam>-disablejsontypename -jsonconvention mapped</additionalparam>
 						</configuration>
 					</execution>
 					<execution>
