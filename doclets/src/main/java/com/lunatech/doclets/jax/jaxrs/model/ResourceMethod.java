@@ -248,9 +248,19 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
         formParameters.add(new FormFieldParameter(field, formParamAnnotation, MethodParameterType.Form));
         continue;
       }
+      //Recurse into the embedded @Form field
+      if(formClass != null) {
+        final AnnotationDesc formAnnotation = Utils.findAnnotation(field, formClass);
+        if(formAnnotation != null) {
+            walkFormParameter(field.type().asClassDoc());
+            continue;
+        }
+      }
+      
       final AnnotationDesc contextAnnotation = Utils.findAnnotation(field, Context.class);
       if (contextAnnotation == null) {
         this.inputParameter = new FormFieldParameter(field, null, MethodParameterType.Input);
+        continue;
       }
     }
     // and methods
@@ -293,6 +303,15 @@ public class ResourceMethod implements Comparable<ResourceMethod> {
         String name = (String) Utils.getAnnotationValue(formParamAnnotation);
         formParameters.add(new FormMethodParameter(method, formParamAnnotation, MethodParameterType.Form));
         continue;
+      }
+      // I'm not sure if @Form can be used on setter methods on an @Form field, but just in case...
+      if(formClass != null) {
+        //recurse into @Form parameters
+        final AnnotationDesc formAnnotation = Utils.findParameterAnnotation(method, parameter, 0, formClass);
+        if(formAnnotation != null) {
+            walkFormParameter(parameter.type().asClassDoc());
+            continue;
+        }
       }
       final AnnotationDesc contextAnnotation = Utils.findParameterAnnotation(method, parameter, 0, Context.class);
       if (contextAnnotation == null) {
