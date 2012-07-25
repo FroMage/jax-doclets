@@ -42,6 +42,8 @@ public class ResourceClass {
 
   private ClassDoc declaringClass;
 
+  private String applicationRootPath;
+
   private AnnotationDesc rootPathAnnotation;
 
   private AnnotationDesc rootProducesAnnotation;
@@ -55,7 +57,12 @@ public class ResourceClass {
   private Map<String, String> regexFragments = new HashMap<String, String>();
 
   public ResourceClass(ClassDoc resourceClass, ResourceMethod methodLocator) {
+    this(resourceClass, methodLocator, null);
+  }
+
+  public ResourceClass(ClassDoc resourceClass, ResourceMethod methodLocator, String applicationRootPath) {
     this.parentMethod = methodLocator;
+    this.applicationRootPath = applicationRootPath;
     // find the annotated class or interface
     declaringClass = Utils.findAnnotatedClass(resourceClass, Path.class);
     // sub-resources may not have a path, but they're still resources
@@ -104,6 +111,8 @@ public class ResourceClass {
       path = null;
     if (parentMethod != null)
       path = Utils.appendURLFragments(parentMethod.getPath(), path);
+    if (parentMethod == null && applicationRootPath != null)
+      path = Utils.appendURLFragments("/", applicationRootPath, path);
   }
 
   public ClassDoc getDeclaringClass() {

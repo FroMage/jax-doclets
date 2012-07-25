@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.LinkedList;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.Path;
 
 import com.lunatech.doclets.jax.JAXDoclet;
@@ -32,6 +33,7 @@ import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.lunatech.doclets.jax.jaxrs.tags.*;
 import com.lunatech.doclets.jax.jaxrs.writers.IndexWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
+import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.LanguageVersion;
@@ -43,10 +45,12 @@ import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
 import com.sun.tools.doclets.internal.toolkit.taglets.LegacyTaglet;
 
 public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
+  public static final String JAX_RS_APP_CLASS = "javax.ws.rs.core.Application";
 
   public final HtmlDoclet htmlDoclet = new HtmlDoclet();
 
   private static final Class<?>[] jaxrsAnnotations = new Class<?>[] { Path.class };
+  private String rootPath;
 
   public static int optionLength(final String option) {
     if ("-jaxrscontext".equals(option)) {
@@ -92,6 +96,7 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
 
   public void start() {
     final ClassDoc[] classes = conf.parentConfiguration.root.classes();
+    findApplicationRoot(classes);
     for (final ClassDoc klass : classes) {
       if (Utils.findAnnotatedClass(klass, jaxrsAnnotations) != null) {
         handleJAXRSClass(klass);
@@ -105,8 +110,36 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
     Utils.copyResources(conf);
   }
 
+  private void findApplicationRoot(ClassDoc[] classes) {
+    List<ClassDoc> applicationClasses = new LinkedList<ClassDoc>();
+
+    for (final ClassDoc klass : classes) {
+      if (Utils.findSuperTypeFromClass(klass, JAX_RS_APP_CLASS) != null) {
+        applicationClasses.add(klass);
+      }
+    }
+
+    switch (applicationClasses.size()) {
+      case 0:
+        getRootDoc().printNotice("JAX-RS root will be set by servlet-mapping for " + JAX_RS_APP_CLASS + ".");
+        break;
+
+      case 1:
+        AnnotationDesc annotation = Utils.findAnnotation(applicationClasses.get(0), ApplicationPath.class);
+        rootPath = (String) Utils.getAnnotationValue(annotation);
+        break;
+
+      default:
+        getRootDoc().printWarning("Ambiguous JAX-RS " + JAX_RS_APP_CLASS + " def:");
+        for (final ClassDoc klass : classes) {
+          getRootDoc().printWarning(klass.position(), "");
+        }
+        break;
+    }
+  }
+
   private void handleJAXRSClass(final ClassDoc klass) {
-    jaxrsMethods.addAll(new ResourceClass(klass, null).getMethods());
+    jaxrsMethods.addAll(new ResourceClass(klass, null, rootPath).getMethods());
   }
 
   public void warn(String warning) {
