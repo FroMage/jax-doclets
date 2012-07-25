@@ -18,26 +18,14 @@
  */
 package com.lunatech.doclets.jax.jaxrs;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.io.*;
-import java.util.*;
 import java.util.regex.Pattern;
-
-import javax.ws.rs.Path;
 
 import com.lunatech.doclets.jax.JAXDoclet;
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.PojoTypes;
 import com.lunatech.doclets.jax.jaxrs.model.Resource;
-import com.lunatech.doclets.jax.jaxrs.model.ResourceClass;
-import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.lunatech.doclets.jax.jaxrs.tags.ExcludeTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.IncludeTaglet;
@@ -45,8 +33,8 @@ import com.lunatech.doclets.jax.jaxrs.tags.InputWrappedTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ReturnWrappedTaglet;
-import com.lunatech.doclets.jax.jaxrs.writers.IndexWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.DataObjectIndexWriter;
+import com.lunatech.doclets.jax.jaxrs.writers.IndexWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.PojoClassWriter;
 import com.lunatech.doclets.jax.jaxrs.writers.SummaryWriter;
 import com.sun.javadoc.ClassDoc;
@@ -54,7 +42,6 @@ import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.SourcePosition;
-import com.sun.javadoc.Type;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDoclet;
 import com.sun.tools.doclets.internal.toolkit.AbstractDoclet;
