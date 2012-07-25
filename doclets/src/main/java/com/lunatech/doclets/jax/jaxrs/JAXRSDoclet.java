@@ -80,7 +80,19 @@ public class JAXRSDoclet extends JAXDoclet<JAXRSConfiguration> {
   }
 
   public static boolean validOptions(final String[][] options, final DocErrorReporter reporter) {
-    return HtmlDoclet.validOptions(options, reporter);
+    if (!HtmlDoclet.validOptions(options, reporter)) {
+      return false;
+    }
+    List<String> values = Utils.getOptions(options, "-pathexcludefilter");
+    for(String value : values){
+      try {
+        Pattern.compile(value);
+      } catch (Throwable t) {
+        reporter.printError("Invalid pattern for '-pathexcludefilter' option: '"+value+"' (not a valid regex)");
+        return false;
+      }
+    }
+    return true;
   }
 
   public static LanguageVersion languageVersion() {

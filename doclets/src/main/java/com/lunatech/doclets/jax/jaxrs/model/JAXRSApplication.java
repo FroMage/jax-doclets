@@ -46,26 +46,20 @@ public class JAXRSApplication {
     if (conf.pathExcludeFilters.isEmpty())
       return;
 
-    System.out.println("Resource methods exclude filters are defined");
-
     // collection for paths removing, since jaxrsMethods is immutable
     List<ResourceMethod> toRemove = new LinkedList<ResourceMethod>();
-    for (String regexpFilter : conf.pathExcludeFilters) {
-      System.out.println("Filtering upon filter " + regexpFilter);
-      Pattern p = Pattern.compile(regexpFilter);
+    for (Pattern regexpFilter : conf.pathExcludeFilters) {
       Iterator<ResourceMethod> irm = jaxrsMethods.iterator();
       while (irm.hasNext()) {
         ResourceMethod rm = irm.next();
 
-        if (p.matcher(rm.getPath()).matches()) {
-          System.out.println("Resource method removed: " + rm);
+        if (regexpFilter.matcher(rm.getPath()).matches()) {
+          conf.parentConfiguration.root.printNotice("Resource method removed: " + rm);
           toRemove.add(rm);
         }
       }
     }
-    int beforeRemoving = jaxrsMethods.size();
     jaxrsMethods.removeAll(toRemove);
-    System.out.println("Resource methods removed. Was " + beforeRemoving + ", now " + jaxrsMethods.size());
   }
 
   private void handleJAXRSClass(final ClassDoc klass) {

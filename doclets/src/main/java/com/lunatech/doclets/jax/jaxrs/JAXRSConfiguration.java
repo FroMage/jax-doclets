@@ -16,7 +16,7 @@ public class JAXRSConfiguration extends JAXConfiguration {
 
   public boolean enableJavaScriptExample;
   
-  public List<String> pathExcludeFilters = new ArrayList<String>();
+  public List<Pattern> pathExcludeFilters = new ArrayList<Pattern>();
 
   public boolean enablePojoJsonDataObjects ;
 
@@ -34,7 +34,10 @@ public class JAXRSConfiguration extends JAXConfiguration {
     jaxrscontext = Utils.getOption(options, "-jaxrscontext");
     enableHTTPExample = !Utils.hasOption(options, "-disablehttpexample");
     enableJavaScriptExample = !Utils.hasOption(options, "-disablejavascriptexample");
-    pathExcludeFilters.addAll(Utils.getOptions(options, "-pathexcludefilter"));
+    List<String> excludeFilters = Utils.getOptions(options, "-pathexcludefilter");
+    for(String excludeFilter : excludeFilters){
+      pathExcludeFilters.add(Pattern.compile(excludeFilter));
+    }
   }
 
 }
