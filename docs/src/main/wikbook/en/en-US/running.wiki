@@ -223,6 +223,7 @@ These parameters are only valid for the JAX-RS doclet
 |{{-disablejavascriptexample}}|Disables the generated JavaScript examples.|
 |{{-enablepojojson}}|Enables the POJO JSON documentation mode.|
 |{{-matchingresourcesonly}}|A regular expression specifying the types of resource classes (based on the fully qualified type name) that will be documented. Useful when sharing resource classes or DTOs between projects. \\ Defaults to matching all resource classes.|
+|{{-pathexcludefilter}}|A regular expression specifying the REST resource paths to be excluded from the documentation. Can be specified more than once.|
 
 These parameters are only valid when the POJO JSON documentation mode is enabled
 ||Parameter||Function||
