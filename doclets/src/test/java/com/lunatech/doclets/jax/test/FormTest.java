@@ -11,6 +11,8 @@ import javax.ws.rs.QueryParam;
 
 import org.jboss.resteasy.annotations.Form;
 
+import com.lunatech.doclets.jax.test.demo.doc.Ingredient;
+
 @Path("/form-{id}")
 public class FormTest {
 
@@ -56,12 +58,46 @@ public class FormTest {
      */
     @CookieParam("c")
     String cookie;
+    
+    /**
+     * An embedded @Form
+     */
+    @Form
+    EmbeddedForm aNestedForm;
 
     /**
      * @param m2
      *          The second foo matrix param.
      */
     void setFoo(@MatrixParam("m2") String m2) {}
+  }
+  
+  public static class EmbeddedForm {
+    /**
+     * A path parameter in the embedded @Form
+     */
+     @PathParam("embedded-path-param")
+     String aString;
+     
+     /**
+      * A form parameter in the embedded @Form
+      */
+      @FormParam("embedded-form-param")
+      String anotherString;
+      
+      /**
+       * An @Form nested inside the embedded @Form
+       */
+      @Form
+      DoubleEmbeddedForm doubleEmbeddedForm;
+  }
+  
+  public static class DoubleEmbeddedForm{
+      /**
+       * A query parameter in the @Form that is nested within the embedded @Form 
+       */
+      @QueryParam("query-param-two-Forms-deep")
+      Long aQueryParam;
   }
 
   @GET
