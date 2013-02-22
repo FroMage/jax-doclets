@@ -207,8 +207,8 @@ These parameters are valid for all jax-doclets
 
 ||Parameter||Function||
 |{{-stylesheet}}|The CSS stylesheet to copy and use.|
-|{{-header}}|The header which is inserted on every page header.|
-|{{-footer}}|The footer which is inserted on every page footer.|
+|{{-header}}|The header which is inserted on every page header ([{@docRoot}|http://docs.oracle.com/javase/1.5.0/docs/tooldocs/solaris/javadoc.html#{@docRoot}] is supported).|
+|{{-footer}}|The footer which is inserted on every page footer ([{@docRoot}|http://docs.oracle.com/javase/1.5.0/docs/tooldocs/solaris/javadoc.html#{@docRoot}] is supported).|
 |{{-charset}}|The charset to use for source files and produced HTML documentation.|
 |{{-link}}{anchor:id=-link}|Path to another JavaDoc documentation. This is used to produce links to other package's documentation, either regular JavaDoc or to JAXB documentation in the case of the JAX-RS doclet.|
 |{{-nonavbar}}|Prevents the generation of the navigation bar.|

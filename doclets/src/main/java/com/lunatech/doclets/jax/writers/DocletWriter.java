@@ -93,7 +93,7 @@ public class DocletWriter {
     open("BODY");
     String msg = configuration.parentConfiguration.header;
     if (msg != null) {
-      print(msg);
+      print(writer.replaceDocRootDir(msg));
     }
   }
 
@@ -102,7 +102,7 @@ public class DocletWriter {
   protected void printFooter() {
     String msg = configuration.parentConfiguration.footer;
     if (msg != null) {
-      print(msg);
+      print(writer.replaceDocRootDir(msg));
     }
     tag("hr");
     open("div class='footer'");
