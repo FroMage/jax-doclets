@@ -7,6 +7,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 public class ClassExample {
@@ -89,4 +90,11 @@ public class ClassExample {
   public void setStringCollection(Collection<String> stringCollection) {
     this.stringCollection = stringCollection;
   }
+
+  public String nonTransientField;
+
+  public transient String transientField;
+
+  @XmlTransient
+  public String xmlTransientField;
 }
