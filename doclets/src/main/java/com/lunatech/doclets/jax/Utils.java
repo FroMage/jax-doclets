@@ -42,8 +42,6 @@ import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.ProgramElementDoc;
 import com.sun.javadoc.Tag;
 import com.sun.javadoc.Type;
-import com.sun.javadoc.TypeVariable;
-import com.sun.javadoc.WildcardType;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 import com.sun.tools.doclets.internal.toolkit.Configuration;
 import com.sun.tools.doclets.internal.toolkit.taglets.DeprecatedTaglet;
@@ -855,17 +853,7 @@ public class Utils {
     }
 
     public Type getType() {
-        if (hasParameters() && type.asParameterizedType() == null) {
-            final List<Type> args = new ArrayList<Type>();
-            for (JaxType param : parameters) {
-                if (param.getType() == null) {
-                    return type;
-                }
-                args.add(param.getType());
-            }
-            return new ParameterizedTypeAdapter(type, args);
-        }
-        return type;
+      return type;
     }
 
     public List<JaxType> getParameters() {
@@ -874,78 +862,6 @@ public class Utils {
 
     public boolean hasParameters() {
       return !parameters.isEmpty();
-    }
-  }
-
-  private static class ParameterizedTypeAdapter implements ParameterizedType {
-    private Type type;
-    private List<Type> args;
-
-    private ParameterizedTypeAdapter(Type type, List<Type> args) {
-      this.type = type;
-      this.args = args;
-    }
-
-    public String typeName() {
-      return type.typeName();
-    }
-
-    public String simpleTypeName() {
-      return type.simpleTypeName();
-    }
-
-    public String qualifiedTypeName() {
-      return type.qualifiedTypeName();
-    }
-
-    public boolean isPrimitive() {
-      return type.isPrimitive();
-    }
-
-    public String dimension() {
-      return type.dimension();
-    }
-
-    public WildcardType asWildcardType() {
-      return type.asWildcardType();
-    }
-
-    public TypeVariable asTypeVariable() {
-      return type.asTypeVariable();
-    }
-
-    public ParameterizedType asParameterizedType() {
-      return this;
-    }
-
-    public AnnotationTypeDoc asAnnotationTypeDoc() {
-      return type.asAnnotationTypeDoc();
-    }
-
-    public Type[] typeArguments() {
-      return args.toArray(new Type[args.size()]);
-    }
-
-    public Type superclassType() {
-      return type;
-    }
-
-    public Type[] interfaceTypes() {
-      if (type.asClassDoc() != null) {
-        return type.asClassDoc().interfaceTypes();
-      }
-      return new Type[0];
-    }
-
-    public Type containingType() {
-      if (type.asClassDoc() != null) {
-        return type.asClassDoc().containingClass();
-      }
-      return null;
-    }
-
-    public ClassDoc asClassDoc() {
-      return type.asClassDoc();
     }
   }
 
