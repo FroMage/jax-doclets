@@ -23,12 +23,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
 
 import com.lunatech.doclets.jax.Utils;
 import com.lunatech.doclets.jax.Utils.InvalidJaxTypeException;
 import com.lunatech.doclets.jax.Utils.JaxType;
-import com.lunatech.doclets.jax.jaxrs.JAXRSConfiguration;
 import com.lunatech.doclets.jax.jaxrs.JAXRSDoclet;
 import com.lunatech.doclets.jax.jaxrs.model.JAXRSApplication;
 import com.lunatech.doclets.jax.jaxrs.model.MethodOutput;
@@ -38,7 +36,6 @@ import com.lunatech.doclets.jax.jaxrs.model.ResourceMethod;
 import com.lunatech.doclets.jax.jaxrs.tags.HTTPTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.RequestHeaderTaglet;
 import com.lunatech.doclets.jax.jaxrs.tags.ResponseHeaderTaglet;
-import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Tag;
@@ -208,7 +205,22 @@ public class MethodWriter extends DocletWriter {
       print(type.getTypeName());
       return;
     }
-    printOutputType(type.getType(), types);
+    open("tt");
+    printOutputGenericType(type.getType(), types);
+    if (type.hasParameters()) {
+      boolean first = true;
+      print("&lt;");
+      for (JaxType genericType : type.getParameters()) {
+        if (first) {
+          first = false;
+        } else {
+          print(",");
+        }
+        printOutputGenericType(genericType.getType(), types);
+      }
+      print("&gt;");
+    }
+    close("tt");
   }
 
   private void printOutputType(Type type, PojoTypes types) {
