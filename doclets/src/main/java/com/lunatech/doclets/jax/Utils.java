@@ -226,22 +226,28 @@ public class Utils {
   }
 
   public static ClassDoc findAnnotatedClass(final ClassDoc klass, final Class<?>... soughtAnnotations) {
-    if (!klass.isClass() || isExcluded(klass))
+    if (!klass.isClass())
       return null;
-    if (hasAnnotation(klass, soughtAnnotations)) {
-      return klass;
-    }
-    // find it in the interfaces
-    final ClassDoc foundClassDoc = findAnnotatedInterface(klass, soughtAnnotations);
-    if (foundClassDoc != null) {
-      return foundClassDoc;
-    }
+    return findAnnotatedClassOrInterface(klass, soughtAnnotations);
+  }
 
-    final Type superclass = klass.superclassType();
-    if (superclass != null && superclass.asClassDoc() != null) {
-      return findAnnotatedClass(superclass.asClassDoc(), soughtAnnotations);
-    }
-    return null;
+  public static ClassDoc findAnnotatedClassOrInterface(ClassDoc klass, Class<?>... soughtAnnotations) {
+	  if (isExcluded(klass))
+		  return null;
+	    if (hasAnnotation(klass, soughtAnnotations)) {
+	        return klass;
+	      }
+	      // find it in the interfaces
+	      final ClassDoc foundClassDoc = findAnnotatedInterface(klass, soughtAnnotations);
+	      if (foundClassDoc != null) {
+	        return foundClassDoc;
+	      }
+
+	      final Type superclass = klass.superclassType();
+	      if (superclass != null && superclass.asClassDoc() != null) {
+	        return findAnnotatedClass(superclass.asClassDoc(), soughtAnnotations);
+	      }
+	      return null;
   }
 
   public static Type findSuperType(final Type type, String typeName) {
@@ -894,4 +900,5 @@ public class Utils {
   private static boolean isExcluded(Doc doc) {
       return doc.tags("exclude").length != 0;
   }
+
 }

@@ -1,5 +1,6 @@
 package com.lunatech.doclets.jax.jaxrs.model;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -33,7 +34,8 @@ public class JAXRSApplication {
   private void discoverJAXRSResources() {
     final ClassDoc[] classes = conf.parentConfiguration.root.classes();
     for (final ClassDoc klass : classes) {
-      if (Utils.findAnnotatedClass(klass, jaxrsAnnotations) != null) {
+    	
+      if (Utils.findAnnotatedClassOrInterface(klass, jaxrsAnnotations) != null) {
         handleJAXRSClass(klass);
       }
     }
