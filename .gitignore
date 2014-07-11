@@ -6,3 +6,6 @@ doclets/.classpath
 doclets/.project
 doclets/.settings/
 target/
+.idea
+*.iml
+*~

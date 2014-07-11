@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.lunatech.jax-doclets</groupId>
-	<artifactId>parent</artifactId>
-	<version>0.10.1-SNAPSHOT</version>
-	<name>jax-doclets</name>
-	<packaging>pom</packaging>
-	<description>jax-doclets allows you to generate JavaDoc documentation for specific Java annotation-based extensions.</description>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -17,7 +8,19 @@
 		<version>9</version>
 	</parent>
 
-	<url>http://www.lunatech-labs.com/open-source/jax-doclets</url>
+	<groupId>com.lunatech.jax-doclets</groupId>
+	<artifactId>parent</artifactId>
+	<version>0.10.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>jax-doclets</name>
+	<description>jax-doclets allows you to generate JavaDoc documentation for specific Java annotation-based extensions.</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<url>https://github.com/FroMage/jax-doclets</url>
 
 	<licenses>
 		<license>
@@ -58,6 +61,10 @@
 		</contributor>
 		<contributor>
 			<name>Sietse de Kaper</name>
+		</contributor>
+		<contributor>
+			<name>Sergio Fernández</name>
+			<url>http://www.wikier.org</url>
 		</contributor>
 	</contributors>
 
