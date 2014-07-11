@@ -10,7 +10,7 @@
 
 	<groupId>com.lunatech.jax-doclets</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.10.1</version>
+	<version>0.10.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>jax-doclets</name>
