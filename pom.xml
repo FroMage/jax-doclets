@@ -10,7 +10,7 @@
 
 	<groupId>com.lunatech.jax-doclets</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.10.2-SNAPSHOT</version>
+	<version>0.10.2</version>
 	<packaging>pom</packaging>
 
 	<name>jax-doclets</name>
@@ -35,6 +35,14 @@
 		<developerConnection>scm:git:git@github.com:FroMage/jax-doclets.git</developerConnection>
 		<url>https://github.com/FroMage/jax-doclets</url>
 	</scm>
+
+    <distributionManagement>
+        <repository>
+            <id>jboss-releases-repository</id>
+            <name>JBoss Releases Repository</name>
+            <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 	<issueManagement>
 		<system>github</system>
@@ -110,7 +118,7 @@
 
 	<modules>
 		<module>doclets</module>
-		<module>docs</module>
+		<!-- <module>docs</module> -->
 	</modules>
 
 	<build>

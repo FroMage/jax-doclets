@@ -142,6 +142,7 @@ public class ResourceWriter extends DocletWriter {
     for (String subResourceKey : resources.keySet()) {
       Resource realSubResource = resources.get(subResourceKey);
       Resource subResource = deepFilter(realSubResource);
+      if (subResource == null) continue;
       open("tr");
       open("td");
       String path = subResource.getPathFrom(resource);
@@ -176,6 +177,9 @@ public class ResourceWriter extends DocletWriter {
       return resource;
     // there cannot be any resource with no method, and no subresources
     // return the first subresource
+    if (!resource.getResources().values().iterator().hasNext()) {
+        return null;
+    }
     return deepFilter(resource.getResources().values().iterator().next());
   }
 
