@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.lunatech.jax-doclets</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.10.2-SNAPSHOT</version>
+		<version>0.10.2</version>
 	</parent>
 
 	<artifactId>doclets</artifactId>
@@ -280,6 +280,44 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <configuration>
+                    <archive>
+                        <index>true</index>
+                        <manifest>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-URL>${project.url}</Implementation-URL>
+                            <Java-Version>${java.version}</Java-Version>
+                            <Java-Vendor>${java.vendor}</Java-Vendor>
+                            <Os-Name>${os.name}</Os-Name>
+                            <Os-Arch>${os.arch}</Os-Arch>
+                            <Os-Version>${os.version}</Os-Version>
+                            <Scm-Url>${project.scm.url}</Scm-Url>
+                            <Scm-Connection>${project.scm.connection}</Scm-Connection>
+                            <Scm-Revision>${buildNumber}</Scm-Revision>
+                            <Build-Timestamp>${build.datetime}</Build-Timestamp>
+                            <Specification-Vendor>JBoss (http://www.jboss.org/)</Specification-Vendor>
+                            <Implementation-URL>http://www.jboss.org/</Implementation-URL>
+                            <Implementation-Vendor>JBoss by Red Hat, Inc</Implementation-Vendor>
+                            <Implementation-Vendor-Id>http://www.jboss.org/</Implementation-Vendor-Id>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 </project>

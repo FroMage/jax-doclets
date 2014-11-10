@@ -10,7 +10,7 @@
 
 	<groupId>com.lunatech.jax-doclets</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.10.2-SNAPSHOT</version>
+	<version>0.10.2</version>
 	<packaging>pom</packaging>
 
 	<name>jax-doclets</name>
@@ -35,6 +35,14 @@
 		<developerConnection>scm:git:git@github.com:FroMage/jax-doclets.git</developerConnection>
 		<url>https://github.com/FroMage/jax-doclets</url>
 	</scm>
+
+    <distributionManagement>
+        <repository>
+            <id>jboss-releases-repository</id>
+            <name>JBoss Releases Repository</name>
+            <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 	<issueManagement>
 		<system>github</system>
@@ -110,7 +118,7 @@
 
 	<modules>
 		<module>doclets</module>
-		<module>docs</module>
+		<!-- <module>docs</module> -->
 	</modules>
 
 	<build>
@@ -132,7 +140,44 @@
 						<createChecksum>true</createChecksum>
 					</configuration>
 				</plugin>
-
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.1.2</version>
+                    <configuration>
+                        <archive>
+                            <index>true</index>
+                            <manifest>
+                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                            <manifestEntries>
+                                <Implementation-URL>${project.url}</Implementation-URL>
+                                <Java-Version>${java.version}</Java-Version>
+                                <Java-Vendor>${java.vendor}</Java-Vendor>
+                                <Os-Name>${os.name}</Os-Name>
+                                <Os-Arch>${os.arch}</Os-Arch>
+                                <Os-Version>${os.version}</Os-Version>
+                                <Scm-Url>${project.scm.url}</Scm-Url>
+                                <Scm-Connection>${project.scm.connection}</Scm-Connection>
+                                <Scm-Revision>${buildNumber}</Scm-Revision>
+                                <Build-Timestamp>${build.datetime}</Build-Timestamp>
+                                <Specification-Vendor>JBoss (http://www.jboss.org/)</Specification-Vendor>
+                                <Implementation-URL>http://www.jboss.org/</Implementation-URL>
+                                <Implementation-Vendor>JBoss by Red Hat, Inc</Implementation-Vendor>
+                                <Implementation-Vendor-Id>http://www.jboss.org/</Implementation-Vendor-Id>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 
